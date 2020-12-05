@@ -8,7 +8,16 @@ export default createGlobalStyle`
 		box-sizing: border-box;
 	}
 
+	body {
+		background: #343d4e;
+		-webkit-font-smoothing: antialiased;
+	}
+
 	body, input, button {
 		font-family: 'Roboto Condensed', sans-serif
+	}
+
+	button {
+		cursor: pointer;
 	}
 `

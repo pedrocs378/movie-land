@@ -1,9 +1,19 @@
 import React from 'react'
 import { GiClapperboard, GiPopcorn } from 'react-icons/gi'
+import { FiSearch } from 'react-icons/fi'
 import { AiOutlineEdit, AiOutlineStar } from 'react-icons/ai'
 import { BsBookmark } from 'react-icons/bs'
 
-import { Container, SideMenu, TitleContainer, ProfileContainer, Navigation } from './styles'
+import {
+	Container,
+	SideMenu,
+	TitleContainer,
+	ProfileContainer,
+	Navigation,
+	Content,
+	SearchInput,
+	MovieSection
+} from './styles'
 
 const Home: React.FC = () => {
 
@@ -48,6 +58,15 @@ const Home: React.FC = () => {
 					Sign Out
 				</a>
 			</SideMenu>
+
+			<Content>
+				<SearchInput>
+					<input name="movie" placeholder="Search..." />
+					<button>
+						<FiSearch />
+					</button>
+				</SearchInput>
+			</Content>
 		</Container>
 	)
 }
