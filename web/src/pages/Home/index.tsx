@@ -1,18 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { GiClapperboard, GiPopcorn } from 'react-icons/gi'
-import { FiSearch } from 'react-icons/fi'
-import { AiOutlineEdit, AiOutlineStar } from 'react-icons/ai'
+import { Link } from 'react-router-dom'
 import { BsBookmark } from 'react-icons/bs'
 import axios from 'axios'
 
 import {
 	Container,
-	SideMenu,
-	TitleContainer,
-	ProfileContainer,
-	Navigation,
-	Content,
-	SearchInput,
 	MovieSection,
 	Movie,
 	ListMovies
@@ -22,8 +14,6 @@ interface GenreProps {
 	id: number
 	name: string
 }
-
-
 interface GenreResponseProp {
 	genres: GenreProps[]
 }
@@ -47,7 +37,6 @@ interface MovieResponseProps {
 }
 
 const Home: React.FC = () => {
-	const [isFocused, setIsFocused] = useState(false)
 	const [popularMovies, setPopularMovies] = useState<MovieProps[]>([])
 	const [topRated, setTopRated] = useState<MovieProps[]>([])
 	const [genres, setGenres] = useState<GenreProps[]>(() => {
@@ -85,14 +74,6 @@ const Home: React.FC = () => {
 
 	}, [])
 
-	const handleFocus = useCallback(() => {
-		setIsFocused(true)
-	}, [])
-
-	const handleBlur = useCallback(() => {
-		setIsFocused(false)
-	}, [])
-
 	const handleGetGenre = useCallback((id: number) => {
 
 		const genre = genres.find((value) => value.id === id)
@@ -103,67 +84,16 @@ const Home: React.FC = () => {
 
 	return (
 		<Container>
-			<SideMenu>
-				<TitleContainer href="/" >
-					<GiClapperboard />
-
-					<h1>MOVIE<span>LAND</span></h1>
-				</TitleContainer>
-
-				<ProfileContainer href="/" >
-					<img src="https://pbs.twimg.com/profile_images/1241471716213342209/cepHHPSo_400x400.jpg" alt="Pedro César" />
-
-					<span>Pedro César</span>
-
-					<AiOutlineEdit />
-				</ProfileContainer>
-
-				<Navigation>
-					<h4>Media</h4>
-
-					<a href="/">
-						<GiPopcorn />
-						Movies
-					</a>
-					<a href="/">
-						<AiOutlineStar />
-						Rated
-					</a>
-				</Navigation>
-
-				<Navigation>
-					<a href="/">
-						<BsBookmark />
-						Saved
-					</a>
-				</Navigation>
-
-				<button>
-					Sign Out
-				</button>
-			</SideMenu>
-
-			<Content>
-				<SearchInput isFocused={isFocused} >
-					<input
-						name="movie"
-						placeholder="Search..."
-						onFocus={handleFocus}
-						onBlur={handleBlur}
-					/>
-					<button>
-						<FiSearch />
-					</button>
-				</SearchInput>
-				<MovieSection>
-					<div>
-						<h1>Popular Movies</h1>
-						<button>See all</button>
-					</div>
-					<ListMovies>
-						{popularMovies.map((movie, index) => {
-							return index < 6 && (
-								<Movie key={movie.id} href="/">
+			<MovieSection>
+				<div>
+					<h1>Popular Movies</h1>
+					<button>See all</button>
+				</div>
+				<ListMovies>
+					{popularMovies.map((movie, index) => {
+						return index < 6 && (
+							<Movie key={movie.id}>
+								<Link to={`/movie/${movie.id}`}>
 									<div>
 										<img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
 
@@ -180,20 +110,22 @@ const Home: React.FC = () => {
 											<p>{new Date(movie.release_date).getFullYear()}, {handleGetGenre(movie.genre_ids[0])}</p>
 										</div>
 									</div>
-								</Movie>
-							)
-						})}
-					</ListMovies>
-				</MovieSection>
-				<MovieSection>
-					<div>
-						<h1>Top Rated</h1>
-						<button>See all</button>
-					</div>
-					<ListMovies>
-						{topRated.map((movie, index) => {
-							return index < 6 && (
-								<Movie key={movie.id} href="/">
+								</Link>
+							</Movie>
+						)
+					})}
+				</ListMovies>
+			</MovieSection>
+			<MovieSection>
+				<div>
+					<h1>Top Rated</h1>
+					<button>See all</button>
+				</div>
+				<ListMovies>
+					{topRated.map((movie, index) => {
+						return index < 6 && (
+							<Movie key={movie.id}>
+								<Link to={`/movie/${movie.id}`}>
 									<div>
 										<img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
 
@@ -210,12 +142,12 @@ const Home: React.FC = () => {
 											<p>{new Date(movie.release_date).getFullYear()}, {handleGetGenre(movie.genre_ids[0])}</p>
 										</div>
 									</div>
-								</Movie>
-							)
-						})}
-					</ListMovies>
-				</MovieSection>
-			</Content>
+								</Link>
+							</Movie>
+						)
+					})}
+				</ListMovies>
+			</MovieSection>
 		</Container>
 	)
 }

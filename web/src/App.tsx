@@ -1,13 +1,24 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom'
 
-import Home from './pages/Home'
+import SideMenu from './components/SideMenu';
+import Header from './components/Header';
 
+import Router from './routes'
+
+import { GridArea } from './styles/app';
 import GlobalStyles from './styles/global'
 
 const App: React.FC = () => {
   return (
     <>
-		<Home />
+		<GridArea>
+			<SideMenu />
+			<Header />
+			<BrowserRouter>
+				<Router />
+			</BrowserRouter>
+		</GridArea>
 
 		<GlobalStyles />
     </>
