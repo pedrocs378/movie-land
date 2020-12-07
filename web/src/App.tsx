@@ -13,9 +13,10 @@ const App: React.FC = () => {
   return (
     <>
 		<GridArea>
-			<SideMenu />
-			<Header />
 			<BrowserRouter>
+				<SideMenu />
+				<Header />
+
 				<Router />
 			</BrowserRouter>
 		</GridArea>

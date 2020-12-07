@@ -1,14 +1,15 @@
 import styled from 'styled-components'
 import { setLightness } from 'polished'
 
-export const Container = styled.nav`
+export const Container = styled.aside`
 	grid-area: menu;
 
 	height: 100vh;
 	padding-top: 40px;
 	background: linear-gradient(180deg, rgba(66,80,98,1) 0%, rgba(45,53,71,1) 100%);
 
-	position: relative;
+	position: fixed;
+	width: 250px;
 
 	button {
 		color: #c2c3c5;
@@ -28,12 +29,15 @@ export const Container = styled.nav`
 	}
 `
 
-export const TitleContainer = styled.a`
+export const TitleContainer = styled.div`
 
-	display: flex;
-	align-items: center;
 	margin-left: 18px;
-	text-decoration: none;
+
+	a {
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+	}
 
 	svg {
 		height: 30px;

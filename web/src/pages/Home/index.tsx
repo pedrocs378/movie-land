@@ -1,12 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { BsBookmark } from 'react-icons/bs'
 import axios from 'axios'
+
+import Movie from '../../components/Movie'
+
+import {
+	API_URL_POPULAR_MOVIES,
+	API_URL_TOP_RATED_MOVIES,
+	API_URL_GENRES
+} from '../../config/movies'
 
 import {
 	Container,
 	MovieSection,
-	Movie,
 	ListMovies
 } from './styles'
 
@@ -37,8 +42,24 @@ interface MovieResponseProps {
 }
 
 const Home: React.FC = () => {
-	const [popularMovies, setPopularMovies] = useState<MovieProps[]>([])
-	const [topRated, setTopRated] = useState<MovieProps[]>([])
+	const [popularMovies, setPopularMovies] = useState<MovieProps[]>(() => {
+		const storagedPopularMovies = localStorage.getItem('@MovieLand:popularMovies')
+
+		if (storagedPopularMovies) {
+			return JSON.parse(storagedPopularMovies)
+		} else {
+			return []
+		}
+	})
+	const [topRated, setTopRated] = useState<MovieProps[]>(() => {
+		const storagedTopRated = localStorage.getItem('@MovieLand:topRated')
+
+		if (storagedTopRated) {
+			return JSON.parse(storagedTopRated)
+		} else {
+			return []
+		}
+	})
 	const [genres, setGenres] = useState<GenreProps[]>(() => {
 		const storagedGenres = localStorage.getItem('@MovieLand:genres')
 
@@ -51,28 +72,34 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 
-		axios.get('https://api.themoviedb.org/3/movie/popular?api_key=b3561ef6903fa8b5ebbddbe3b7dcdcd3').then(response => {
-			const movies = response.data as MovieResponseProps
+		if (popularMovies.length === 0) {
+			axios.get(`${API_URL_POPULAR_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
+				const movies = response.data as MovieResponseProps
 
-			setPopularMovies(movies.results)
-			localStorage.setItem('@MovieLand:popularMovies', JSON.stringify(movies))
-		})
+				setPopularMovies(movies.results)
+				localStorage.setItem('@MovieLand:popularMovies', JSON.stringify(movies.results))
+			})
+		}
 
-		axios.get('https://api.themoviedb.org/3/movie/top_rated?api_key=b3561ef6903fa8b5ebbddbe3b7dcdcd3').then(response => {
-			const movies = response.data as MovieResponseProps
+		if (topRated.length === 0) {
+			axios.get(`${API_URL_TOP_RATED_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
+				const movies = response.data as MovieResponseProps
 
-			setTopRated(movies.results)
-			localStorage.setItem('@MovieLand:topRated', JSON.stringify(movies))
-		})
+				setTopRated(movies.results)
+				localStorage.setItem('@MovieLand:topRated', JSON.stringify(movies.results))
+			})
+		}
 
-		axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=b3561ef6903fa8b5ebbddbe3b7dcdcd3').then(response => {
-			const responseGenres = response.data as GenreResponseProp
+		if (genres.length === 0) {
+			axios.get(`${API_URL_GENRES}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
+				const responseGenres = response.data as GenreResponseProp
 
-			setGenres(responseGenres.genres)
-			localStorage.setItem('@MovieLand:genres', JSON.stringify(responseGenres.genres))
-		})
+				setGenres(responseGenres.genres)
+				localStorage.setItem('@MovieLand:genres', JSON.stringify(responseGenres.genres))
+			})
+		}
 
-	}, [])
+	}, [popularMovies.length, topRated.length, genres.length])
 
 	const handleGetGenre = useCallback((id: number) => {
 
@@ -92,26 +119,7 @@ const Home: React.FC = () => {
 				<ListMovies>
 					{popularMovies.map((movie, index) => {
 						return index < 6 && (
-							<Movie key={movie.id}>
-								<Link to={`/movie/${movie.id}`}>
-									<div>
-										<img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-
-										<button>
-											<BsBookmark />
-										</button>
-
-										<div>
-											<div className="blur" />
-											<h3>
-												{movie.title}
-												<span>{movie.vote_average}</span>
-											</h3>
-											<p>{new Date(movie.release_date).getFullYear()}, {handleGetGenre(movie.genre_ids[0])}</p>
-										</div>
-									</div>
-								</Link>
-							</Movie>
+							<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
 						)
 					})}
 				</ListMovies>
@@ -124,26 +132,7 @@ const Home: React.FC = () => {
 				<ListMovies>
 					{topRated.map((movie, index) => {
 						return index < 6 && (
-							<Movie key={movie.id}>
-								<Link to={`/movie/${movie.id}`}>
-									<div>
-										<img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} />
-
-										<button>
-											<BsBookmark />
-										</button>
-
-										<div>
-											<div className="blur" />
-											<h3>
-												{movie.title}
-												<span>{movie.vote_average}</span>
-											</h3>
-											<p>{new Date(movie.release_date).getFullYear()}, {handleGetGenre(movie.genre_ids[0])}</p>
-										</div>
-									</div>
-								</Link>
-							</Movie>
+							<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
 						)
 					})}
 				</ListMovies>

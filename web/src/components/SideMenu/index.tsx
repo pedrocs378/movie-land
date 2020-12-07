@@ -2,6 +2,7 @@ import React from 'react'
 import { AiOutlineEdit, AiOutlineStar } from 'react-icons/ai'
 import { BsBookmark } from 'react-icons/bs'
 import { GiClapperboard, GiPopcorn } from 'react-icons/gi'
+import { Link } from 'react-router-dom'
 
 import {
 	Container,
@@ -14,10 +15,12 @@ const SideMenu: React.FC = () => {
 
 	return (
 		<Container>
-			<TitleContainer href="/" >
-				<GiClapperboard />
+			<TitleContainer>
+				<Link to="/" >
+					<GiClapperboard />
 
-				<h1>MOVIE<span>LAND</span></h1>
+					<h1>MOVIE<span>LAND</span></h1>
+				</Link>
 			</TitleContainer>
 
 			<ProfileContainer href="/" >
