@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 import Movie from '../../components/Movie'
@@ -15,14 +16,14 @@ import {
 	ListMovies
 } from './styles'
 
-interface GenreProps {
+export interface GenreProps {
 	id: number
 	name: string
 }
 interface GenreResponseProp {
 	genres: GenreProps[]
 }
-interface MovieProps {
+export interface MovieProps {
 	id: number
 	genre_ids: number[]
 	title: string
@@ -42,11 +43,16 @@ interface MovieResponseProps {
 }
 
 const Home: React.FC = () => {
+	const [showAllPopularMovies, setShowAllPopularMovies] = useState(false)
+	const [showAllTopRatedMovies, setShowAllTopRatedMovies] = useState(false)
+
 	const [popularMovies, setPopularMovies] = useState<MovieProps[]>(() => {
 		const storagedPopularMovies = localStorage.getItem('@MovieLand:popularMovies')
 
 		if (storagedPopularMovies) {
-			return JSON.parse(storagedPopularMovies)
+			const movies = JSON.parse(storagedPopularMovies) as MovieResponseProps
+
+			return movies.results
 		} else {
 			return []
 		}
@@ -55,7 +61,9 @@ const Home: React.FC = () => {
 		const storagedTopRated = localStorage.getItem('@MovieLand:topRated')
 
 		if (storagedTopRated) {
-			return JSON.parse(storagedTopRated)
+			const movies = JSON.parse(storagedTopRated) as MovieResponseProps
+
+			return movies.results
 		} else {
 			return []
 		}
@@ -77,7 +85,7 @@ const Home: React.FC = () => {
 				const movies = response.data as MovieResponseProps
 
 				setPopularMovies(movies.results)
-				localStorage.setItem('@MovieLand:popularMovies', JSON.stringify(movies.results))
+				localStorage.setItem('@MovieLand:popularMovies', JSON.stringify(movies))
 			})
 		}
 
@@ -86,7 +94,7 @@ const Home: React.FC = () => {
 				const movies = response.data as MovieResponseProps
 
 				setTopRated(movies.results)
-				localStorage.setItem('@MovieLand:topRated', JSON.stringify(movies.results))
+				localStorage.setItem('@MovieLand:topRated', JSON.stringify(movies))
 			})
 		}
 
@@ -111,29 +119,45 @@ const Home: React.FC = () => {
 
 	return (
 		<Container>
-			<MovieSection>
+			<MovieSection isHidden={showAllTopRatedMovies ? true : false} >
 				<div>
 					<h1>Popular Movies</h1>
-					<button>See all</button>
+					<button onClick={() => setShowAllPopularMovies(!showAllPopularMovies)}>
+						{showAllPopularMovies ? "Hide movies" : "See all" }
+					</button>
 				</div>
 				<ListMovies>
 					{popularMovies.map((movie, index) => {
-						return index < 6 && (
-							<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
-						)
+						if (showAllPopularMovies) {
+							return (
+								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
+							)
+						} else {
+							return index < 6 && (
+								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
+							)
+						}
 					})}
 				</ListMovies>
 			</MovieSection>
-			<MovieSection>
+			<MovieSection isHidden={showAllPopularMovies ? true : false} >
 				<div>
 					<h1>Top Rated</h1>
-					<button>See all</button>
+					<button onClick={() => setShowAllTopRatedMovies(!showAllTopRatedMovies)}>
+						{showAllTopRatedMovies ? "Hide movies" : "See all"}
+					</button>
 				</div>
 				<ListMovies>
 					{topRated.map((movie, index) => {
-						return index < 6 && (
-							<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
-						)
+						if (showAllTopRatedMovies) {
+							return (
+								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
+							)
+						} else {
+							return index < 6 && (
+								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
+							)
+						}
 					})}
 				</ListMovies>
 			</MovieSection>

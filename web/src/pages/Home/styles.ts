@@ -1,5 +1,9 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { shade } from 'polished'
+
+interface MovieSectionProps {
+	isHidden: boolean
+}
 
 export const Container = styled.main`
 	grid-area: content;
@@ -14,11 +18,13 @@ export const Container = styled.main`
 
 `
 
-export const MovieSection = styled.section`
+export const MovieSection = styled.section<MovieSectionProps>`
+	margin-top: 30px;
+	margin-bottom: 10px;
 
-	& + section {
-		margin-top: 40px;
-	}
+	${({ isHidden }) => isHidden && css`
+		display: none;
+	`}
 
 	> div:first-child {
 		margin-bottom: 10px;
@@ -35,7 +41,7 @@ export const MovieSection = styled.section`
 			background: transparent;
 			color: white;
 			font-size: 14px;
-			border: 0;
+			text-decoration: none;
 			transition: color 0.2s;
 
 			&:hover {

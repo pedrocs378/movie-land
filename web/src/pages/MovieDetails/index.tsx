@@ -69,8 +69,7 @@ const MovieDetails: React.FC = () => {
 			setRecommentaions(response.data.results)
 		})
 
-		axios.get(`${API_URL_MOVIE}/${params.movie_id}/credits?api_key=${process.env.REACT_APP_API_KEY}`). then(response => {
-			console.log(response.data.cast)
+		axios.get(`${API_URL_MOVIE}/${params.movie_id}/credits?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
 			setCast(response.data.cast)
 		})
 	}, [params.movie_id])
