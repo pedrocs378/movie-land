@@ -1,8 +1,11 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { setLightness, shade } from 'polished'
 
-export const Container = styled.div`
+interface SearchInputProps {
+	isFocused: boolean
+}
 
+export const Container = styled.div`
 	display: grid;
 	grid-template-columns: 250px 1fr;
 	grid-template-areas: "menu content";
@@ -17,8 +20,10 @@ export const SideMenu = styled.aside`
 
 	position: relative;
 
-	> a:last-child {
+	button {
 		color: #c2c3c5;
+		background: transparent;
+		font-size: 18px;
 		text-decoration: none;
 		margin-left: 18px;
 
@@ -109,7 +114,7 @@ export const Navigation = styled.nav`
 		color: #c2c3c5;
 		padding: 7px 14px;
 		text-decoration: none;
-		border-left: 4px solid #2f374a;
+		border-left: 4px solid transparent;
 
 		display: flex;
 		align-items: center;
@@ -130,16 +135,18 @@ export const Navigation = styled.nav`
 
 export const Content = styled.main`
 	grid-area: content;
+	width: 95%;
 	max-width: 1500px;
-	margin: 30px auto;
+	margin: 30px 0;
 
 	display: flex;
 	flex-direction: column;
+	justify-self: center;
 
 `
 
-export const SearchInput = styled.div`
-	width: 300px;
+export const SearchInput = styled.div<SearchInputProps>`
+	width: 400px;
 	align-self: flex-end;
 
 	display: flex;
@@ -149,10 +156,11 @@ export const SearchInput = styled.div`
 	border-radius: 4px;
 	border-left: 3px solid #ffc50d;
 	background: #4d5a6d;
+	transition: box-shadow 0.2s;
 
-	&:focus {
-		box-shadow: 0 5px 0 0 red;
-	}
+	${({ isFocused }) => isFocused && css`
+		box-shadow: 0 0 10px 0 ${shade(0.8, '#343d4e')};
+	`}
 
 	input {
 		background: transparent;
@@ -168,7 +176,6 @@ export const SearchInput = styled.div`
 
 	button {
 		background: transparent;
-		border: 0;
 
 		svg {
 			height: 17px;
@@ -179,10 +186,10 @@ export const SearchInput = styled.div`
 `
 
 export const MovieSection = styled.section`
-	flex: 1;
+	margin-top: 40px;
 
-	div {
-		margin-top: 30px;
+
+	> div {
 		margin-bottom: 20px;
 
 		display: flex;
@@ -196,6 +203,7 @@ export const MovieSection = styled.section`
 		button {
 			background: transparent;
 			color: white;
+			font-size: 14px;
 			border: 0;
 			transition: color 0.2s;
 
@@ -204,8 +212,21 @@ export const MovieSection = styled.section`
 			}
 		}
 	}
+`
 
-	a {
+export const ListMovies = styled.div`
+	display: flex;
+`
+
+export const Movie = styled.a`
+
+	transition: transform 0.2s;
+
+	&:hover {
+		transform: translateY(-2%)
+	}
+
+	> div {
 		height: 300px;
 		width: 200px;
 		position: relative;
@@ -213,6 +234,71 @@ export const MovieSection = styled.section`
 		img {
 			height: 100%;
 			width: 100%;
+			background-size: contain;
+
+			border-radius: 4px;
+		}
+
+		button {
+			position: absolute;
+			right: 10px;
+			top: 10px;
+			padding: 5px;
+			background: rgba(215, 215, 215, 0.2);
+			border-radius: 50%;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			transition: background-color 0.2s;
+
+			&:hover {
+				background: ${shade(0.6, '#d7d7d7')}
+			}
+
+			svg {
+				height: 17px;
+				width: 17px;
+			}
+		}
+
+		div {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: 60px;
+
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
+			border-radius: 4px;
+
+			.blur {
+				height: 100%;
+				width: 100%;
+				background: rgba(0, 0, 0, 0.1);
+				backdrop-filter: blur(8px);
+				z-index: 1;
+			}
+
+			h3 {
+				z-index: 2;
+				display: flex;
+				justify-content: space-between;
+				font-size: 16px;
+				color: white;
+				margin: 0 8px;
+			}
+
+			p {
+				z-index: 2;
+				color: #c2c3c5;
+				font-size: 14px;
+				margin-top: 2px;
+				margin-left: 8px;
+			}
 		}
 	}
 `
