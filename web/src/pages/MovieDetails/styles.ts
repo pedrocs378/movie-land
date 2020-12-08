@@ -14,7 +14,7 @@ export const Container = styled.div`
 
 export const GridDetails = styled.div`
 	display: grid;
-	grid-template-columns: 1fr 250px;
+	grid-template-columns: 1fr auto;
 	grid-template-areas: "infos cast";
 
 `
@@ -139,4 +139,5 @@ export const ListMovies = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
+	margin-bottom: 10px;
 `

@@ -12,12 +12,10 @@ export const Container = styled.header`
 	margin: 0 auto;
 
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-end;
 `
 
 export const InputContainer = styled.div`
-	align-self: flex-end;
 	width: 400px;
 	position: relative;
 `
@@ -25,6 +23,8 @@ export const InputContainer = styled.div`
 export const Input = styled.div<SearchInputProps>`
 	width: 100%;
 	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
 	z-index: 300;
 
 	display: flex;
