@@ -16,9 +16,16 @@ export const Container = styled.header`
 	justify-content: center;
 `
 
-export const Input = styled.div<SearchInputProps>`
-	width: 400px;
+export const InputContainer = styled.div`
 	align-self: flex-end;
+	width: 400px;
+	position: relative;
+`
+
+export const Input = styled.div<SearchInputProps>`
+	width: 100%;
+	position: absolute;
+	z-index: 300;
 
 	display: flex;
 	align-items: center;
@@ -28,10 +35,6 @@ export const Input = styled.div<SearchInputProps>`
 	border-left: 3px solid #ffc50d;
 	background: #4d5a6d;
 	transition: box-shadow 0.2s;
-
-	${({ isFocused }) => isFocused && css`
-		box-shadow: 0 0 10px 0 ${shade(0.8, '#343d4e')};
-	`}
 
 	input {
 		background: transparent;
@@ -52,6 +55,68 @@ export const Input = styled.div<SearchInputProps>`
 			height: 17px;
 			width: 17px;
 			color: #c2c3c5;
+		}
+	}
+`
+
+export const ResultsBox = styled.div<SearchInputProps>`
+	${({ isFocused }) => isFocused
+		? css`
+			visibility: visible;
+		`
+		: css`
+			visibility: hidden;
+		`}
+
+	background: ${shade(0.3, '#4d5a6d')};
+	width: calc(100% + 6px);
+	position: absolute;
+	top: -3px;
+	left: -3px;
+	z-index: 100;
+
+	border-radius: 4px;
+	padding: 0 3px;
+
+	box-shadow: 0 0 10px 0 ${shade(0.8, '#343d4e')};
+
+	a {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 8px;
+		border-radius: 5px;
+		text-decoration: none;
+
+		div {
+			display: flex;
+			align-items: center;
+
+			img {
+				height: 30px;
+				width: 30px;
+				border-radius: 50%;
+				margin-right: 10px;
+			}
+
+			span {
+				color: white;
+			}
+
+		}
+
+		svg {
+			color: white;
+			height: 20px;
+			width: 20px;
+		}
+
+		&:hover {
+			background: ${shade(0.5, '#4d5a6d')};
+		}
+
+		&:first-child {
+			margin-top: 40px;
 		}
 	}
 `

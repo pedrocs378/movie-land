@@ -5,3 +5,4 @@ export const API_URL_TOP_RATED_MOVIES = "https://api.themoviedb.org/3/movie/top_
 export const API_URL_GENRES = "https://api.themoviedb.org/3/genre/movie/list"
 export const API_URL_IMAGES = "https://image.tmdb.org/t/p/original"
 export const API_URL_IMAGES_W200 = "https://image.tmdb.org/t/p/w200"
+export const API_URL_SEARCH_MOVIES = "https://api.themoviedb.org/3/search/movie"

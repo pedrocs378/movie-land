@@ -91,10 +91,14 @@ export const Section = styled.section`
 	}
 
 	div {
-		width: 200px;
+		width: 350px;
 		h1{
 			display: flex;
 			justify-content: space-between;
+
+			span {
+				color: #ffc50d;
+			}
 		}
 	}
 
