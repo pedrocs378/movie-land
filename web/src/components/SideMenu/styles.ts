@@ -13,6 +13,7 @@ export const Container = styled.aside`
 
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 
 	button {
 		color: #c2c3c5;
@@ -20,9 +21,8 @@ export const Container = styled.aside`
 		font-size: 18px;
 		text-decoration: none;
 		margin-left: 18px;
-
-		position: absolute;
-		bottom: 18px;
+		margin-bottom: 15px;
+		align-self: flex-start;
 
 		transition: color 0.2s;
 
@@ -30,6 +30,10 @@ export const Container = styled.aside`
 			color: ${setLightness(1, '#c2c3c5')}
 		}
 	}
+`
+
+export const Content = styled.div`
+	height: 100%;
 `
 
 export const TitleContainer = styled.div`

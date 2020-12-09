@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect, useState, FormEvent } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { FiSearch, FiArrowRight } from 'react-icons/fi'
 import axios from 'axios'
 
@@ -77,7 +77,8 @@ const Header: React.FC = () => {
 	const handleSubmit = useCallback((event: FormEvent) => {
 		event.preventDefault()
 
-		history.push(`search?q=${searchText}`)
+		history.push(`/search?q=${searchText}`)
+
 	}, [searchText, history])
 
 	useEffect(() => {

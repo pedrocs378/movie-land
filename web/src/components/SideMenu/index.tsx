@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 
 import {
 	Container,
+	Content,
 	Navigation,
 	ProfileContainer,
 	TitleContainer
@@ -15,41 +16,43 @@ const SideMenu: React.FC = () => {
 
 	return (
 		<Container>
-			<TitleContainer>
-				<Link to="/" >
-					<GiClapperboard />
+			<Content>
+				<TitleContainer>
+					<Link to="/" >
+						<GiClapperboard />
 
-					<h1>MOVIE<span>LAND</span></h1>
-				</Link>
-			</TitleContainer>
+						<h1>MOVIE<span>LAND</span></h1>
+					</Link>
+				</TitleContainer>
 
-			<ProfileContainer href="/" >
-				<img src="https://pbs.twimg.com/profile_images/1241471716213342209/cepHHPSo_400x400.jpg" alt="Pedro César" />
+				<ProfileContainer href="/" >
+					<img src="https://pbs.twimg.com/profile_images/1241471716213342209/cepHHPSo_400x400.jpg" alt="Pedro César" />
 
-				<span>Pedro César</span>
+					<span>Pedro César</span>
 
-				<AiOutlineEdit />
-			</ProfileContainer>
+					<AiOutlineEdit />
+				</ProfileContainer>
 
-			<Navigation>
-				<h4>Media</h4>
+				<Navigation>
+					<h4>Media</h4>
 
-				<a href="/">
-				<GiPopcorn />
+					<a href="/">
+						<GiPopcorn />
 					Movies
 				</a>
-				<a href="/">
-				<AiOutlineStar />
+					<a href="/">
+						<AiOutlineStar />
 					Rated
 				</a>
-			</Navigation>
+				</Navigation>
 
-			<Navigation>
-				<a href="/">
-				<BsBookmark />
+				<Navigation>
+					<a href="/">
+						<BsBookmark />
 					Saved
 				</a>
-			</Navigation>
+				</Navigation>
+			</Content>
 
 			<button>
 				Sign Out
