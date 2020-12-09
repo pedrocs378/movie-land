@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import Pagination from '@material-ui/lab/Pagination'
 import axios from 'axios'
 
 import Movie from '../../components/Movie'
@@ -45,26 +46,26 @@ const Home: React.FC = () => {
 	const [showAllPopularMovies, setShowAllPopularMovies] = useState(false)
 	const [showAllTopRatedMovies, setShowAllTopRatedMovies] = useState(false)
 
-	const [popularMovies, setPopularMovies] = useState<MovieProps[]>(() => {
+	const [popularMovies, setPopularMovies] = useState<MovieResponseProps>(() => {
 		const storagedPopularMovies = localStorage.getItem('@MovieLand:popularMovies')
 
 		if (storagedPopularMovies) {
 			const movies = JSON.parse(storagedPopularMovies) as MovieResponseProps
 
-			return movies.results
+			return movies
 		} else {
-			return []
+			return {} as MovieResponseProps
 		}
 	})
-	const [topRated, setTopRated] = useState<MovieProps[]>(() => {
+	const [topRated, setTopRated] = useState<MovieResponseProps>(() => {
 		const storagedTopRated = localStorage.getItem('@MovieLand:topRated')
 
 		if (storagedTopRated) {
 			const movies = JSON.parse(storagedTopRated) as MovieResponseProps
 
-			return movies.results
+			return movies
 		} else {
-			return []
+			return {} as MovieResponseProps
 		}
 	})
 	const [genres, setGenres] = useState<GenreProps[]>(() => {
@@ -79,20 +80,20 @@ const Home: React.FC = () => {
 
 	useEffect(() => {
 
-		if (popularMovies.length === 0) {
+		if (popularMovies.results.length === 0) {
 			axios.get(`${API_URL_POPULAR_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
 				const movies = response.data as MovieResponseProps
 
-				setPopularMovies(movies.results)
+				setPopularMovies(movies)
 				localStorage.setItem('@MovieLand:popularMovies', JSON.stringify(movies))
 			})
 		}
 
-		if (topRated.length === 0) {
+		if (topRated.results.length === 0) {
 			axios.get(`${API_URL_TOP_RATED_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
 				const movies = response.data as MovieResponseProps
 
-				setTopRated(movies.results)
+				setTopRated(movies)
 				localStorage.setItem('@MovieLand:topRated', JSON.stringify(movies))
 			})
 		}
@@ -106,7 +107,7 @@ const Home: React.FC = () => {
 			})
 		}
 
-	}, [popularMovies.length, topRated.length, genres.length])
+	}, [popularMovies.results.length, topRated.results.length, genres.length])
 
 	const handleGetGenre = useCallback((id: number) => {
 
@@ -115,6 +116,22 @@ const Home: React.FC = () => {
 		return genre?.name || "Undefined Genre"
 
 	}, [genres])
+
+	const handleChangePagePopular = useCallback((_, page: number) => {
+		axios.get(`${API_URL_POPULAR_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}&page=${page}`).then(response => {
+			const movies = response.data as MovieResponseProps
+
+			setPopularMovies(movies)
+		})
+	}, [])
+
+	const handleChangePageTopRated = useCallback((_, page: number) => {
+		axios.get(`${API_URL_TOP_RATED_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}&page=${page}`).then(response => {
+			const movies = response.data as MovieResponseProps
+
+			setTopRated(movies)
+		})
+	}, [])
 
 	return (
 		<Container>
@@ -126,7 +143,7 @@ const Home: React.FC = () => {
 					</button>
 				</div>
 				<ListMovies>
-					{popularMovies.map((movie, index) => {
+					{popularMovies.results.map((movie, index) => {
 						if (showAllPopularMovies) {
 							return (
 								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
@@ -138,6 +155,15 @@ const Home: React.FC = () => {
 						}
 					})}
 				</ListMovies>
+				{showAllPopularMovies && (
+					<Pagination
+						variant="outlined"
+						shape="rounded"
+						page={popularMovies.page}
+						count={popularMovies.total_pages}
+						onChange={handleChangePagePopular}
+					/>
+				)}
 			</MovieSection>
 			<MovieSection isHidden={showAllPopularMovies ? true : false} >
 				<div>
@@ -147,7 +173,7 @@ const Home: React.FC = () => {
 					</button>
 				</div>
 				<ListMovies>
-					{topRated.map((movie, index) => {
+					{topRated.results.map((movie, index) => {
 						if (showAllTopRatedMovies) {
 							return (
 								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
@@ -159,6 +185,15 @@ const Home: React.FC = () => {
 						}
 					})}
 				</ListMovies>
+				{showAllTopRatedMovies && (
+					<Pagination
+						variant="outlined"
+						shape="rounded"
+						page={topRated.page}
+						count={topRated.total_pages}
+						onChange={handleChangePageTopRated}
+					/>
+				)}
 			</MovieSection>
 		</Container>
 	)

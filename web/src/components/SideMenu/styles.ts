@@ -11,6 +11,9 @@ export const Container = styled.aside`
 	position: fixed;
 	width: 250px;
 
+	display: flex;
+	flex-direction: column;
+
 	button {
 		color: #c2c3c5;
 		background: transparent;

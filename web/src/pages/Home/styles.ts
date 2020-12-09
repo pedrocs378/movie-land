@@ -49,10 +49,35 @@ export const MovieSection = styled.section<MovieSectionProps>`
 			}
 		}
 	}
+
+	.MuiPagination-root {
+
+		.MuiPaginationItem-root {
+			color: #fff;
+			font-weight: bold;
+		}
+
+		.MuiPaginationItem-page {
+			background: #4d5a6d;
+			border-width: 2px;
+			border-color: transparent;
+		}
+
+		.MuiPaginationItem-page:hover {
+			background: ${shade(0.2, '#4d5a6d')};
+		}
+
+		.Mui-selected {
+			border-color: #ffc50d;
+			color: #ffc50d;
+		}
+	}
 `
 
 export const ListMovies = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
+
+	margin-bottom: 15px;
 `

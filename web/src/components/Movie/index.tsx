@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { MouseEvent, useCallback } from 'react'
 import { BsBookmark } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 import { API_URL_IMAGES } from '../../config/movies'
@@ -24,13 +24,17 @@ interface Props {
 
 const Movie: React.FC<Props> = ({ movie, genre, ...rest }) => {
 
+	const handleSaveMovie = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault()
+	}, [])
+
 	return (
 		<Container {...rest}>
 			<Link to={{ pathname: `/movie/${movie.id}`, state: { genre } }}>
 				<div>
 					<img src={`${API_URL_IMAGES}${movie.poster_path}`} alt={movie.title} />
 
-					<button>
+					<button onClick={handleSaveMovie} >
 						<BsBookmark />
 					</button>
 
