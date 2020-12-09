@@ -1,0 +1,8 @@
+// CREATE FILE auth.ts
+
+export default {
+	jwt: {
+		secret: '',
+		expiresIn: '2d'
+	}
+}

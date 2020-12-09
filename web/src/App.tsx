@@ -11,18 +11,16 @@ import GlobalStyles from './styles/global'
 
 const App: React.FC = () => {
   return (
-    <>
+	<BrowserRouter>
 		<GridArea>
-			<BrowserRouter>
-				<SideMenu />
-				<Header />
+			<SideMenu />
+			<Header />
 
-				<Router />
-			</BrowserRouter>
+			<Router />
 		</GridArea>
 
 		<GlobalStyles />
-    </>
+	</BrowserRouter>
   );
 }
 

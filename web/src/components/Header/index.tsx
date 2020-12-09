@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useCallback, useEffect, useState, FormEvent } from 'react'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { FiSearch, FiArrowRight } from 'react-icons/fi'
 import axios from 'axios'
 

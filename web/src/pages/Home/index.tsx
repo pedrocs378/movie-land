@@ -107,7 +107,7 @@ const Home: React.FC = () => {
 			})
 		}
 
-	}, [popularMovies.results.length, topRated.results.length, genres.length])
+	}, [popularMovies, topRated, genres])
 
 	const handleGetGenre = useCallback((id: number) => {
 

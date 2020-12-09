@@ -27,6 +27,17 @@ export const ColumnInfos = styled.div`
 		height: 450px;
 		max-width: 100%;
 	}
+
+	div {
+		display: flex;
+
+		section + section {
+			margin-left: 20px;
+
+			padding-left: 30px;
+			border-left: 1px solid rgba(194, 195, 197, 0.2);
+		}
+	}
 `
 export const ColumnCast = styled.div`
 	grid-area: cast;
@@ -71,42 +82,52 @@ export const ColumnCast = styled.div`
 
 export const Section = styled.section`
 	display: flex;
-	align-items: center;
+	flex-direction: column;
 	margin-top: 20px;
-
-	& + section {
-		align-items: flex-start;
-		flex-direction: column;
-	}
 
 	h1 {
 		color: white;
 		font-size: 24px;
+
+		span {
+			color: #ffc50d;
+			margin-left: 20px;
+		}
 	}
 
 	p {
 		color: #c2c3c5;
 		font-size: 15px;
-		margin-top: 8px;
+		margin-top: 5px;
 	}
 
-	div {
-		width: 350px;
-		h1{
-			display: flex;
-			justify-content: space-between;
+	ul {
+		display: flex;
+		margin-top: 10px;
 
-			span {
-				color: #ffc50d;
-			}
+		li {
+			list-style: none;
+			color: #c2c3c5;
+			font-size: 15px;
+			line-height: 0;
+			margin-top: 5px;
+		}
+
+		li + li {
+			margin-left: 10px;
 		}
 	}
 
-	div + div {
-		margin-left: 30px;
-		padding-left: 30px;
-		border-left: 1px solid rgba(194, 195, 197, 0.2);
+	div {
+		display: flex;
+		align-items: center;
 
+		svg {
+			margin-left: 10px;
+			height: 25px;
+			width: 25px;
+			color: white;
+		}
 	}
 `
 
