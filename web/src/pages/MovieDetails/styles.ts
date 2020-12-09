@@ -83,15 +83,20 @@ export const ColumnCast = styled.div`
 export const Section = styled.section`
 	display: flex;
 	flex-direction: column;
-	margin-top: 20px;
+	margin-top: 25px;
 
 	h1 {
 		color: white;
 		font-size: 24px;
+		display: flex;
 
-		span {
-			color: #ffc50d;
-			margin-left: 20px;
+		.MuiRating-readOnly {
+			margin-left: 30px;
+			align-self: center;
+
+			.MuiRating-iconFilled {
+				color: #ffc50d;
+			}
 		}
 	}
 
@@ -103,13 +108,11 @@ export const Section = styled.section`
 
 	ul {
 		display: flex;
-		margin-top: 10px;
 
 		li {
 			list-style: none;
 			color: #c2c3c5;
 			font-size: 15px;
-			line-height: 0;
 			margin-top: 5px;
 		}
 
@@ -126,7 +129,7 @@ export const Section = styled.section`
 			margin-left: 10px;
 			height: 25px;
 			width: 25px;
-			color: white;
+			color: #ffc50d;
 		}
 	}
 `
@@ -147,12 +150,11 @@ export const Description = styled.div`
 `
 
 export const Recommendations = styled.div`
-	margin-top: 30px;
+	margin-top: 25px;
 
 	h1 {
 		color: white;
 		font-size: 24px;
-		margin-bottom: 10px;
 	}
 `
 

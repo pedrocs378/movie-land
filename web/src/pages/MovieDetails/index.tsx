@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import { BsStopwatch } from 'react-icons/bs'
 import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi'
+import Rating from '@material-ui/lab/Rating'
 import { format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 import axios from 'axios'
@@ -71,7 +72,6 @@ const MovieDetails: React.FC = () => {
 	useEffect(() => {
 		axios.get(`${API_URL_MOVIE}/${params.movie_id}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
 			setMovie(response.data)
-			console.log(response.data)
 			const releaseDate = new Date(response.data.release_date)
 
 			setDate(format(releaseDate, 'dd/MM/yyyy', {
@@ -125,6 +125,10 @@ const MovieDetails: React.FC = () => {
 		}
 	}, [movie])
 
+	const rating = useMemo(() => {
+		return (5 * movie.vote_average) / 10
+	}, [movie])
+
 	return (
 		<Container>
 			<GridDetails>
@@ -132,7 +136,9 @@ const MovieDetails: React.FC = () => {
 					<img src={`${API_URL_IMAGES}${movie.backdrop_path}`} alt={movie.original_title} />
 					<div>
 						<Section>
-							<h1>{movie.title} <span>{movie.vote_average}</span></h1>
+							<h1>
+								{movie.title} <Rating name="read-only" value={rating} readOnly />
+							</h1>
 							<p>{date}</p>
 						</Section>
 						<Section>
@@ -143,11 +149,13 @@ const MovieDetails: React.FC = () => {
 					<Section>
 						<h1>Genres</h1>
 						<ul>
-							{movie.genres && movie.genres.map(genre => {
-								return (
-									<li>{genre.name}</li>
-								)
-							})}
+							{(movie.genres && movie.genres.length > 0)
+								? movie.genres.map(genre => {
+									return (
+										<li>{genre.name}</li>
+									)
+								})
+								: <p>No genres</p>}
 						</ul>
 					</Section>
 					<Section>

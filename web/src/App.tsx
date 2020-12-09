@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import SideMenu from './components/SideMenu';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 import Router from './routes'
 
@@ -17,6 +18,8 @@ const App: React.FC = () => {
 			<Header />
 
 			<Router />
+
+			<Footer />
 		</GridArea>
 
 		<GlobalStyles />
