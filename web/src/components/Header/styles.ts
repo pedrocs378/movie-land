@@ -13,18 +13,17 @@ export const Container = styled.header`
 
 	display: flex;
 	justify-content: flex-end;
-`
+	align-items: center;
 
-export const InputContainer = styled.div`
-	width: 400px;
-	position: relative;
+	form {
+		width: 400px;
+		position: relative;
+	}
 `
 
 export const Input = styled.div<SearchInputProps>`
 	width: 100%;
 	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
 	z-index: 300;
 
 	display: flex;

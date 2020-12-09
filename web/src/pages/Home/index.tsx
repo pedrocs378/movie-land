@@ -35,7 +35,7 @@ export interface MovieProps {
 	vote_average: number
 }
 
-interface MovieResponseProps {
+export interface MovieResponseProps {
 	page: number
 	results: MovieProps[]
 	total_pages: number

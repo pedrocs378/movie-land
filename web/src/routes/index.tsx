@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import Home from '../pages/Home'
 import MovieDetails from '../pages/MovieDetails'
+import Results from '../pages/Results'
 
 const Routes: React.FC = () => {
 
@@ -10,6 +11,7 @@ const Routes: React.FC = () => {
 		<Switch>
 			<Route path="/" exact component={Home} />
 			<Route path="/movie/:movie_id" component={MovieDetails} />
+			<Route path="/search" component={Results} />
 		</Switch>
 	)
 }

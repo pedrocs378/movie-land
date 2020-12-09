@@ -1,12 +1,12 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { ChangeEvent, useCallback, useEffect, useState, FormEvent } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { FiSearch, FiArrowRight } from 'react-icons/fi'
 import axios from 'axios'
 
 import { GenreProps } from '../../pages/Home'
 import { API_URL_GENRES, API_URL_IMAGES, API_URL_SEARCH_MOVIES } from '../../config/movies'
 
-import { Container, Input, InputContainer, ResultsBox } from './styles'
+import { Container, Input, ResultsBox } from './styles'
 
 interface MovieProps {
 	id: number
@@ -16,6 +16,11 @@ interface MovieProps {
 }
 
 const Header: React.FC = () => {
+	const [isFocused, setIsFocused] = useState(false)
+	const [boxOpened, setBoxOpened] = useState(false)
+	const [searchText, setSearchText] = useState("")
+	const [movies, setMovies] = useState<MovieProps[]>([])
+
 	const [genres, setGenres] = useState<GenreProps[]>(() => {
 		const storagedGenres = localStorage.getItem('@MovieLand:genres')
 
@@ -25,11 +30,8 @@ const Header: React.FC = () => {
 
 		return []
 	})
-	const [isFocused, setIsFocused] = useState(false)
-	const [boxOpened, setBoxOpened] = useState(false)
-	const [movies, setMovies] = useState<MovieProps[]>([])
-	const [searchText, setSearchText] = useState("")
 
+	const history = useHistory()
 
 	const handleFocus = useCallback(() => {
 		setIsFocused(true)
@@ -72,6 +74,12 @@ const Header: React.FC = () => {
 		}
 	}, [])
 
+	const handleSubmit = useCallback((event: FormEvent) => {
+		event.preventDefault()
+
+		history.push(`search?q=${searchText}`)
+	}, [searchText, history])
+
 	useEffect(() => {
 
 		if (genres.length === 0) {
@@ -87,7 +95,7 @@ const Header: React.FC = () => {
 
 	return (
 		<Container>
-			<InputContainer>
+			<form onSubmit={handleSubmit} >
 				<Input isFocused={isFocused}>
 					<input
 						name="movie"
@@ -97,7 +105,7 @@ const Header: React.FC = () => {
 						onFocus={handleFocus}
 						onBlur={handleBlur}
 					/>
-					<button>
+					<button type="submit" >
 						<FiSearch />
 					</button>
 				</Input>
@@ -118,7 +126,7 @@ const Header: React.FC = () => {
 						)
 					})}
 				</ResultsBox>
-			</InputContainer>
+			</form>
 		</Container>
 	)
 }

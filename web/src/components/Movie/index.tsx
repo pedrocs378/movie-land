@@ -1,7 +1,10 @@
 import React, { MouseEvent, useCallback } from 'react'
-import { BsBookmark } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import { BsBookmark } from 'react-icons/bs'
+
 import { API_URL_IMAGES } from '../../config/movies'
+
+import notFound from '../../assets/no-poster.png'
 
 import { Container } from './styles'
 
@@ -32,7 +35,10 @@ const Movie: React.FC<Props> = ({ movie, genre, ...rest }) => {
 		<Container {...rest}>
 			<Link to={{ pathname: `/movie/${movie.id}`, state: { genre } }}>
 				<div>
-					<img src={`${API_URL_IMAGES}${movie.poster_path}`} alt={movie.title} />
+					<img
+						src={movie.poster_path ? `${API_URL_IMAGES}${movie.poster_path}` : notFound}
+						alt={movie.title}
+					/>
 
 					<button onClick={handleSaveMovie} >
 						<BsBookmark />
@@ -41,7 +47,7 @@ const Movie: React.FC<Props> = ({ movie, genre, ...rest }) => {
 					<div>
 						<div className="blur" />
 						<h3>
-							{movie.title}
+							{movie.title.length > 20 ? `${movie.title.substring(0, 20)}...` : movie.title}
 							<span>{movie.vote_average}</span>
 						</h3>
 						<p>{new Date(movie.release_date).getFullYear()}, {genre}</p>
