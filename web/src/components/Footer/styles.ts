@@ -12,7 +12,7 @@ export const Container = styled.footer`
 
 	svg {
 		margin: 0 5px;
-		color: #e10000;
+		color: #0056ff;
 	}
 
 	a {

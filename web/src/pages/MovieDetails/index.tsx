@@ -8,9 +8,9 @@ import ptBR from 'date-fns/locale/pt-BR'
 import axios from 'axios'
 
 import Movie, { MovieParams } from '../../components/Movie'
-import { GenreProps, useGenres } from '../../hooks/genres'
+import { useGenres } from '../../hooks/genres'
 
-import { API_URL_IMAGES, API_URL_MOVIE, API_URL_IMAGES_W200, API_URL_GENRES } from '../../config/movies'
+import { API_URL_IMAGES, API_URL_MOVIE, API_URL_IMAGES_W200 } from '../../config/movies'
 
 import {
 	Container,

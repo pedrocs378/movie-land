@@ -8,4 +8,6 @@ export const GridArea = styled.div`
 		"menu header"
 		"menu content"
 		"menu footer";
+
+	position: relative;
 `

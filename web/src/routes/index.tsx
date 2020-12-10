@@ -1,6 +1,8 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
+import Login from '../pages/Login'
+import Register from '../pages/Register'
 import Home from '../pages/Home'
 import MovieDetails from '../pages/MovieDetails'
 import Results from '../pages/Results'
@@ -20,6 +22,8 @@ const Routes: React.FC = () => {
 				<Redirect to="/" />
 			</Route>
 			<Route path="/search/:query" component={Results} />
+			<Route path="/login" component={Login} />
+			<Route path="/register" component={Register} />
 		</Switch>
 	)
 }
