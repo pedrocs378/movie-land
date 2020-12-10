@@ -33,7 +33,7 @@ const Movie: React.FC<Props> = ({ movie, genre, ...rest }) => {
 
 	return (
 		<Container {...rest}>
-			<Link to={{ pathname: `/movie/${movie.id}`, state: { genre } }}>
+			<Link to={`/movie/${movie.id}`}>
 				<div>
 					<img
 						src={movie.poster_path ? `${API_URL_IMAGES}${movie.poster_path}` : notFound}

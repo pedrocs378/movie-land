@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useRouteMatch } from 'react-router-dom'
 import { BsStopwatch } from 'react-icons/bs'
 import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi'
 import Rating from '@material-ui/lab/Rating'
@@ -8,18 +8,21 @@ import ptBR from 'date-fns/locale/pt-BR'
 import axios from 'axios'
 
 import Movie, { MovieParams } from '../../components/Movie'
+import { GenreProps, useGenres } from '../../hooks/genres'
 
-import { API_URL_IMAGES, API_URL_MOVIE, API_URL_IMAGES_W200 } from '../../config/movies'
+import { API_URL_IMAGES, API_URL_MOVIE, API_URL_IMAGES_W200, API_URL_GENRES } from '../../config/movies'
 
 import {
 	Container,
 	GridDetails,
 	ColumnInfos,
 	ColumnCast,
+	CastItem,
 	Section,
 	Recommendations,
 	ListMovies
 } from './styles'
+import { getGenre } from '../../utils/genres'
 
 interface Genre {
 	id: number
@@ -48,26 +51,18 @@ interface Cast {
 	profile_path: string
 }
 
-interface HistoryParams {
-	location: {
-		state: {
-			genre: string
-		}
-	}
-}
-
 interface Params {
 	movie_id: string
 }
 
 const MovieDetails: React.FC = () => {
+	const { genres } = useGenres()
 	const [movie, setMovie] = useState<MovieDetailsProps>({} as MovieDetailsProps)
 	const [date, setDate] = useState("")
 	const [recommendations, setRecommentaions] = useState<MovieParams[]>([])
 	const [cast, setCast] = useState<Cast[]>([])
 
 	const { params } = useRouteMatch<Params>()
-	const { location }: HistoryParams = useHistory()
 
 	useEffect(() => {
 		axios.get(`${API_URL_MOVIE}/${params.movie_id}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
@@ -86,7 +81,10 @@ const MovieDetails: React.FC = () => {
 		axios.get(`${API_URL_MOVIE}/${params.movie_id}/credits?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
 			setCast(response.data.cast)
 		})
+
 	}, [params.movie_id])
+
+	const handleGetGenre = useCallback(getGenre, [])
 
 	const budget = useMemo(() => {
 		if (movie.budget) {
@@ -152,7 +150,7 @@ const MovieDetails: React.FC = () => {
 							{(movie.genres && movie.genres.length > 0)
 								? movie.genres.map(genre => {
 									return (
-										<li>{genre.name}</li>
+										<li key={genre.id}>{genre.name}</li>
 									)
 								})
 								: <p>No genres</p>}
@@ -165,7 +163,7 @@ const MovieDetails: React.FC = () => {
 					<div>
 						<Section>
 							<div>
-								<h1>Running Time</h1>
+								<h1>Duration</h1>
 								<BsStopwatch />
 							</div>
 							<p>{runtime}</p>
@@ -191,13 +189,13 @@ const MovieDetails: React.FC = () => {
 					{cast.map((actor, index) => {
 
 						return index < 10 && (
-							<div key={actor.id}>
+							<CastItem key={actor.id} >
 								{actor.profile_path && <img src={`${API_URL_IMAGES_W200}${actor.profile_path}`} alt={actor.original_name} />}
 								<div>
 									<h2>{actor.name}</h2>
 									<p>{actor.character}</p>
 								</div>
-							</div>
+							</CastItem>
 						)
 					})}
 				</ColumnCast>
@@ -207,7 +205,7 @@ const MovieDetails: React.FC = () => {
 				<ListMovies>
 					{recommendations.map((movie, index) => {
 						return index < 6 && (
-							<Movie key={movie.id} movie={movie} genre={location.state.genre} />
+							<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
 						)
 					})}
 				</ListMovies>

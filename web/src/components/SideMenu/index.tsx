@@ -36,21 +36,21 @@ const SideMenu: React.FC = () => {
 				<Navigation>
 					<h4>Media</h4>
 
-					<a href="/">
+					<Link to="/">
 						<GiPopcorn />
-					Movies
-				</a>
-					<a href="/">
+						Movies
+					</Link>
+					<Link to="/">
 						<AiOutlineStar />
-					Rated
-				</a>
+						Rated
+					</Link>
 				</Navigation>
 
 				<Navigation>
-					<a href="/">
+					<Link to="/">
 						<BsBookmark />
-					Saved
-				</a>
+						Saved
+					</Link>
 				</Navigation>
 			</Content>
 

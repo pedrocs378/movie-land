@@ -26,6 +26,8 @@ export const ColumnInfos = styled.div`
 		border-radius: 8px;
 		height: 450px;
 		max-width: 100%;
+
+		animation: scaleXY 800ms;
 	}
 
 	div {
@@ -48,34 +50,34 @@ export const ColumnCast = styled.div`
 		font-size: 24px;
 		margin-bottom: 15px;
 	}
+`
 
-	> div {
-		display: flex;
-		align-items: center;
+export const CastItem = styled.div`
+	display: flex;
+	align-items: center;
 
-		img {
-			height: 50px;
-			width: 40px;
-			border-radius: 50%;
+	img {
+		height: 50px;
+		width: 40px;
+		border-radius: 50%;
+	}
+
+	div {
+		margin-left: 10px;
+
+		h2 {
+			color: white;
+			font-size: 18px;
+			font-weight: normal;
 		}
 
-		div {
-			margin-left: 10px;
-
-			h2 {
-				color: white;
-				font-size: 18px;
-				font-weight: normal;
-			}
-
-			p {
-				color: #c2c3c5;
-				font-size: 15px;
-			}
+		p {
+			color: #c2c3c5;
+			font-size: 15px;
 		}
 	}
 
-	> div + div {
+	& + div {
 		margin-top: 20px;
 	}
 `

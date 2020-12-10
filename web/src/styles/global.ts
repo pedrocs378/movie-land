@@ -21,4 +21,13 @@ export default createGlobalStyle`
 	button {
 		cursor: pointer;
 	}
+
+	@keyframes scaleXY {
+		from {
+			transform: scale(1.11, 1.11)
+		}
+		to {
+			transform: scale(1, 1)
+		}
+	}
 `

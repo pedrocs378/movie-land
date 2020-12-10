@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Pagination from '@material-ui/lab/Pagination'
 import axios from 'axios'
 
+import { getGenre } from '../../utils/genres'
+import { useGenres } from '../../hooks/genres'
 import Movie from '../../components/Movie'
 
 import {
 	API_URL_POPULAR_MOVIES,
-	API_URL_TOP_RATED_MOVIES,
-	API_URL_GENRES
+	API_URL_TOP_RATED_MOVIES
 } from '../../config/movies'
 
 import {
@@ -16,13 +17,6 @@ import {
 	ListMovies
 } from './styles'
 
-export interface GenreProps {
-	id: number
-	name: string
-}
-interface GenreResponseProp {
-	genres: GenreProps[]
-}
 export interface MovieProps {
 	id: number
 	genre_ids: number[]
@@ -43,6 +37,7 @@ export interface MovieResponseProps {
 }
 
 const Home: React.FC = () => {
+	const { genres } = useGenres()
 	const [showAllPopularMovies, setShowAllPopularMovies] = useState(false)
 	const [showAllTopRatedMovies, setShowAllTopRatedMovies] = useState(false)
 
@@ -68,15 +63,6 @@ const Home: React.FC = () => {
 			return {} as MovieResponseProps
 		}
 	})
-	const [genres, setGenres] = useState<GenreProps[]>(() => {
-		const storagedGenres = localStorage.getItem('@MovieLand:genres')
-
-		if (storagedGenres) {
-			return JSON.parse(storagedGenres)
-		}
-
-		return []
-	})
 
 	useEffect(() => {
 
@@ -98,24 +84,9 @@ const Home: React.FC = () => {
 			})
 		}
 
-		if (genres.length === 0) {
-			axios.get(`${API_URL_GENRES}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
-				const responseGenres = response.data as GenreResponseProp
-
-				setGenres(responseGenres.genres)
-				localStorage.setItem('@MovieLand:genres', JSON.stringify(responseGenres.genres))
-			})
-		}
-
 	}, [popularMovies, topRated, genres])
 
-	const handleGetGenre = useCallback((id: number) => {
-
-		const genre = genres.find((value) => value.id === id)
-
-		return genre?.name || "Undefined Genre"
-
-	}, [genres])
+	const handleGetGenre = useCallback(getGenre, [])
 
 	const handleChangePagePopular = useCallback((_, page: number) => {
 		axios.get(`${API_URL_POPULAR_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}&page=${page}`).then(response => {
@@ -146,11 +117,11 @@ const Home: React.FC = () => {
 					{popularMovies.results.map((movie, index) => {
 						if (showAllPopularMovies) {
 							return (
-								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
+								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
 							)
 						} else {
 							return index < 6 && (
-								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
+								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
 							)
 						}
 					})}
@@ -176,11 +147,11 @@ const Home: React.FC = () => {
 					{topRated.results.map((movie, index) => {
 						if (showAllTopRatedMovies) {
 							return (
-								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
+								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
 							)
 						} else {
 							return index < 6 && (
-								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0])} />
+								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
 							)
 						}
 					})}

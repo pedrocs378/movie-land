@@ -6,7 +6,7 @@ export const Container = styled.div`
 	transition: transform 0.2s;
 
 	&:hover {
-		transform: translateY(-2%)
+		transform: scale(1.03, 1.03)
 	}
 
 	div {

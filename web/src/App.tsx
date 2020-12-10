@@ -5,6 +5,8 @@ import SideMenu from './components/SideMenu';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
+import AppProvider from './hooks'
+
 import Router from './routes'
 
 import { GridArea } from './styles/app';
@@ -13,14 +15,16 @@ import GlobalStyles from './styles/global'
 const App: React.FC = () => {
   return (
 	<BrowserRouter>
-		<GridArea>
-			<SideMenu />
-			<Header />
+		<AppProvider>
+			<GridArea>
+				<SideMenu />
+				<Header />
 
-			<Router />
+				<Router />
 
-			<Footer />
-		</GridArea>
+				<Footer />
+			</GridArea>
+		</AppProvider>
 
 		<GlobalStyles />
 	</BrowserRouter>

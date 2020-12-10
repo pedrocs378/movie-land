@@ -1,10 +1,9 @@
-import React, { ChangeEvent, useCallback, useEffect, useState, FormEvent } from 'react'
+import React, { ChangeEvent, useCallback, useState, FormEvent } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { FiSearch, FiArrowRight } from 'react-icons/fi'
 import axios from 'axios'
 
-import { GenreProps } from '../../pages/Home'
-import { API_URL_GENRES, API_URL_IMAGES, API_URL_SEARCH_MOVIES } from '../../config/movies'
+import { API_URL_IMAGES, API_URL_SEARCH_MOVIES } from '../../config/movies'
 
 import { Container, Input, ResultsBox } from './styles'
 
@@ -21,16 +20,6 @@ const Header: React.FC = () => {
 	const [searchText, setSearchText] = useState("")
 	const [movies, setMovies] = useState<MovieProps[]>([])
 
-	const [genres, setGenres] = useState<GenreProps[]>(() => {
-		const storagedGenres = localStorage.getItem('@MovieLand:genres')
-
-		if (storagedGenres) {
-			return JSON.parse(storagedGenres)
-		}
-
-		return []
-	})
-
 	const history = useHistory()
 
 	const handleFocus = useCallback(() => {
@@ -44,14 +33,6 @@ const Header: React.FC = () => {
 			setIsFocused(false)
 		}
 	}, [boxOpened])
-
-	const handleGetGenre = useCallback((id: number) => {
-
-		const genre = genres.find((value) => value.id === id)
-
-		return genre?.name || "Undefined Genre"
-
-	}, [genres])
 
 	const handleSetOpenedBox = useCallback(() => {
 		setBoxOpened(true)
@@ -77,22 +58,9 @@ const Header: React.FC = () => {
 	const handleSubmit = useCallback((event: FormEvent) => {
 		event.preventDefault()
 
-		history.push(`/search?q=${searchText}`)
+		history.push(`/search/${searchText}`)
 
 	}, [searchText, history])
-
-	useEffect(() => {
-
-		if (genres.length === 0) {
-			axios.get(`${API_URL_GENRES}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
-				const responseGenres = response.data
-
-				setGenres(responseGenres.genres)
-				localStorage.setItem('@MovieLand:genres', JSON.stringify(responseGenres.genres))
-			})
-		}
-
-	}, [genres.length])
 
 	return (
 		<Container>
@@ -115,7 +83,7 @@ const Header: React.FC = () => {
 						return index < 8 && (
 							<Link
 								key={movie.id}
-								to={{ pathname: `/movie/${movie.id}`, state: { genre: handleGetGenre(movie.genre_ids[0]) } }}
+								to={`/movie/${movie.id}`}
 								onClick={() => setIsFocused(false)}
 							>
 								<div>
