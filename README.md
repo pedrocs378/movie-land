@@ -12,7 +12,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - [Typeorm](https://typeorm.io/)
 - [Postgres](https://node-postgres.com/)
 
-### API utilizada
+#### API utilizada
 - [MovieDB Api](https://developers.themoviedb.org/3)
 
 ## :computer: Projeto
