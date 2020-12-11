@@ -52,4 +52,13 @@ export default createGlobalStyle`
 			opacity: 1;
 		}
 	}
+
+	@keyframes fade {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 `

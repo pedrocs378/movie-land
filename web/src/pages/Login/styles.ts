@@ -16,6 +16,10 @@ export const Container = styled.div`
 		align-items: center;
 		width: 100%;
 		max-width: 400px;
+		padding: 30px 0;
+		border-radius: 6px;
+		box-shadow: 0 0 10px 0 #000;
+		background: ${shade(0.2, '#343d4e')};
 
 		animation: fadeFromUp 1s;
 

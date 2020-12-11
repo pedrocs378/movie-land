@@ -16,6 +16,12 @@ export const Container = styled.div`
 		align-items: center;
 		width: 100%;
 		max-width: 400px;
+		padding: 30px 0;
+		border-radius: 6px;
+		box-shadow: 0 0 10px 0 #000;
+		background: ${shade(0.2, '#343d4e')};
+
+		animation: fade 1s;
 
 		h1 {
 			color: #f0f0f0;
@@ -45,6 +51,8 @@ export const Container = styled.div`
 		color: #c2c3c5;
 		margin-top: 30px;
 		transition: color 0.1s;
+
+		animation: fade 1s;
 
 		&:hover {
 			color: ${shade(0.1, '#c2c3c5')}

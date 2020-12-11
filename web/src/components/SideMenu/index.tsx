@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { AiOutlineEdit, AiOutlineStar } from 'react-icons/ai'
 import { BsBookmark } from 'react-icons/bs'
 import { GiClapperboard, GiPopcorn } from 'react-icons/gi'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { useAuth } from '../../hooks/auth'
+
+import defaultUserImg from '../../assets/avatar-default.gif'
 
 import {
 	Container,
@@ -13,6 +16,24 @@ import {
 } from './styles'
 
 const SideMenu: React.FC = () => {
+	const { user, signOut } = useAuth()
+
+	const history = useHistory()
+
+	const handleReduceName = useCallback((name: string) => {
+		const nameSplited = name.split(' ')
+
+		return nameSplited[0]
+	}, [])
+
+	const handleSignInOrSignOut = useCallback(() => {
+		if (user) {
+			signOut()
+		} else {
+			history.push('/login')
+		}
+
+	}, [user, signOut, history])
 
 	return (
 		<Container>
@@ -26,9 +47,9 @@ const SideMenu: React.FC = () => {
 				</TitleContainer>
 
 				<ProfileContainer href="/" >
-					<img src="https://pbs.twimg.com/profile_images/1241471716213342209/cepHHPSo_400x400.jpg" alt="Pedro César" />
+					<img src={(user && user.avatar_url) ? user.avatar_url : defaultUserImg} alt={user ? user.name : "Stranger"} />
 
-					<span>Pedro César</span>
+					<span>{user ? handleReduceName(user.name) : "Stranger" }</span>
 
 					<AiOutlineEdit />
 				</ProfileContainer>
@@ -54,8 +75,8 @@ const SideMenu: React.FC = () => {
 				</Navigation>
 			</Content>
 
-			<button>
-				Sign Out
+			<button onClick={handleSignInOrSignOut} >
+				{ user ? "Sign Out" : "Sign In" }
 			</button>
 		</Container>
 	)

@@ -6,8 +6,10 @@ import Register from '../pages/Register'
 import Home from '../pages/Home'
 import MovieDetails from '../pages/MovieDetails'
 import Results from '../pages/Results'
+import { useAuth } from '../hooks/auth'
 
 const Routes: React.FC = () => {
+	const { user } = useAuth()
 
 	return (
 		<Switch>
@@ -22,8 +24,13 @@ const Routes: React.FC = () => {
 				<Redirect to="/" />
 			</Route>
 			<Route path="/search/:query" component={Results} />
-			<Route path="/login" component={Login} />
-			<Route path="/register" component={Register} />
+
+			<Route path="/login" component={Login} >
+				{ user && <Redirect to="/" /> }
+			</Route>
+			<Route path="/register" component={Register} >
+				{user && <Redirect to="/" />}
+			</Route>
 		</Switch>
 	)
 }

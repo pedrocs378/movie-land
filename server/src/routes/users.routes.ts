@@ -12,7 +12,7 @@ usersRouter.post('/', async (request, response) => {
 	const user = await createUser.execute({
 		name,
 		email,
-		password
+		password,
 	})
 
 	const payload = {

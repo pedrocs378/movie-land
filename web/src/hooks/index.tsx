@@ -1,12 +1,15 @@
 import React from 'react'
 
 import { GenresProvider } from './genres'
+import { AuthProvider } from './auth'
 
 const AppProvider: React.FC = ({ children }) => {
 
 	return (
 		<GenresProvider>
-			{children}
+			<AuthProvider>
+				{children}
+			</AuthProvider>
 		</GenresProvider>
 	)
 }
