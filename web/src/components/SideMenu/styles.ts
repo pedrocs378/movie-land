@@ -99,7 +99,7 @@ export const ProfileContainer = styled.a`
 `
 
 export const Navigation = styled.nav`
-	margin-top: 50px;
+	margin: 50px 0;
 
 	display: flex;
 	flex-direction: column;

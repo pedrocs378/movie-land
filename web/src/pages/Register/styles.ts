@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
 	grid-area: content;
 
-	height: calc(100vh - 170px);
+	height: 550px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -49,7 +49,7 @@ export const Container = styled.div`
 
 	> a {
 		color: #c2c3c5;
-		margin-top: 30px;
+		margin: 30px 0;
 		transition: color 0.1s;
 
 		animation: fade 1s;
