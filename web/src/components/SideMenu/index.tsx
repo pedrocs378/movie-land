@@ -46,12 +46,14 @@ const SideMenu: React.FC = () => {
 					</Link>
 				</TitleContainer>
 
-				<ProfileContainer href="/" >
-					<img src={(user && user.avatar_url) ? user.avatar_url : defaultUserImg} alt={user ? user.name : "Stranger"} />
+				<ProfileContainer>
+					<Link to={ user ? "/profile" : "/login" }>
+						<img src={(user && user.avatar_url) ? user.avatar_url : defaultUserImg} alt={user ? user.name : "Stranger"} />
 
-					<span>{user ? handleReduceName(user.name) : "Stranger" }</span>
+						<span>{user ? handleReduceName(user.name) : "Stranger" }</span>
 
-					<AiOutlineEdit />
+						<AiOutlineEdit />
+					</Link>
 				</ProfileContainer>
 
 				<Navigation>

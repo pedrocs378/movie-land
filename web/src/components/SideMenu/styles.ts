@@ -63,32 +63,35 @@ export const TitleContainer = styled.div`
 	}
 `
 
-export const ProfileContainer = styled.a`
+export const ProfileContainer = styled.div`
 
-	margin-top: 25px;
+	margin-top: 35px;
 	margin-left: 18px;
-	display: flex;
-	align-items: center;
-	text-decoration: none;
 
-	img {
-		height: 46px;
-		width: 46px;
-		border-radius: 50%;
+	a {
+		display: flex;
+		align-items: center;
+		text-decoration: none;
 
-		border: 2px solid #c2c3c5;
-	}
+		img {
+			height: 46px;
+			width: 46px;
+			border-radius: 50%;
 
-	span {
-		margin-left: 8px;
-		color: #c2c3c5;
-	}
+			border: 2px solid #c2c3c5;
+		}
 
-	svg {
-		height: 22px;
-		width: 22px;
-		color: #c2c3c5;
-		margin-left: 5px;
+		span {
+			margin-left: 8px;
+			color: #c2c3c5;
+		}
+
+		svg {
+			height: 22px;
+			width: 22px;
+			color: #c2c3c5;
+			margin-left: 5px;
+		}
 	}
 
 	&:hover {
@@ -96,6 +99,7 @@ export const ProfileContainer = styled.a`
 			text-decoration: underline;
 		}
 	}
+
 `
 
 export const Navigation = styled.nav`

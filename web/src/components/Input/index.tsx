@@ -16,6 +16,7 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, isPassword, ...rest }) 
 
 	const [showPass, setShowPass] = useState(false)
 	const [isFocused, setIsFocused] = useState(false)
+	const [isFilled, setIsFilled] = useState(false)
 
 	const {
 		fieldName,
@@ -30,6 +31,8 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, isPassword, ...rest }) 
 
 	const handleInputBlur = useCallback(() => {
 		setIsFocused(false)
+
+		setIsFilled(!!inputRef.current?.value)
 	}, [])
 
 	const handleShowText = useCallback(() => {
@@ -45,7 +48,7 @@ const Input: React.FC<InputProps> = ({ name, icon: Icon, isPassword, ...rest }) 
 	}, [fieldName, registerField])
 
 	return (
-		<Container isFocused={isFocused} >
+		<Container isErrored={!!error} isFocused={isFocused} isFilled={isFilled} >
 			{ Icon && <Icon size={22} />}
 			<input
 				ref={inputRef}

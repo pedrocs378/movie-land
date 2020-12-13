@@ -1,11 +1,12 @@
-import React, { useCallback, useRef } from 'react'
+import React, { ChangeEvent, useCallback, useRef } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { HiOutlineMail } from 'react-icons/hi'
-import { BiLockAlt } from 'react-icons/bi'
+import { BiLockAlt, BiUser } from 'react-icons/bi'
 import { Form } from '@unform/web'
 import { FormHandles } from '@unform/core'
 import * as Yup from 'yup'
 
+import userAvatarDefault from '../../assets/avatar-default.gif'
 import api from '../../services/api'
 import getValidationErrors from '../../utils/getValidationErrors'
 
@@ -40,11 +41,18 @@ const Register: React.FC = () => {
 				abortEarly: false
 			})
 
-			await api.post('users', {
-				name: data.name,
-				email: data.email,
-				password: data.password
-			})
+			const res = await fetch(userAvatarDefault)
+			const blob = await res.blob()
+
+			const formData = new FormData()
+			const defaultImg = new File([blob], 'avatar-default.gif', blob)
+
+			formData.append('avatar', defaultImg)
+			formData.append('name', data.name)
+			formData.append('email', data.email)
+			formData.append('password', data.password)
+
+			await api.post('users', formData)
 
 			history.push('/login')
 			alert('Cadastro realizado com succeso')
@@ -54,11 +62,12 @@ const Register: React.FC = () => {
 
 				formRef.current?.setErrors(errors)
 				console.log(errors)
+				alert(errors)
 
 				return
 			}
 
-			console.log(err)
+			alert(err)
 		}
 
 	}, [history])
@@ -68,7 +77,7 @@ const Register: React.FC = () => {
 			<Form ref={formRef} onSubmit={handleSubmit} >
 				<h1>Register a new account</h1>
 				<Input
-					icon={HiOutlineMail}
+					icon={BiUser}
 					name="name"
 					placeholder="Name"
 				/>

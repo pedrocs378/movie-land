@@ -6,6 +6,8 @@ import Register from '../pages/Register'
 import Home from '../pages/Home'
 import MovieDetails from '../pages/MovieDetails'
 import Results from '../pages/Results'
+import Profile from '../pages/Profile'
+
 import { useAuth } from '../hooks/auth'
 
 const Routes: React.FC = () => {
@@ -29,7 +31,11 @@ const Routes: React.FC = () => {
 				{ user && <Redirect to="/" /> }
 			</Route>
 			<Route path="/register" component={Register} >
-				{user && <Redirect to="/" />}
+				{ user && <Redirect to="/" /> }
+			</Route>
+
+			<Route path="/profile" component={Profile} >
+				{ !user && <Redirect to="/" /> }
 			</Route>
 		</Switch>
 	)

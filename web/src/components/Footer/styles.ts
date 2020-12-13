@@ -9,7 +9,8 @@ export const Container = styled.footer`
 	justify-content: center;
 	color: white;
 	font-size: 15px;
-
+	padding-top: 50px;
+	padding-bottom: 10px;
 	svg {
 		margin: 0 5px;
 		color: #0056ff;
