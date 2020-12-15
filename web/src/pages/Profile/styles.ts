@@ -13,7 +13,7 @@ export const Container = styled.div`
 	margin: 0 auto;
 
 	form {
-		width: 340px;
+		width: 400px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;

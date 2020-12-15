@@ -29,7 +29,6 @@ const Profile: React.FC = () => {
 		if (event.target.files) {
 			const data = new FormData()
 
-			console.log(event.target.files)
 			data.append('avatar', event.target.files[0])
 
 			api.patch('/users/avatar', data).then(response => {

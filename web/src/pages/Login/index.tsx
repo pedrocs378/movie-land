@@ -47,11 +47,12 @@ const Login: React.FC = () => {
 				const errors = getValidationErrors(err)
 
 				formRef.current?.setErrors(errors)
+				alert(err.inner.map(error => `${error.message}\n`))
 
 				return
 			}
 
-			console.log(err)
+			alert(err.message)
 		}
 	}, [history, signIn])
 

@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 import { BsBookmark } from 'react-icons/bs'
 
 import { API_URL_IMAGES } from '../../config/movies'
+import { useAuth } from '../../hooks/auth'
 
 import notFound from '../../assets/no-poster.png'
 
-import { Container } from './styles'
+import { Container, MovieInfo, ToolTip } from './styles'
 
 export interface MovieParams {
 	id: number
@@ -27,12 +28,19 @@ interface Props {
 
 const Movie: React.FC<Props> = ({ movie, genre, ...rest }) => {
 
+	const { user } = useAuth()
+
 	const handleSaveMovie = useCallback((event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
-	}, [])
+
+		if (!user) {
+			return
+		}
+
+	}, [user])
 
 	return (
-		<Container {...rest}>
+		<Container isLogged={!!user} {...rest}>
 			<Link to={`/movie/${movie.id}`}>
 				<div>
 					<img
@@ -40,18 +48,21 @@ const Movie: React.FC<Props> = ({ movie, genre, ...rest }) => {
 						alt={movie.title}
 					/>
 
-					<button onClick={handleSaveMovie} >
+					<button type="button" onClick={handleSaveMovie} >
 						<BsBookmark />
+
+						<ToolTip>
+							<span>Sign in to save this movie in your Watch List</span>
+						</ToolTip>
 					</button>
 
-					<div>
-						<div className="blur" />
+					<MovieInfo>
 						<h3>
 							{movie.title.length > 20 ? `${movie.title.substring(0, 20)}...` : movie.title}
 							<span>{movie.vote_average}</span>
 						</h3>
 						<p>{new Date(movie.release_date).getFullYear()}, {genre}</p>
-					</div>
+					</MovieInfo>
 				</div>
 			</Link>
 		</Container>

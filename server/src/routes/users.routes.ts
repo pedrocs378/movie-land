@@ -55,7 +55,7 @@ usersRouter.put('/profile', ensureAuthenticated, async (request, response) => {
 		id: user.id,
 		name: user.name,
 		email: user.email,
-		avatar_url: `http://192.168.208.1:3333/files/${user.avatar}`,
+		avatar_url: `http://172.18.176.1:3333/files/${user.avatar}`,
 		created_at: user.created_at,
 		updated_at: user.updated_at
 	}
@@ -76,7 +76,7 @@ usersRouter.patch('/avatar', ensureAuthenticated, upload.single('avatar'), async
 		id: user.id,
 		name: user.name,
 		email: user.email,
-		avatar_url: `http://192.168.208.1:3333/files/${user.avatar}`,
+		avatar_url: `http://172.18.176.1:3333/files/${user.avatar}`,
 		created_at: user.created_at,
 		updated_at: user.updated_at
 	}

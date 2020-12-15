@@ -9,21 +9,23 @@ export const Container = styled.footer`
 	justify-content: center;
 	color: white;
 	font-size: 15px;
-	padding-top: 50px;
-	padding-bottom: 10px;
-	svg {
-		margin: 0 5px;
-		color: #0056ff;
-	}
 
-	a {
-		text-decoration: none;
-		margin-left: 5px;
-		color: #c2c3c5;
-		transition: color 0.1s;
-	}
+	span {
+		svg {
+			margin: 0 5px;
+			color: #0056ff;
+		}
 
-	a:hover {
-		color: ${setLightness(0.9, '#c2c3c5')}
+		a {
+			text-decoration: none;
+			margin-left: 5px;
+			color: #c2c3c5;
+			transition: color 0.1s;
+		}
+
+		a:hover {
+			color: ${setLightness(0.9, '#c2c3c5')}
+		}
+
 	}
 `

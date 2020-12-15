@@ -5,7 +5,7 @@ import { GiClapperboard, GiPopcorn } from 'react-icons/gi'
 import { Link, useHistory } from 'react-router-dom'
 import { useAuth } from '../../hooks/auth'
 
-import defaultUserImg from '../../assets/avatar-default.gif'
+import defaultImg from '../../assets/avatar-default.gif'
 
 import {
 	Container,
@@ -48,9 +48,9 @@ const SideMenu: React.FC = () => {
 
 				<ProfileContainer>
 					<Link to={ user ? "/profile" : "/login" }>
-						<img src={(user && user.avatar_url) ? user.avatar_url : defaultUserImg} alt={user ? user.name : "Stranger"} />
+						<img src={user ? user.avatar_url : defaultImg} alt={user ? user.name : "Stranger"} />
 
-						<span>{user ? handleReduceName(user.name) : "Stranger" }</span>
+						<span>{ user ? handleReduceName(user.name) : "Stranger" }</span>
 
 						<AiOutlineEdit />
 					</Link>
@@ -70,7 +70,7 @@ const SideMenu: React.FC = () => {
 				</Navigation>
 
 				<Navigation>
-					<Link to="/">
+					<Link to="/watchlist">
 						<BsBookmark />
 						Saved
 					</Link>

@@ -7,9 +7,11 @@ const Footer: React.FC = () => {
 
 	return (
 		<Container>
-			© 2020, made with
-			<FaHeart /> by
-			<a target="_blank" rel="noopener noreferrer" href="http://www.github.com/pedrocs378">pedrocs378</a>
+			<span>
+				© 2020, made with
+				<FaHeart /> by
+				<a target="_blank" rel="noopener noreferrer" href="http://www.github.com/pedrocs378">pedrocs378</a>
+			</span>
 		</Container>
 	)
 }

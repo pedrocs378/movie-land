@@ -7,6 +7,7 @@ import Home from '../pages/Home'
 import MovieDetails from '../pages/MovieDetails'
 import Results from '../pages/Results'
 import Profile from '../pages/Profile'
+import WatchList from '../pages/WatchList'
 
 import { useAuth } from '../hooks/auth'
 
@@ -37,6 +38,8 @@ const Routes: React.FC = () => {
 			<Route path="/profile" component={Profile} >
 				{ !user && <Redirect to="/" /> }
 			</Route>
+
+			<Route path="/watchlist" component={WatchList} />
 		</Switch>
 	)
 }
