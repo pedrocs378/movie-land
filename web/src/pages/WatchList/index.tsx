@@ -3,8 +3,6 @@ import { BiSad } from 'react-icons/bi'
 
 import Movie from '../../components/Movie'
 import { useAuth } from '../../hooks/auth'
-import { useGenres } from '../../hooks/genres'
-import { getGenre } from '../../utils/genres'
 import api from '../../services/api'
 
 
@@ -31,6 +29,12 @@ const WatchList: React.FC = () => {
 		})
 	}, [user])
 
+	const refreshWatchList = useCallback(() => {
+		api.get('/watchlist').then(response => {
+			setWatchList(response.data)
+		})
+	}, [])
+
 	return (
 		<Container>
 			<h1>Saved movies</h1>
@@ -38,6 +42,11 @@ const WatchList: React.FC = () => {
 				<Message>
 					<BiSad />
 					<p>You need to sign in to see your watch list</p>
+				</Message>
+			) : watchList.length === 0 ? (
+				<Message>
+					<BiSad />
+					<p>You don't have movies saved in yout list yet</p>
 				</Message>
 			) : (
 				<ListMovies>
@@ -53,11 +62,12 @@ const WatchList: React.FC = () => {
 									vote_average: movie.vote_average,
 									year: movie.year
 								}}
+								onUpdate={refreshWatchList}
 							/>
 						)
 					})}
 				</ListMovies>
-			)}
+			) }
 		</Container>
 	)
 }
