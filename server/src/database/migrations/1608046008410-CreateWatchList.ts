@@ -19,8 +19,8 @@ export class CreateWatchList1608046008410 implements MigrationInterface {
 					isUnique: true
 				},
 				{
-					name: 'genre_id',
-					type: 'integer'
+					name: 'genre',
+					type: 'varchar'
 				},
 				{
 					name: 'title',

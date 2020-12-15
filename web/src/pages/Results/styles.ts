@@ -15,6 +15,7 @@ export const Container = styled.div`
 
 	h1 {
 		color: white;
+		font-size: 24px;
 	}
 
 	.MuiPagination-root {

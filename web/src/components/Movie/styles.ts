@@ -1,11 +1,12 @@
 import { shade } from 'polished'
 import styled, { css } from 'styled-components'
 
-interface ToolTipPros {
+interface ContainerProps {
 	isLogged: boolean
 }
 
-export const Container = styled.div<ToolTipPros>`
+export const Container = styled.div<ContainerProps>`
+	margin: 0 5px;
 	margin-top: 10px;
 	transition: transform 0.2s;
 

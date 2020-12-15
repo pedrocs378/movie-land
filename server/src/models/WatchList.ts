@@ -16,7 +16,7 @@ class WatchList {
 	movie_id: number
 
 	@Column()
-	genre_id: number
+	genre: string
 
 	@Column()
 	title: string

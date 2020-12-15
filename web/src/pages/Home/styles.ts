@@ -77,7 +77,6 @@ export const MovieSection = styled.section<MovieSectionProps>`
 export const ListMovies = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
 
 	margin-bottom: 15px;
 `

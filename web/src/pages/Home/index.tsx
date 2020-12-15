@@ -120,7 +120,7 @@ const Home: React.FC = () => {
 								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
 							)
 						} else {
-							return index < 6 && (
+							return index < 7 && (
 								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
 							)
 						}
@@ -150,7 +150,7 @@ const Home: React.FC = () => {
 								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
 							)
 						} else {
-							return index < 6 && (
+							return index < 7 && (
 								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
 							)
 						}

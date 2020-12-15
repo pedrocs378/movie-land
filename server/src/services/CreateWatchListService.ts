@@ -4,7 +4,7 @@ import WatchList from '../models/WatchList'
 
 interface Movie {
 	id: number
-	genre_id: number
+	genre: string
 	title: string
 	year: string
 	poster_path: string
@@ -23,7 +23,7 @@ class CreateWatchListService {
 
 		const movie = watchListRepository.create({
 			movie_id: data.id,
-			genre_id: data.genre_id,
+			genre: data.genre,
 			title: data.title,
 			poster_path: data.poster_path,
 			year: data.year,
