@@ -16,14 +16,14 @@ const App: React.FC = () => {
   return (
 	<BrowserRouter>
 		<AppProvider>
+
 			<GridArea>
 				<SideMenu />
 				<Header />
-
 				<Router />
-
 				<Footer />
 			</GridArea>
+
 		</AppProvider>
 
 		<GlobalStyles />

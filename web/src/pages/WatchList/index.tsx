@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { BiSad } from 'react-icons/bi'
+import { RiEmotionNormalLine } from 'react-icons/ri'
 
 import Movie from '../../components/Movie'
 import { useAuth } from '../../hooks/auth'
+
 import api from '../../services/api'
 
 
@@ -41,11 +43,11 @@ const WatchList: React.FC = () => {
 			{ !user ? (
 				<Message>
 					<BiSad />
-					<p>You need to sign in to see your watch list</p>
+					<p>You need sign in to see your watch list</p>
 				</Message>
 			) : watchList.length === 0 ? (
 				<Message>
-					<BiSad />
+					<RiEmotionNormalLine />
 					<p>You don't have movies saved in yout list yet</p>
 				</Message>
 			) : (

@@ -43,10 +43,12 @@ const Movie: React.FC<Props> = ({ movie, genre, onUpdate, ...rest }) => {
 	const { user } = useAuth()
 
 	useEffect(() => {
-		api.get(`watchlist/${movie.id}`).then(response => {
-			setSaved(response.data.found)
-		})
-	}, [movie])
+		if (user) {
+			api.get(`watchlist/${movie.id}`).then(response => {
+				setSaved(response.data.found)
+			})
+		}
+	}, [movie, user])
 
 	const handleSaveMovie = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()

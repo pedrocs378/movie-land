@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { AiOutlineEdit, AiOutlineStar } from 'react-icons/ai'
+import { AiOutlineEdit } from 'react-icons/ai'
 import { BsBookmark } from 'react-icons/bs'
 import { GiClapperboard, GiPopcorn } from 'react-icons/gi'
 import { Link, useHistory } from 'react-router-dom'
@@ -63,13 +63,6 @@ const SideMenu: React.FC = () => {
 						<GiPopcorn />
 						Movies
 					</Link>
-					<Link to="/">
-						<AiOutlineStar />
-						Rated
-					</Link>
-				</Navigation>
-
-				<Navigation>
 					<Link to="/watchlist">
 						<BsBookmark />
 						Saved

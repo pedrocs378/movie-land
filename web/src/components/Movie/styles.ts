@@ -56,6 +56,7 @@ export const Container = styled.div<ContainerProps>`
 				svg {
 					height: 17px;
 					width: 17px;
+					color: white;
 				}
 			}
 

@@ -13,7 +13,7 @@ export const Container = styled.footer`
 	span {
 		svg {
 			margin: 0 5px;
-			color: #0056ff;
+			color: #ff9000;
 		}
 
 		a {
