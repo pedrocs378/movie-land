@@ -61,8 +61,7 @@ const Register: React.FC = () => {
 				const errors = getValidationErrors(err)
 
 				formRef.current?.setErrors(errors)
-				console.log(errors)
-				alert(errors)
+				alert(err.inner.map(error => `${error.message}\n`))
 
 				return
 			}
