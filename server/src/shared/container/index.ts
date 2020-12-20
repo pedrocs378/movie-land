@@ -1,5 +1,8 @@
 import { container } from 'tsyringe'
 
+import '../../modules/users/providers'
+import './providers'
+
 import WatchListRepository from '../../modules/watchlist/infra/typeorm/repositories/WatchListRepository'
 import IWatchListRepository from '../../modules/watchlist/repositories/IWatchListRepository'
 
