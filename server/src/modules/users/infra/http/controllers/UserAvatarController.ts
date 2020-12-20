@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { container } from 'tsyringe'
 
 import UpdateUserService from "../../../services/UpdateUserService";
 import UsersRepository from "../../typeorm/repositories/UsersRepository";
@@ -6,8 +7,7 @@ import UsersRepository from "../../typeorm/repositories/UsersRepository";
 class UserAvatarController {
 
 	public async update(request: Request, response: Response): Promise<Response> {
-		const usersRepository = new UsersRepository()
-		const updateUserAvatar = new UpdateUserService(usersRepository)
+		const updateUserAvatar = container.resolve(UpdateUserService)
 
 		const user = await updateUserAvatar.execute({
 			user_id: request.user.id,

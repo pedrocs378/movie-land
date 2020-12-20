@@ -1,16 +1,15 @@
 import { Request, Response } from "express";
+import { container } from 'tsyringe'
 
 import CreateUserService from "../../../services/CreateUserService";
 import UpdateUserService from "../../../services/UpdateUserService";
-import UsersRepository from "../../typeorm/repositories/UsersRepository";
 
 class UsersController {
 	public async create(request: Request, response: Response): Promise<Response> {
 		const { name, email, password } = request.body
 		const files = request.files as any
 
-		const usersRepository = new UsersRepository()
-		const createUser = new CreateUserService(usersRepository)
+		const createUser = container.resolve(CreateUserService)
 
 		const user = await createUser.execute({
 			avatar: files.avatar[0].filename,
@@ -34,8 +33,7 @@ class UsersController {
 	public async update(request: Request, response: Response): Promise<Response> {
 		const userData = request.body
 
-		const usersRepository = new UsersRepository()
-		const updateUser = new UpdateUserService(usersRepository)
+		const updateUser = container.resolve(UpdateUserService)
 
 		const user = await updateUser.execute({
 			user_id: request.user.id,

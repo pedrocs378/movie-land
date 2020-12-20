@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import AppError from "../../../../../shared/errors/AppError";
+import { container } from 'tsyringe'
 
+import AppError from "../../../../../shared/errors/AppError";
 import CreateWatchListService from "../../../services/CreateWatchListService";
 import DeleteWatchListService from "../../../services/DeleteWatchListService";
 import ShowWatchListService from "../../../services/ShowWatchListService";
@@ -11,8 +12,7 @@ class WatchListController {
 	public async create(request: Request, response: Response): Promise<Response> {
 		const data = request.body
 
-		const watchListRepository = new WatchListRepository()
-		const createWatchList = new CreateWatchListService(watchListRepository)
+		const createWatchList = container.resolve(CreateWatchListService)
 
 		const movie = await createWatchList.execute({
 			data,
@@ -23,8 +23,7 @@ class WatchListController {
 	}
 
 	public async show(request: Request, response: Response): Promise<Response> {
-		const watchListRepository = new WatchListRepository()
-		const showWatchList = new ShowWatchListService(watchListRepository)
+		const showWatchList = container.resolve(ShowWatchListService)
 
 		const watchList = await showWatchList.execute(request.user.id)
 
@@ -54,8 +53,7 @@ class WatchListController {
 	public async delete(request: Request, response: Response): Promise<Response> {
 		const { movie_id } = request.body
 
-		const watchListRepository = new WatchListRepository()
-		const deleteWatchList = new DeleteWatchListService(watchListRepository)
+		const deleteWatchList = container.resolve(DeleteWatchListService)
 
 		const movie = await deleteWatchList.execute(movie_id)
 

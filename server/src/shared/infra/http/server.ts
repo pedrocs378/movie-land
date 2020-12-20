@@ -5,10 +5,11 @@ import cors from 'cors'
 import 'express-async-errors'
 
 import AppError from '../../errors/AppError'
+import uploadConfig from '../../../config/upload'
 import routes from './routes'
 
 import '../typeorm'
-import uploadConfig from '../../../config/upload'
+import '../../container'
 
 const app = express()
 const PORT = process.env.PORT || 3333

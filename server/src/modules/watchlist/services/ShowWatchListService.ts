@@ -1,9 +1,13 @@
+import { injectable, inject } from 'tsyringe'
+
 import WatchList from '../infra/typeorm/entities/WatchList'
 import IWatchListRepository from '../repositories/IWatchListRepository'
 
+@injectable()
 class ShowWatchListService {
 
 	constructor(
+		@inject('WatchListRepository')
 		private watchListRepository: IWatchListRepository
 	) { }
 

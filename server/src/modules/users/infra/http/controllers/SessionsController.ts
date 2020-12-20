@@ -1,15 +1,14 @@
 import { Request, Response } from "express";
+import { container } from 'tsyringe'
 
 import AuthenticateUserService from "../../../services/AuthenticateUserService";
-import UsersRepository from "../../typeorm/repositories/UsersRepository";
 
 class SessionsController {
 
 	public async create(request: Request, response: Response): Promise<Response> {
 		const { email, password } = request.body
 
-		const usersRepository = new UsersRepository()
-		const authenticateUser = new AuthenticateUserService(usersRepository)
+		const authenticateUser = container.resolve(AuthenticateUserService)
 
 		const { token, user } = await authenticateUser.execute({
 			email,
