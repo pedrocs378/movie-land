@@ -4,10 +4,10 @@ import WatchList from '../infra/typeorm/entities/WatchList'
 import IWatchListRepository from '../repositories/IWatchListRepository'
 
 interface Movie {
-	movie_id: number
+	id: number
 	genre: string
 	title: string
-	year: string
+	year: number
 	poster_path: string
 	vote_average: number
 }
@@ -28,7 +28,12 @@ class CreateWatchListService {
 	public async execute({ data, user_id }: Request): Promise<WatchList> {
 
 		const movie = await this.watchListRepository.create({
-			...data,
+			movie_id: data.id,
+			genre: data.genre,
+			poster_path: data.poster_path,
+			year: data.year,
+			title: data.title,
+			vote_average: data.vote_average,
 			user_id
 		})
 

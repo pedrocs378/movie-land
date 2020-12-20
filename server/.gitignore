@@ -1,6 +1,6 @@
 node_modules/
 
-/src/config/auth.ts
+.env
 
 /tmp/*
 !/tmp/.gitkeep

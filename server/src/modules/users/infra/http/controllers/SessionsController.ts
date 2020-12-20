@@ -19,7 +19,7 @@ class SessionsController {
 			id: user.id,
 			name: user.name,
 			email: user.email,
-			avatar_url: user.avatar ? `http://172.18.176.1:3333/files/${user.avatar}` : undefined,
+			avatar_url: user.avatar ? `${process.env.APP_API_URL}/files/${user.avatar}` : undefined,
 			created_at: user.created_at,
 			updated_at: user.updated_at
 		}

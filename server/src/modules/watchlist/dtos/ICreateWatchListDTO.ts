@@ -4,7 +4,7 @@ export default interface ICreateWatchListDTO {
 	genre: string,
 	title: string,
 	poster_path: string,
-	year: string,
+	year: number,
 	vote_average: number,
 	user_id: string
 }

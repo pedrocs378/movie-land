@@ -44,7 +44,7 @@ class UsersController {
 			id: user.id,
 			name: user.name,
 			email: user.email,
-			avatar_url: `http://172.18.176.1:3333/files/${user.avatar}`,
+			avatar_url: `${process.env.APP_API_URL}/files/${user.avatar}`,
 			created_at: user.created_at,
 			updated_at: user.updated_at
 		}

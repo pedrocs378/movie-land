@@ -1,5 +1,6 @@
 import { hash } from 'bcryptjs'
 import { injectable, inject } from 'tsyringe'
+import IStorageProvider from '../../../shared/container/providers/StorageProvider/models/IStorageProvider'
 
 import AppError from '../../../shared/errors/AppError'
 import User from '../infra/typeorm/entities/User'
@@ -16,7 +17,10 @@ interface Request {
 class CreateUserService {
 	constructor(
 		@inject('UsersRepository')
-		private usersRepository: IUsersRepository
+		private usersRepository: IUsersRepository,
+
+		@inject('StorageProvider')
+		private storageProvider: IStorageProvider
 	) {}
 
 	public async execute({ avatar, name, email, password }: Request): Promise<User> {
@@ -28,11 +32,12 @@ class CreateUserService {
 		}
 
 		const hashedPassword = await hash(password, 8)
+		const filename = await this.storageProvider.saveFile(avatar)
 
 		const user = await this.usersRepository.create({
 			name,
 			email,
-			avatar,
+			avatar: filename,
 			password: hashedPassword
 		})
 
