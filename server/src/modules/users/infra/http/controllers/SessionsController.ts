@@ -1,3 +1,4 @@
+import { classToClass } from "class-transformer";
 import { Request, Response } from "express";
 import { container } from 'tsyringe'
 
@@ -15,16 +16,7 @@ class SessionsController {
 			password
 		})
 
-		const payload = {
-			id: user.id,
-			name: user.name,
-			email: user.email,
-			avatar_url: user.avatar ? `${process.env.APP_API_URL}/files/${user.avatar}` : undefined,
-			created_at: user.created_at,
-			updated_at: user.updated_at
-		}
-
-		return response.json({ user: payload, token })
+		return response.json({ user: classToClass(user), token })
 	}
 }
 
