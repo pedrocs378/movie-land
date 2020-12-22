@@ -1,9 +1,0 @@
-node_modules/
-build/
-.env
-coverage
-ormconfig.json
-dist
-
-/tmp/*
-!/tmp/.gitkeep
