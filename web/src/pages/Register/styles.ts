@@ -1,5 +1,14 @@
 import { shade } from 'polished'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const fade = keyframes`
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+`
 
 export const Container = styled.div`
 	grid-area: content;
@@ -21,7 +30,7 @@ export const Container = styled.div`
 		box-shadow: 0 0 10px 0 #000;
 		background: ${shade(0.2, '#343d4e')};
 
-		animation: fade 1s;
+		animation: ${fade} 1s;
 
 		h1 {
 			color: #f0f0f0;

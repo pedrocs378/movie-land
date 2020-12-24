@@ -8,6 +8,8 @@ import MovieDetails from '../pages/MovieDetails'
 import Results from '../pages/Results'
 import Profile from '../pages/Profile'
 import WatchList from '../pages/WatchList'
+import ForgotPassword from '../pages/ForgotPassword'
+import ResetPassword from '../pages/ResetPassword'
 
 import { useAuth } from '../hooks/auth'
 
@@ -32,6 +34,12 @@ const Routes: React.FC = () => {
 				{ user && <Redirect to="/" /> }
 			</Route>
 			<Route path="/register" component={Register} >
+				{ user && <Redirect to="/" /> }
+			</Route>
+			<Route path="/forgot-password" component={ForgotPassword} >
+				{ user && <Redirect to="/" /> }
+			</Route>
+			<Route path="/reset-password" component={ResetPassword} >
 				{ user && <Redirect to="/" /> }
 			</Route>
 

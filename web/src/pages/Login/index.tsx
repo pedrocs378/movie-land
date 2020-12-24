@@ -72,6 +72,8 @@ const Login: React.FC = () => {
 					isPassword
 				/>
 				<button type="submit">Login</button>
+
+				<Link to="forgot-password">Forgot my password</Link>
 			</Form>
 			<Link to="/register">
 				Don't have account? Register here

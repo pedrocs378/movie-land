@@ -1,24 +1,11 @@
 import { shade } from 'polished'
 import styled, { keyframes } from 'styled-components'
 
-const fadeFromUp = keyframes`
+const fade = keyframes`
 	from {
-		transform: translateY(-20%);
 		opacity: 0;
 	}
 	to {
-		transform: translateY(0%);
-		opacity: 1;
-	}
-`
-
-const fadeFromDown = keyframes`
-	from {
-		transform: translateY(30%);
-		opacity: 0;
-	}
-	to {
-		transform: translateY(0%);
 		opacity: 1;
 	}
 `
@@ -26,7 +13,7 @@ const fadeFromDown = keyframes`
 export const Container = styled.div`
 	grid-area: content;
 
-	height: 550px;
+	height: 500px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -43,7 +30,7 @@ export const Container = styled.div`
 		box-shadow: 0 0 10px 0 #000;
 		background: ${shade(0.2, '#343d4e')};
 
-		animation: ${fadeFromUp} 1s;
+		animation: ${fade} 1s;
 
 		h1 {
 			color: #f0f0f0;
@@ -68,24 +55,23 @@ export const Container = styled.div`
 			}
 		}
 
-		a {
-			text-decoration: none;
-			color: #c2c3c5;
-			margin-top: 15px;
-			transition: color 0.2s;
-
-			&:hover {
-				color: ${shade(0.1, '#c2c3c5')}
-			}
-		}
 	}
 
 	> a {
 		color: #c2c3c5;
 		margin-top: 30px;
 		transition: color 0.1s;
+		text-decoration: none;
+		font-size: 18px;
 
-		animation: ${fadeFromDown} 1s;
+		display: flex;
+		align-items: center;
+
+		svg {
+			margin-right: 5px;
+			height: 22px;
+			width: 22px;
+		}
 
 		&:hover {
 			color: ${shade(0.1, '#c2c3c5')}
