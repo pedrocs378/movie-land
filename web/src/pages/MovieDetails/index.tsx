@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouteMatch } from 'react-router-dom'
-import { BsStopwatch } from 'react-icons/bs'
+import { BsBookmark, BsBookmarkFill, BsStopwatch } from 'react-icons/bs'
 import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi'
 import Rating from '@material-ui/lab/Rating'
 import { format } from 'date-fns'
@@ -16,6 +16,7 @@ import {
 	Container,
 	GridDetails,
 	ColumnInfos,
+	ToolTip,
 	ColumnCast,
 	CastItem,
 	Section,
@@ -23,6 +24,8 @@ import {
 	ListMovies
 } from './styles'
 import { getGenre } from '../../utils/genres'
+import { useAuth } from '../../hooks/auth'
+import api from '../../services/api'
 
 interface Genre {
 	id: number
@@ -36,6 +39,7 @@ interface MovieDetailsProps {
 	original_title: string
 	genres: Genre[]
 	overview: string
+	poster_path: string
 	release_date: string
 	revenue: number
 	runtime: number
@@ -56,11 +60,14 @@ interface Params {
 }
 
 const MovieDetails: React.FC = () => {
-	const { genres } = useGenres()
 	const [movie, setMovie] = useState<MovieDetailsProps>({} as MovieDetailsProps)
 	const [date, setDate] = useState("")
 	const [recommendations, setRecommentaions] = useState<MovieParams[]>([])
 	const [cast, setCast] = useState<Cast[]>([])
+	const [saved, setSaved] = useState(false)
+
+	const { genres } = useGenres()
+	const { user } = useAuth()
 
 	const { params } = useRouteMatch<Params>()
 
@@ -84,7 +91,48 @@ const MovieDetails: React.FC = () => {
 
 	}, [params.movie_id])
 
+	useEffect(() => {
+		if (user) {
+			api.get(`watchlist/${params.movie_id}`).then(response => {
+				setSaved(response.data.found)
+			})
+		} else {
+			setSaved(false)
+		}
+	}, [params.movie_id, user])
+
 	const handleGetGenre = useCallback(getGenre, [])
+
+	const handleSaveMovie = useCallback(async () => {
+
+		if (!user) {
+			return
+		}
+
+		try {
+			if (!saved) {
+				await api.post('watchlist', {
+					id: params.movie_id,
+					genre: movie.genres[0].name,
+					title: movie.title,
+					year: new Date(movie.release_date).getFullYear(),
+					poster_path: movie.poster_path ? movie.poster_path : "",
+					vote_average: movie.vote_average
+				})
+				setSaved(!saved)
+
+			} else {
+				await api.delete('watchlist', {
+					data: {
+						movie_id: params.movie_id
+					}
+				})
+				setSaved(!saved)
+			}
+		} catch(err) {
+			alert(err)
+		}
+	}, [user, saved, movie, params.movie_id])
 
 	const budget = useMemo(() => {
 		if (movie.budget) {
@@ -130,8 +178,16 @@ const MovieDetails: React.FC = () => {
 	return (
 		<Container>
 			<GridDetails>
-				<ColumnInfos>
+				<ColumnInfos movieSaved={saved} isLogged={!!user} >
 					<img src={`${API_URL_IMAGES}${movie.backdrop_path}`} alt={movie.original_title} />
+					<button type="button" onClick={handleSaveMovie} >
+						{ saved ? <BsBookmarkFill /> : <BsBookmark /> }
+						{ saved ? "Remove" : "Save" }
+
+						<ToolTip>
+							<span>Sign in to save this movie in your Watch List</span>
+						</ToolTip>
+					</button>
 					<div>
 						<Section>
 							<h1>

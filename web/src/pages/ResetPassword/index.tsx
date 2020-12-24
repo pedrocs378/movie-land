@@ -51,7 +51,7 @@ const ResetPassword: React.FC = () => {
 				abortEarly: false
 			})
 
-			const { password, password_confirmation } = data
+			const { password } = data
 
 			if (!token) {
 				throw new Error()
@@ -59,7 +59,6 @@ const ResetPassword: React.FC = () => {
 
 			await api.post('/password/reset', {
 				password,
-				password_confirmation,
 				token
 			})
 

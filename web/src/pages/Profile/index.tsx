@@ -112,7 +112,7 @@ const Profile: React.FC = () => {
 				onSubmit={handleSubmit}
 				initialData={{
 					name: user.name,
-					email: user.email
+					email: user.email,
 				}}
 			>
 				<AvatarInput>

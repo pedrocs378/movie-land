@@ -20,7 +20,7 @@ const Routes: React.FC = () => {
 		<Switch>
 			<Route path="/" exact component={Home} />
 
-			<Route path="/movie" exact component={MovieDetails}>
+			<Route path="/movie" exact>
 				<Redirect to="/" />
 			</Route>
 			<Route path="/movie/:movie_id" component={MovieDetails} />
