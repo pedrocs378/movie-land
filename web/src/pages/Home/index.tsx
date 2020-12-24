@@ -42,19 +42,19 @@ const Home: React.FC = () => {
 	const [showAllTopRatedMovies, setShowAllTopRatedMovies] = useState(false)
 
 	const [popularMovies, setPopularMovies] = useState<MovieResponseProps>(() => {
-		const movies = localStorage.getItem('@MovieLand:popularMovies')
+		const storagedPopular = localStorage.getItem('@MovieLand:popularMovies')
 
-		if (movies) {
-			return JSON.parse(movies)
+		if (storagedPopular) {
+			return JSON.parse(storagedPopular)
 		}
 
 		return {} as MovieResponseProps
 	})
 	const [topRated, setTopRated] = useState<MovieResponseProps>(() => {
-		const movies = localStorage.getItem('@MovieLand:topRated')
+		const storagedTopRated = localStorage.getItem('@MovieLand:topRated')
 
-		if (movies) {
-			return JSON.parse(movies)
+		if (storagedTopRated) {
+			return JSON.parse(storagedTopRated)
 		}
 
 		return {} as MovieResponseProps
@@ -80,8 +80,21 @@ const Home: React.FC = () => {
 			})
 		}
 
-
 	}, [popularMovies.results, topRated.results])
+
+	useEffect(() => {
+		const storagedPopular = localStorage.getItem('@MovieLand:popularMovies')
+		const storagedTopRated = localStorage.getItem('@MovieLand:topRated')
+
+		if (storagedPopular || storagedTopRated) {
+			const timer = setTimeout(() => {
+				localStorage.removeItem('@MovieLand:popularMovies')
+				localStorage.removeItem('@MovieLand:topRated')
+			}, 43200000)
+
+			return () => clearTimeout(timer)
+		}
+	}, [])
 
 	const handleGetGenre = useCallback(getGenre, [])
 
@@ -101,6 +114,30 @@ const Home: React.FC = () => {
 		})
 	}, [])
 
+	const handleShowAllPopularMovies = useCallback(() => {
+		setShowAllPopularMovies(!showAllPopularMovies)
+
+		if (!showAllPopularMovies === false) {
+			axios.get(`${API_URL_POPULAR_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}&page=1`).then(response => {
+				const movies = response.data as MovieResponseProps
+
+				setPopularMovies(movies)
+			})
+		}
+	}, [showAllPopularMovies])
+
+	const handleShowAllTopRatedMovies = useCallback(() => {
+		setShowAllTopRatedMovies(!showAllTopRatedMovies)
+
+		if (!showAllTopRatedMovies === false) {
+			axios.get(`${API_URL_TOP_RATED_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}&page=1`).then(response => {
+				const movies = response.data as MovieResponseProps
+
+				setTopRated(movies)
+			})
+		}
+	}, [showAllTopRatedMovies])
+
 	if (!popularMovies.results || !topRated.results) {
 		return <h1>No results</h1>
 	}
@@ -110,7 +147,7 @@ const Home: React.FC = () => {
 			<MovieSection isHidden={showAllTopRatedMovies ? true : false} >
 				<div>
 					<h1>Popular Movies</h1>
-					<button onClick={() => setShowAllPopularMovies(!showAllPopularMovies)}>
+					<button onClick={handleShowAllPopularMovies}>
 						{showAllPopularMovies ? "Hide movies" : "See all" }
 					</button>
 				</div>
@@ -140,7 +177,7 @@ const Home: React.FC = () => {
 			<MovieSection isHidden={showAllPopularMovies ? true : false} >
 				<div>
 					<h1>Top Rated</h1>
-					<button onClick={() => setShowAllTopRatedMovies(!showAllTopRatedMovies)}>
+					<button onClick={handleShowAllTopRatedMovies}>
 						{showAllTopRatedMovies ? "Hide movies" : "See all"}
 					</button>
 				</div>

@@ -26,9 +26,11 @@ const WatchList: React.FC = () => {
 	const { user } = useAuth()
 
 	useEffect(() => {
-		api.get('/watchlist').then(response => {
-			setWatchList(response.data)
-		})
+		if (user) {
+			api.get('/watchlist').then(response => {
+				setWatchList(response.data)
+			})
+		}
 	}, [user])
 
 	const refreshWatchList = useCallback(() => {

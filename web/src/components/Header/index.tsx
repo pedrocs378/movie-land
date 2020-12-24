@@ -70,6 +70,7 @@ const Header: React.FC = () => {
 						name="movie"
 						placeholder="Search..."
 						value={searchText}
+						autoComplete="off"
 						onChange={handleSearchOnDigit}
 						onFocus={handleFocus}
 						onBlur={handleBlur}
