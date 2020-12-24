@@ -8,10 +8,6 @@ export interface GenreProps {
 	name: string
 }
 
-interface GenreResponseProp {
-	genres: GenreProps[]
-}
-
 interface GenresContextData {
 	genres: GenreProps[]
 }
@@ -32,7 +28,7 @@ const GenresProvider: React.FC = ({ children }) => {
 	useEffect(() => {
 		if (genres.length === 0) {
 			axios.get(`${API_URL_GENRES}?api_key=${process.env.REACT_APP_API_KEY}`).then(response => {
-				const responseGenres = response.data as GenreResponseProp
+				const responseGenres = response.data as GenresContextData
 
 				setGenres(responseGenres.genres)
 				localStorage.setItem('@MovieLand:genres', JSON.stringify(responseGenres.genres))

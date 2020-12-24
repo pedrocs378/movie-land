@@ -68,6 +68,10 @@ const Home: React.FC = () => {
 
 				setPopularMovies(movies)
 				localStorage.setItem('@MovieLand:popularMovies', JSON.stringify(movies))
+
+				setTimeout(() => {
+					localStorage.removeItem('@MovieLand:popularMovies')
+				}, 43200000)
 			})
 		}
 
@@ -77,24 +81,14 @@ const Home: React.FC = () => {
 
 				setTopRated(movies)
 				localStorage.setItem('@MovieLand:topRated', JSON.stringify(movies))
+
+				setTimeout(() => {
+					localStorage.removeItem('@MovieLand:topRated')
+				}, 43200000)
 			})
 		}
 
 	}, [popularMovies.results, topRated.results])
-
-	useEffect(() => {
-		const storagedPopular = localStorage.getItem('@MovieLand:popularMovies')
-		const storagedTopRated = localStorage.getItem('@MovieLand:topRated')
-
-		if (storagedPopular || storagedTopRated) {
-			const timer = setTimeout(() => {
-				localStorage.removeItem('@MovieLand:popularMovies')
-				localStorage.removeItem('@MovieLand:topRated')
-			}, 43200000)
-
-			return () => clearTimeout(timer)
-		}
-	}, [])
 
 	const handleGetGenre = useCallback(getGenre, [])
 
