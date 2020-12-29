@@ -44,4 +44,14 @@ export const ListMovies = styled.div`
 	flex-wrap: wrap;
 
 	margin-bottom: 15px;
+
+	> div {
+		max-width: 150px;
+	}
+
+	@media (min-width: 670px) {
+		> div {
+			max-width: 200px;
+		}
+	}
 `

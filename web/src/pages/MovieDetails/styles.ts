@@ -19,9 +19,14 @@ export const Container = styled.div`
 `
 
 export const GridDetails = styled.div`
-	display: grid;
-	grid-template-columns: 1fr auto;
-	grid-template-areas: "infos cast";
+	display: flex;
+	flex-direction: column;
+
+	@media (min-width: 670px) {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		grid-template-areas: "infos cast";
+	}
 
 `
 
@@ -33,7 +38,13 @@ export const ColumnInfos = styled.div<ColumnInfosProps>`
 	> img {
 		border-radius: 8px;
 		height: auto;
-		max-width: 820px;
+		width: 100%;
+	}
+
+	@media (min-width: 670px) {
+		> img {
+			max-width: 820px;
+		}
 	}
 
 	button {
@@ -132,12 +143,17 @@ export const ToolTip = styled.div`
 
 export const ColumnCast = styled.div`
 	grid-area: cast;
-	margin-left: 15px;
+	margin-top: 20px;
 
 	h1 {
 		color: white;
 		font-size: 24px;
 		margin-bottom: 15px;
+	}
+
+	@media (min-width: 670px) {
+		margin-top: 0;
+		margin-left: 15px;
 	}
 `
 
@@ -227,6 +243,7 @@ export const Section = styled.section`
 
 export const Recommendations = styled.div`
 	margin-top: 25px;
+	width: 100%;
 
 	h1 {
 		color: white;
@@ -237,6 +254,18 @@ export const Recommendations = styled.div`
 export const ListMovies = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
+
 	margin-bottom: 10px;
+
+	> div {
+		max-width: 150px;
+	}
+
+	@media (min-width: 670px) {
+		justify-content: space-between;
+
+		> div {
+			max-width: 200px;
+		}
+	}
 `

@@ -16,8 +16,8 @@ export const Container = styled.div<ContainerProps>`
 
 	a {
 		> div {
-			height: 300px;
-			width: 200px;
+			height: auto;
+			width: 100%;
 			position: relative;
 
 			img {
@@ -60,6 +60,14 @@ export const Container = styled.div<ContainerProps>`
 				}
 			}
 
+		}
+	}
+
+	@media(min-width: 670px) {
+		a {
+			> div {
+				width: 200px;
+			}
 		}
 	}
 

@@ -2,32 +2,38 @@ import styled from 'styled-components'
 import { setLightness } from 'polished'
 
 export const Container = styled.aside`
-	grid-area: menu;
+	display: none;
 
-	height: 100vh;
-	padding-top: 40px;
-	background: linear-gradient(180deg, rgba(66,80,98,1) 0%, rgba(45,53,71,1) 100%);
+	@media (min-width: 670px) {
+		grid-area: menu;
 
-	position: fixed;
-	width: 250px;
+		position: fixed;
 
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+		height: 100%;
+		width: 250px;
+		padding-top: 40px;
+		background: linear-gradient(180deg, rgba(66,80,98,1) 0%, rgba(45,53,71,1) 100%);
 
-	button {
-		color: #c2c3c5;
-		background: transparent;
-		font-size: 18px;
-		text-decoration: none;
-		margin-left: 18px;
-		margin-bottom: 15px;
-		align-self: flex-start;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 
-		transition: color 0.2s;
 
-		&:hover {
-			color: ${setLightness(1, '#c2c3c5')}
+
+		button {
+			color: #c2c3c5;
+			background: transparent;
+			font-size: 18px;
+			text-decoration: none;
+			margin-left: 18px;
+			margin-bottom: 15px;
+			align-self: flex-start;
+
+			transition: color 0.2s;
+
+			&:hover {
+				color: ${setLightness(1, '#c2c3c5')}
+			}
 		}
 	}
 `

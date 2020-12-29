@@ -7,17 +7,26 @@ interface SearchInputProps {
 
 export const Container = styled.header`
 	grid-area: header;
+
 	width: 95%;
+	height: 120px;
 	max-width: 1500px;
 	margin: 0 auto;
 
 	display: flex;
-	justify-content: flex-end;
 	align-items: center;
 
 	form {
-		width: 400px;
+		width: 100%;
 		position: relative;
+	}
+
+	@media(min-width: 670px) {
+		justify-content: flex-end;
+
+		form {
+			width: 400px;
+		}
 	}
 `
 

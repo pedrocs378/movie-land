@@ -243,7 +243,6 @@ const MovieDetails: React.FC = () => {
 				<ColumnCast>
 					<h1>Cast</h1>
 					{cast.map((actor, index) => {
-
 						return index < 10 && (
 							<CastItem key={actor.id} >
 								{actor.profile_path && <img src={`${API_URL_IMAGES_W200}${actor.profile_path}`} alt={actor.original_name} />}
