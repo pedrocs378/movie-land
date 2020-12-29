@@ -1,11 +1,12 @@
 import React, { ChangeEvent, useCallback, useState, FormEvent } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { FiSearch, FiArrowRight } from 'react-icons/fi'
+import { FiSearch, FiArrowRight, FiMenu } from 'react-icons/fi'
 import axios from 'axios'
 
 import { API_URL_IMAGES, API_URL_SEARCH_MOVIES } from '../../config/movies'
 
 import { Container, Input, ResultsBox } from './styles'
+import { useShowMenu } from '../../hooks/menu'
 
 interface MovieProps {
 	id: number
@@ -20,6 +21,7 @@ const Header: React.FC = () => {
 	const [searchText, setSearchText] = useState("")
 	const [movies, setMovies] = useState<MovieProps[]>([])
 
+	const { show, setShow } = useShowMenu()
 	const history = useHistory()
 
 	const handleFocus = useCallback(() => {
@@ -63,7 +65,10 @@ const Header: React.FC = () => {
 	}, [searchText, history])
 
 	return (
-		<Container>
+		<Container isShowllableMenu={show} >
+			<button type="button" onClick={() => setShow(!show)} >
+				<FiMenu />
+			</button>
 			<form onSubmit={handleSubmit} >
 				<Input isFocused={isFocused}>
 					<input

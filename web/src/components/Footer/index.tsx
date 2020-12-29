@@ -1,12 +1,14 @@
 import React from 'react'
 import { FaHeart } from 'react-icons/fa'
+import { useShowMenu } from '../../hooks/menu'
 
 import { Container } from './styles'
 
 const Footer: React.FC = () => {
+	const { show } = useShowMenu()
 
 	return (
-		<Container>
+		<Container isShowllableMenu={show} >
 			<span>
 				© 2020, made with
 				<FaHeart /> by

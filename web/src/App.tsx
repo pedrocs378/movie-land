@@ -13,22 +13,23 @@ import { GridArea } from './styles/app';
 import GlobalStyles from './styles/global'
 
 const App: React.FC = () => {
-  return (
-	<BrowserRouter>
-		<AppProvider>
 
-			<GridArea>
-				<SideMenu />
-				<Header />
-				<Router />
-				<Footer />
-			</GridArea>
+	return (
+		<BrowserRouter>
+			<AppProvider>
 
-		</AppProvider>
+				<GridArea>
+					<SideMenu />
+					<Header />
+					<Router />
+					<Footer />
+				</GridArea>
 
-		<GlobalStyles />
-	</BrowserRouter>
-  );
+			</AppProvider>
+
+			<GlobalStyles />
+		</BrowserRouter>
+	);
 }
 
 export default App;

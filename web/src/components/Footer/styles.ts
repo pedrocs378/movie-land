@@ -1,14 +1,19 @@
 import { setLightness } from 'polished'
 import styled from 'styled-components'
 
-export const Container = styled.footer`
+interface ContainerProps {
+	isShowllableMenu: boolean
+}
+
+export const Container = styled.footer<ContainerProps>`
 	grid-area: footer;
+
+	color: white;
+	font-size: 15px;
 
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: white;
-	font-size: 15px;
 
 	span {
 		svg {

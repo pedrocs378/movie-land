@@ -11,6 +11,7 @@ export const Container = styled.div`
 	width: 95%;
 	max-width: 1500px;
 	margin: 0 auto;
+	margin-bottom: 100px;
 
 	form {
 		width: 400px;

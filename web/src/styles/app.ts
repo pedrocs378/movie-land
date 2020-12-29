@@ -3,8 +3,12 @@ import styled from 'styled-components'
 export const GridArea = styled.div`
 	position: relative;
 
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-areas:
+		"header"
+		"content"
+		"footer";
 
 	@media(min-width: 670px) {
 		display: grid;

@@ -5,7 +5,11 @@ interface SearchInputProps {
 	isFocused: boolean
 }
 
-export const Container = styled.header`
+interface ContainerProps {
+	isShowllableMenu: boolean
+}
+
+export const Container = styled.header<ContainerProps>`
 	grid-area: header;
 
 	width: 95%;
@@ -14,7 +18,21 @@ export const Container = styled.header`
 	margin: 0 auto;
 
 	display: flex;
-	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+
+	> button {
+		background: transparent;
+		width: 22px;
+		height: 22px;
+		margin-bottom: 10px;
+
+		svg {
+			color: white;
+			width: 100%;
+			height: 100%;
+		}
+	}
 
 	form {
 		width: 100%;
@@ -22,10 +40,14 @@ export const Container = styled.header`
 	}
 
 	@media(min-width: 670px) {
-		justify-content: flex-end;
 
 		form {
 			width: 400px;
+			align-self: flex-end;
+		}
+
+		> button {
+			display: none;
 		}
 	}
 `

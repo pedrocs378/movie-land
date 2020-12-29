@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { BsBookmark } from 'react-icons/bs'
+import { BiArrowToLeft } from 'react-icons/bi'
 import { GiClapperboard, GiPopcorn } from 'react-icons/gi'
 import { Link, useHistory } from 'react-router-dom'
+
 import { useAuth } from '../../hooks/auth'
 
 import defaultImg from '../../assets/avatar-default.gif'
@@ -14,9 +16,12 @@ import {
 	ProfileContainer,
 	TitleContainer
 } from './styles'
+import { useShowMenu } from '../../hooks/menu'
+
 
 const SideMenu: React.FC = () => {
 	const { user, signOut } = useAuth()
+	const { show, setShow } = useShowMenu()
 
 	const history = useHistory()
 
@@ -36,7 +41,7 @@ const SideMenu: React.FC = () => {
 	}, [user, signOut, history])
 
 	return (
-		<Container>
+		<Container show={show} >
 			<Content>
 				<TitleContainer>
 					<Link to="/" >
@@ -44,6 +49,10 @@ const SideMenu: React.FC = () => {
 
 						<h1>MOVIE<span>LAND</span></h1>
 					</Link>
+
+					<button type="button" onClick={() => setShow(false)} >
+						<BiArrowToLeft />
+					</button>
 				</TitleContainer>
 
 				<ProfileContainer>
