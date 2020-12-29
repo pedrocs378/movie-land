@@ -81,7 +81,7 @@ export const ListMovies = styled.div`
 	margin-bottom: 15px;
 
 	> div {
-		max-width: 150px;
+		max-width: 130px;
 	}
 
 	@media (min-width: 670px) {
