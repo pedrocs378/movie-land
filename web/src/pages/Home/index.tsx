@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Pagination from '@material-ui/lab/Pagination'
 import axios from 'axios'
 
@@ -132,6 +132,14 @@ const Home: React.FC = () => {
 		}
 	}, [showAllTopRatedMovies])
 
+	const partOfPopularMovies = useMemo(() => {
+		return popularMovies.results.filter((_, index) => index < 7)
+	}, [popularMovies.results])
+
+	const partOfTopRated = useMemo(() => {
+		return topRated.results.filter((_, index) => index < 7)
+	}, [topRated.results])
+
 	if (!popularMovies.results || !topRated.results) {
 		return <h1>No results</h1>
 	}
@@ -146,16 +154,14 @@ const Home: React.FC = () => {
 					</button>
 				</div>
 				<ListMovies>
-					{popularMovies && popularMovies.results.map((movie, index) => {
-						if (showAllPopularMovies) {
-							return (
-								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
-							)
-						} else {
-							return index < 7 && (
-								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
-							)
-						}
+					{(popularMovies && showAllPopularMovies) ? popularMovies.results.map((movie) => {
+						return (
+							<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
+						)
+					}) : partOfPopularMovies.map((movie) => {
+						return (
+							<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
+						)
 					})}
 				</ListMovies>
 				{showAllPopularMovies && (
@@ -176,16 +182,14 @@ const Home: React.FC = () => {
 					</button>
 				</div>
 				<ListMovies>
-					{topRated && topRated.results.map((movie, index) => {
-						if (showAllTopRatedMovies) {
-							return (
-								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
-							)
-						} else {
-							return index < 7 && (
-								<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
-							)
-						}
+					{(topRated && showAllTopRatedMovies) ? topRated.results.map((movie) => {
+						return (
+							<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
+						)
+					}) : partOfTopRated.map((movie) => {
+						return (
+							<Movie key={movie.id} movie={movie} genre={handleGetGenre(movie.genre_ids[0], genres)} />
+						)
 					})}
 				</ListMovies>
 				{showAllTopRatedMovies && (

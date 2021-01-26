@@ -46,10 +46,6 @@ const GenresProvider: React.FC = ({ children }) => {
 function useGenres(): GenresContextData {
 	const context = useContext(GenresContext)
 
-	if (!context) {
-		throw new Error('useGenres must be used within as GenresProvider')
-	}
-
 	return context
 }
 

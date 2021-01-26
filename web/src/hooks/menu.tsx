@@ -22,10 +22,6 @@ const MenuProvider: React.FC = ({ children }) => {
 function useShowMenu(): MenuContextProps {
 	const context = useContext(MenuContext)
 
-	if (!context) {
-		throw new Error('useShowMenu must be used within an MenuProvider')
-	}
-
 	return context
 }
 
