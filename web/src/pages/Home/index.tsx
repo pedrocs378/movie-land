@@ -133,10 +133,18 @@ const Home: React.FC = () => {
 	}, [showAllTopRatedMovies])
 
 	const partOfPopularMovies = useMemo(() => {
+		if (!popularMovies.results) {
+			return []
+		}
+
 		return popularMovies.results.filter((_, index) => index < 7)
 	}, [popularMovies.results])
 
 	const partOfTopRated = useMemo(() => {
+		if (!topRated.results) {
+			return []
+		}
+
 		return topRated.results.filter((_, index) => index < 7)
 	}, [topRated.results])
 
