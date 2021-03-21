@@ -1,4 +1,7 @@
-# MovieLand
+<h1 align="center">
+  <img alt="MovieLand" title="MovieLand" src=".github/logo.png" />
+</h1>
+
 https://movieland.vercel.app/
 
 ## :rocket: Tecnologias
