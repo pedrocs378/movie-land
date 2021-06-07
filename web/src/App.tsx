@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom'
 
+import { Development } from './pages/Development';
+
 import SideMenu from './components/SideMenu';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -13,6 +15,17 @@ import { GridArea } from './styles/app';
 import GlobalStyles from './styles/global'
 
 const App: React.FC = () => {
+
+	if (process.env.REACT_APP_IS_DEVELOPING === 'true') {
+		return (
+			<BrowserRouter>
+				<Development />
+				<Footer />
+
+				<GlobalStyles />
+			</BrowserRouter>
+		)
+	}
 
 	return (
 		<BrowserRouter>

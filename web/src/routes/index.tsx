@@ -30,21 +30,21 @@ const Routes: React.FC = () => {
 			</Route>
 			<Route path="/search/:query" component={Results} />
 
-			<Route path="/login" component={Login} >
-				{ user && <Redirect to="/" /> }
+			<Route path="/login" component={Login}>
+				{user && <Redirect to="/" />}
 			</Route>
-			<Route path="/register" component={Register} >
-				{ user && <Redirect to="/" /> }
+			<Route path="/register" component={Register}>
+				{user && <Redirect to="/" />}
 			</Route>
-			<Route path="/forgot-password" component={ForgotPassword} >
-				{ user && <Redirect to="/" /> }
+			<Route path="/forgot-password" component={ForgotPassword}>
+				{user && <Redirect to="/" />}
 			</Route>
-			<Route path="/reset-password" component={ResetPassword} >
-				{ user && <Redirect to="/" /> }
+			<Route path="/reset-password" component={ResetPassword}>
+				{user && <Redirect to="/" />}
 			</Route>
 
-			<Route path="/profile" component={Profile} >
-				{ !user && <Redirect to="/" /> }
+			<Route path="/profile" component={Profile}>
+				{!user && <Redirect to="/" />}
 			</Route>
 
 			<Route path="/watchlist" component={WatchList} />

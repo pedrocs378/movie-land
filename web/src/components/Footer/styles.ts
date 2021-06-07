@@ -16,8 +16,9 @@ export const Container = styled.footer<ContainerProps>`
 	justify-content: center;
 
 	span {
+		position: relative;
+
 		svg {
-			margin: 0 5px;
 			color: #ff9000;
 		}
 

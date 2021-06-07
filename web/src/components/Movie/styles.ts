@@ -1,5 +1,5 @@
-import { shade } from 'polished'
 import styled, { css } from 'styled-components'
+import { shade } from 'polished'
 
 interface ContainerProps {
 	isLogged: boolean
