@@ -4,10 +4,19 @@ import { GenresProvider } from './genres'
 import { MenuProvider } from './menu'
 import { AuthProvider } from './auth'
 
-const AppProvider: React.FC = ({ children }) => {
+interface GenreProps {
+	id: number
+	name: string
+}
+
+interface AppProviderProps {
+	genres: GenreProps[]
+}
+
+const AppProvider: React.FC<AppProviderProps> = ({ children, genres }) => {
 
 	return (
-		<GenresProvider>
+		<GenresProvider data={genres}>
 			<MenuProvider>
 				<AuthProvider>
 					{children}

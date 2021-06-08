@@ -1,4 +1,6 @@
 import React, { createContext, useCallback, useContext, useState } from 'react'
+import { parseCookies, setCookie, destroyCookie } from 'nookies'
+
 import api from '../services/api'
 
 interface SignInCredentials {
@@ -28,9 +30,9 @@ interface AuthContextData {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 const AuthProvider: React.FC = ({ children }) => {
-	const [data ,setData] = useState<AuthState>(() => {
-		const token = localStorage.getItem('@MovieLand:token')
-		const user = localStorage.getItem('@MovieLand:user')
+	const [data, setData] = useState<AuthState>(() => {
+		const { '@MovieLand:token': token } = parseCookies(undefined)
+		const { '@MovieLand:user': user } = parseCookies(undefined)
 
 		if (token && user) {
 			api.defaults.headers.authorization = `Bearer ${token}`
@@ -48,8 +50,8 @@ const AuthProvider: React.FC = ({ children }) => {
 
 		const { token, user } = response.data
 
-		localStorage.setItem('@MovieLand:token', token)
-		localStorage.setItem('@MovieLand:user', JSON.stringify(user))
+		setCookie(undefined, '@MovieLand:token', token)
+		setCookie(undefined, '@MovieLand:user', JSON.stringify(user))
 
 		api.defaults.headers.authorization = `Bearer ${token}`
 
@@ -57,14 +59,14 @@ const AuthProvider: React.FC = ({ children }) => {
 	}, [])
 
 	const signOut = useCallback(() => {
-		localStorage.removeItem('@MovieLand:token')
-		localStorage.removeItem('@MovieLand:user')
+		destroyCookie(undefined, '@MovieLand:token')
+		destroyCookie(undefined, '@MovieLand:user')
 
 		setData({} as AuthState)
 	}, [])
 
 	const updateUser = useCallback((user: User) => {
-		localStorage.setItem('@MovieLand:user', JSON.stringify(user))
+		setCookie(undefined, '@MovieLand:user', JSON.stringify(user))
 
 		setData({
 			token: data.token,

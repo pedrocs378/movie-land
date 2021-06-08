@@ -5,14 +5,20 @@ import { SideMenu } from '../components/SideMenu'
 import { Footer } from '../components/Footer'
 
 import AppProvider from '../hooks'
+import { GenreProps } from '../hooks/genres'
 
-import { GridArea } from '../styles/app'
+import { GridArea } from '../styles/pages/app'
 import GlobalStyles from '../styles/global'
 
-function MyApp({ Component, pageProps }: AppProps) {
+interface MyAppProps extends AppProps {
+  genres: GenreProps[]
+}
+
+function MyApp({ Component, pageProps, genres }: MyAppProps) {
+
   return (
     <>
-      <AppProvider>
+      <AppProvider genres={genres}>
         <GridArea>
           <SideMenu />
           <Header />
