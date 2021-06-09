@@ -12,7 +12,13 @@ const Footer: React.FC = () => {
 		<Container isShowllableMenu={show}>
 			<span>
 				© 2020, made with <FaHeart /> by
-				<a target="_blank" rel="noopener noreferrer" href="http://www.github.com/pedrocs378">pedrocs378</a>
+				<a
+					target="_blank"
+					rel="noopener noreferrer"
+					href="http://www.github.com/pedrocs378"
+				>
+					pedrocs378
+				</a>
 			</span>
 		</Container>
 	)

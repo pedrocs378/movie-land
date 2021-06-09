@@ -1,13 +1,13 @@
-import React, { ChangeEvent, useCallback, useState, FormEvent } from 'react'
+import React, { useCallback, useState, FormEvent, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FiSearch, FiArrowRight, FiMenu } from 'react-icons/fi'
-import axios from 'axios'
+import Loading from 'react-loading'
 
-import { API_URL_IMAGES, API_URL_SEARCH_MOVIES } from '../../config/movies'
+import { useShowMenu } from '../../hooks/menu'
+import { tmdbApi } from '../../services/tmdb'
 
 import { Container, Input, ResultsBox } from './styles'
-import { useShowMenu } from '../../hooks/menu'
 
 interface MovieProps {
 	id: number
@@ -16,10 +16,13 @@ interface MovieProps {
 	genre_ids: number[]
 }
 
+let searchTimeout: NodeJS.Timeout
+
 const Header: React.FC = () => {
 	const [isFocused, setIsFocused] = useState(false)
 	const [boxOpened, setBoxOpened] = useState(false)
 	const [searchText, setSearchText] = useState("")
+	const [isLoading, setIsLoading] = useState(false)
 	const [movies, setMovies] = useState<MovieProps[]>([])
 
 	const { show, setShow } = useShowMenu()
@@ -45,24 +48,32 @@ const Header: React.FC = () => {
 		setBoxOpened(false)
 	}, [])
 
-	const handleSearchOnDigit = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-		setSearchText(event.target.value)
-		if (event.target.value.length > 0) {
-			axios.get(`${API_URL_SEARCH_MOVIES}?api_key=${process.env.REACT_APP_API_KEY}&query=${event.target.value}`).then(response => {
-				setMovies(response.data.results)
-			})
-		}
-
-		if (event.target.value.length === 0) {
-			setMovies([])
-		}
-	}, [])
-
 	const handleSubmit = useCallback((event: FormEvent) => {
 		event.preventDefault()
 
 		router.push(`/search/${searchText}`)
 	}, [searchText, router])
+
+	useEffect(() => {
+		clearTimeout(searchTimeout)
+		setIsLoading(true)
+
+		if (searchText.trim()) {
+			searchTimeout = setTimeout(() => {
+				tmdbApi
+					.get<{ results: MovieProps[] }>(`/search/movie?query=${searchText}`)
+					.then(response => {
+						const data = response.data.results.filter((_, index) => index < 8)
+
+						setMovies(data)
+					})
+					.finally(() => setIsLoading(false))
+			}, 1000)
+		} else {
+			setMovies([])
+			setIsLoading(false)
+		}
+	}, [searchText])
 
 	return (
 		<Container isShowllableMenu={show} >
@@ -76,24 +87,33 @@ const Header: React.FC = () => {
 						placeholder="Search..."
 						value={searchText}
 						autoComplete="off"
-						onChange={handleSearchOnDigit}
+						onChange={event => setSearchText(event.target.value)}
 						onFocus={handleFocus}
 						onBlur={handleBlur}
 					/>
-					<button type="submit" >
-						<FiSearch />
-					</button>
+					{isLoading ? (
+						<Loading type="bubbles" height={20} width={20} />
+					) : (
+						<button type="submit" >
+							<FiSearch />
+						</button>
+					)}
 				</Input>
 				<ResultsBox isFocused={isFocused} onMouseEnter={handleSetOpenedBox} onMouseLeave={handleSetClosenedBox}>
-					{movies.map((movie, index) => {
-						return index < 8 && (
+					{movies.map(movie => {
+						return (
 							<Link
 								key={movie.id}
 								href={`/movie/${movie.id}`}
 							>
 								<a onClick={() => setIsFocused(false)}>
 									<div>
-										{movie.poster_path && <img src={`${API_URL_IMAGES}${movie.poster_path}`} alt={movie.title} />}
+										{movie.poster_path && (
+											<img
+												src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+												alt={movie.title}
+											/>
+										)}
 										<span>{movie.title}</span>
 									</div>
 
