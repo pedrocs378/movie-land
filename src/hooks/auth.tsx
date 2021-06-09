@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useState } from 'react'
 import { parseCookies, setCookie, destroyCookie } from 'nookies'
 
-import api from '../services/api'
+import { api } from '../services/api'
 
 interface SignInCredentials {
 	email: string
