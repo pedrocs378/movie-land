@@ -1,4 +1,4 @@
-import { GetServerSideProps } from 'next'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import { BsBookmark, BsBookmarkFill, BsStopwatch } from 'react-icons/bs'
 import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi'
@@ -8,6 +8,7 @@ import ptBR from 'date-fns/locale/pt-BR'
 
 import { Movie } from '../../components/Movie'
 
+import { getGenre } from '../../utils/getGenre'
 import { getRuntime } from '../../utils/getRuntime'
 import { getCurrency } from '../../utils/getCurrency'
 import { tmdbApi } from '../../services/tmdb'
@@ -23,7 +24,12 @@ import {
 	Section,
 	Recommendations,
 } from '../../styles/pages/movie'
-import { getGenre } from '../../utils/getGenre'
+
+interface PathMovieResponse {
+	results: {
+		id: number
+	}[]
+}
 
 interface Genre {
 	id: number
@@ -190,11 +196,31 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 	)
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+	const popularMoviesResponse = await tmdbApi.get<PathMovieResponse>('/movie/popular?page=1')
+	const topRatedResponse = await tmdbApi.get<PathMovieResponse>('/movie/top_rated?page=1')
+
+	const popularMovies = popularMoviesResponse.data.results.filter((_, index) => index < 7)
+	const topRated = topRatedResponse.data.results.filter((_, index) => index < 7)
+
+	const movies = popularMovies.concat(topRated)
+
+	const paths = movies.map(movie => {
+		return {
+			params: { id: String(movie.id) }
+		}
+	})
+
+	return {
+		paths,
+		fallback: 'blocking'
+	}
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const { id } = params
 
 	const genresResponse = await tmdbApi.get('/genre/movie/list')
-
 	const genres = genresResponse.data.genres
 
 	const movieResponse = await tmdbApi.get<MovieParams>(`/movie/${id}`)

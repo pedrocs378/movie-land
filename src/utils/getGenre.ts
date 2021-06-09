@@ -1,6 +1,9 @@
-import { GenreProps } from '../hooks/genres'
+interface GenreParams {
+	id: number
+	name: string
+}
 
-const getGenre = (id: number, genres: GenreProps[]): string => {
+const getGenre = (id: number, genres: GenreParams[]): string => {
 
 	const genre = genres.find((value) => value.id === id)
 
