@@ -9,18 +9,6 @@ import { api } from '../../services/api'
 
 import { Container, MovieInfo, ToolTip } from './styles'
 
-export interface MovieParams {
-	id: number
-	title: string
-	genre_ids: number[]
-	original_title: string
-	overview?: string
-	backdrop_path?: string
-	release_date: string
-	poster_path: string
-	vote_average: number
-}
-
 interface MovieCard {
 	id: number
 	title: string

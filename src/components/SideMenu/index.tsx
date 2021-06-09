@@ -70,7 +70,7 @@ const SideMenu: React.FC = () => {
 				</ProfileContainer>
 
 				<Navigation>
-					<h4>Media</h4>
+					<h3>Media</h3>
 
 					<Link href="/">
 						<a>

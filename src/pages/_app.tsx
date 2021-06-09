@@ -19,7 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <GridArea>
           <SideMenu />
           <Header />
+
           <Component {...pageProps} />
+
           <Footer />
         </GridArea>
       </AppProvider>

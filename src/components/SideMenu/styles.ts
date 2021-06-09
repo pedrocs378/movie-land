@@ -157,7 +157,7 @@ export const Navigation = styled.nav`
 	display: flex;
 	flex-direction: column;
 
-	h4 {
+	h3 {
 		margin-bottom: 20px;
 		color: #c2c3c5;
 		margin-left: 18px;
