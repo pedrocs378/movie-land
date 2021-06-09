@@ -262,8 +262,6 @@ export const ListMovies = styled.div`
 	}
 
 	@media (min-width: 670px) {
-		justify-content: space-between;
-
 		> div {
 			max-width: 200px;
 		}

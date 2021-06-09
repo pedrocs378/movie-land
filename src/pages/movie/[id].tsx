@@ -6,6 +6,8 @@ import Rating from '@material-ui/lab/Rating'
 import { format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
 
+import { Movie } from '../../components/Movie'
+
 import { getRuntime } from '../../utils/getRuntime'
 import { getCurrency } from '../../utils/getCurrency'
 import { tmdbApi } from '../../services/tmdb'
@@ -21,6 +23,7 @@ import {
 	Section,
 	Recommendations,
 } from '../../styles/pages/movie'
+import { getGenre } from '../../utils/getGenre'
 
 interface Genre {
 	id: number
@@ -32,11 +35,10 @@ interface RecommendationMovie {
 	title: string
 	genre_ids: number[]
 	original_title: string
-	overview?: string
-	backdrop_path?: string
-	release_date: string
 	poster_path: string
 	vote_average: number
+	release_date?: string
+	genre_name: string
 }
 
 interface MovieParams {
@@ -68,9 +70,11 @@ interface Cast {
 
 interface MovieDetailsProps {
 	movie: MovieParams
+	recommendations: RecommendationMovie[]
+	cast: Cast[]
 }
 
-export default function MovieDetails({ movie }: MovieDetailsProps) {
+export default function MovieDetails({ movie, recommendations, cast }: MovieDetailsProps) {
 
 	const saved = false
 	const user = null
@@ -148,7 +152,39 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
 							</Section>
 						</div>
 					</ColumnInfos>
+					<ColumnCast>
+						<h1>Cast</h1>
+						{cast.map(actor => {
+							return (
+								<CastItem key={actor.id} >
+									{actor.profile_path && (
+										<img
+											src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+											alt={actor.original_name}
+										/>
+									)}
+									<div>
+										<h2>{actor.name}</h2>
+										<p>{actor.character}</p>
+									</div>
+								</CastItem>
+							)
+						})}
+					</ColumnCast>
 				</GridDetails>
+				<Recommendations>
+					<h1>Recommendations</h1>
+					<ListMovies>
+						{recommendations.map((recommendationMovie) => {
+							return (
+								<Movie
+									key={recommendationMovie.id}
+									movie={recommendationMovie}
+								/>
+							)
+						})}
+					</ListMovies>
+				</Recommendations>
 			</Container>
 		</>
 	)
@@ -157,9 +193,13 @@ export default function MovieDetails({ movie }: MovieDetailsProps) {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 	const { id } = params
 
+	const genresResponse = await tmdbApi.get('/genre/movie/list')
+
+	const genres = genresResponse.data.genres
+
 	const movieResponse = await tmdbApi.get<MovieParams>(`/movie/${id}`)
-	const recommendationsResponse = await tmdbApi.get<RecommendationMovie[]>(`/movie/${id}/recommendations`)
-	const castResponse = await tmdbApi.get<Cast[]>(`/movie/${id}/credits`)
+	const recommendationsResponse = await tmdbApi.get<{ results: RecommendationMovie[] }>(`/movie/${id}/recommendations`)
+	const castResponse = await tmdbApi.get<{ cast: Cast[] }>(`/movie/${id}/credits`)
 
 	const budgetFormatted = movieResponse.data.budget
 		? getCurrency(movieResponse.data.budget)
@@ -184,9 +224,22 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 		runtimeFormatted
 	}
 
+	const recommendations = recommendationsResponse.data.results
+		.map(movie => {
+			return {
+				...movie,
+				genre_name: getGenre(movie.genre_ids[0], genres)
+			}
+		})
+		.filter((_, index) => index < 8)
+
+	const cast = castResponse.data.cast.filter((_, index) => index < 10)
+
 	return {
 		props: {
-			movie
+			movie,
+			recommendations,
+			cast
 		}
 	}
 }
