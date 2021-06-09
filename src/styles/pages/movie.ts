@@ -51,7 +51,7 @@ export const ColumnInfos = styled.div<ColumnInfosProps>`
 		position: relative;
 		margin-top: 15px;
 		width: 150px;
-		height: 40px;
+		padding: 10px 0;
 		border-radius: 6px;
 		color: #312e38;
 		font-size: 18px;
@@ -257,13 +257,5 @@ export const ListMovies = styled.div`
 
 	margin-bottom: 10px;
 
-	> div {
-		max-width: 150px;
-	}
-
-	@media (min-width: 670px) {
-		> div {
-			max-width: 200px;
-		}
-	}
+	gap: 10px;
 `

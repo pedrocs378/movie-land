@@ -1,8 +1,8 @@
-import React, { MouseEvent, useCallback, useEffect, useState } from 'react'
+import React, { memo, MouseEvent, useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
+import lodash from 'lodash'
 
-import { API_URL_IMAGES } from '../../config/movies'
 import { useAuth } from '../../hooks/auth'
 
 import { api } from '../../services/api'
@@ -14,6 +14,7 @@ interface MovieCard {
 	title: string
 	poster_path: string
 	vote_average: number
+	voteAverageFormatted: string
 	release_date?: string
 	genre_name: string
 }
@@ -23,7 +24,7 @@ interface Props {
 	onUpdate?: () => void
 }
 
-const Movie: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
+const MovieComponent: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 	const [saved, setSaved] = useState(false)
 
 	const { user } = useAuth()
@@ -79,7 +80,7 @@ const Movie: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 			<Link href={`/movie/${movie.id}`}>
 				<a>
 					<img
-						src={movie.poster_path ? `${API_URL_IMAGES}${movie.poster_path}` : '/images/no-poster.png'}
+						src={movie.poster_path ? `https://image.tmdb.org/t/p/original${movie.poster_path}` : '/images/no-poster.png'}
 						alt={movie.title}
 					/>
 
@@ -95,7 +96,7 @@ const Movie: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 						<div>
 							<h3>{movie.title}</h3>
 
-							<strong>{movie.vote_average}</strong>
+							<strong>{movie.voteAverageFormatted}</strong>
 						</div>
 						<p>{movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????'}, {movie.genre_name}</p>
 					</MovieInfo>
@@ -105,4 +106,10 @@ const Movie: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 	)
 }
 
-export { Movie }
+export { MovieComponent }
+
+export const Movie = memo(MovieComponent, (prevProps, nextProps) => {
+	return lodash.isEqual(prevProps.movie, nextProps.movie)
+})
+
+

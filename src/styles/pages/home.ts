@@ -81,13 +81,13 @@ export const ListMovies = styled.div`
 
 	margin-bottom: 15px;
 
-	> div {
-		max-width: 130px;
-	}
+	gap: 10px;
+`
 
-	@media (min-width: 670px) {
-		> div {
-			max-width: 200px;
-		}
-	}
+export const LoadWrapper = styled.div`
+	width: 100%;
+	height: 450px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `

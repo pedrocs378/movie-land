@@ -6,9 +6,9 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
-	margin: 0 5px;
-	margin-top: 10px;
 	transition: transform 0.2s;
+	width: 100%;
+	max-width: 130px;
 
 	&:hover {
 		transform: scale(1.03, 1.03)
@@ -58,13 +58,11 @@ export const Container = styled.div<ContainerProps>`
 				width: 17px;
 				color: white;
 			}
-			}
+		}
 	}
 
 	@media(min-width: 670px) {
-		a {
-			width: 200px;
-		}
+		max-width: 200px;
 	}
 
 `

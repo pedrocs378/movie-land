@@ -43,6 +43,7 @@ interface RecommendationMovie {
 	original_title: string
 	poster_path: string
 	vote_average: number
+	voteAverageFormatted: string
 	release_date?: string
 	genre_name: string
 }
@@ -81,7 +82,6 @@ interface MovieDetailsProps {
 }
 
 export default function MovieDetails({ movie, recommendations, cast }: MovieDetailsProps) {
-
 	const saved = false
 	const user = null
 
@@ -93,7 +93,7 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 
 			<Container>
 				<GridDetails>
-					<ColumnInfos movieSaved={saved} isLogged={!!user} >
+					<ColumnInfos movieSaved={saved} isLogged={!!user}>
 						<img
 							src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
 							alt={movie.original_title}
@@ -254,7 +254,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		.map(movie => {
 			return {
 				...movie,
-				genre_name: getGenre(movie.genre_ids[0], genres)
+				genre_name: getGenre(movie.genre_ids[0], genres),
+				voteAverageFormatted: movie.vote_average.toFixed(1)
 			}
 		})
 		.filter((_, index) => index < 8)

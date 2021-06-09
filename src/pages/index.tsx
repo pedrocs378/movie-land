@@ -1,11 +1,13 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
+import { useQuery } from 'react-query'
 import Loading from 'react-loading'
 import Pagination from '@material-ui/lab/Pagination'
 
 import { Movie } from '../components/Movie'
 
+import { GenreProps } from '../hooks/genres'
 import { getGenre } from '../utils/getGenre'
 
 import { tmdbApi } from '../services/tmdb'
@@ -13,10 +15,9 @@ import { tmdbApi } from '../services/tmdb'
 import {
   Container,
   ListMovies,
-  MovieSection
+  MovieSection,
+  LoadWrapper
 } from '../styles/pages/home'
-import { useQuery } from 'react-query'
-import { GenreProps } from '../hooks/genres'
 
 interface MovieProps {
   id: number
@@ -29,6 +30,7 @@ interface MovieProps {
   release_date: string
   poster_path: string
   vote_average: number
+  voteAverageFormatted: string
 }
 
 interface MovieResponseProps {
@@ -63,7 +65,8 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
       results: response.data.results.map(movie => {
         return {
           ...movie,
-          genre_name: getGenre(movie.genre_ids[0], genres)
+          genre_name: getGenre(movie.genre_ids[0], genres),
+          voteAverageFormatted: movie.vote_average.toFixed(1)
         }
       })
     }
@@ -85,7 +88,8 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
       results: response.data.results.map(movie => {
         return {
           ...movie,
-          genre_name: getGenre(movie.genre_ids[0], genres)
+          genre_name: getGenre(movie.genre_ids[0], genres),
+          voteAverageFormatted: movie.vote_average.toFixed(1)
         }
       })
     }
@@ -141,7 +145,9 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
 
           <ListMovies>
             {showAllPopularMovies ? isPopularMoviesLoading ? (
-              <Loading type="spinningBubbles" height={50} width={50} />
+              <LoadWrapper>
+                <Loading type="spinningBubbles" height={50} width={50} />
+              </LoadWrapper>
             ) : (
               popularMoviesData.results.map(movie => {
                 return (
@@ -188,7 +194,9 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
 
           <ListMovies>
             {showAllTopRatedMovies ? isTopRatedLoading ? (
-              <Loading type="spinningBubbles" height={50} width={50} />
+              <LoadWrapper>
+                <Loading type="spinningBubbles" height={50} width={50} />
+              </LoadWrapper>
             ) : (
               topRatedData.results.map(movie => {
                 return (
@@ -238,7 +246,8 @@ export const getStaticProps: GetStaticProps = async () => {
       .map(movie => {
         return {
           ...movie,
-          genre_name: getGenre(movie.genre_ids[0], genres)
+          genre_name: getGenre(movie.genre_ids[0], genres),
+          voteAverageFormatted: movie.vote_average.toFixed(1)
         }
       })
       .filter((_, index) => index < 7)
@@ -250,7 +259,8 @@ export const getStaticProps: GetStaticProps = async () => {
       .map(movie => {
         return {
           ...movie,
-          genre_name: getGenre(movie.genre_ids[0], genres)
+          genre_name: getGenre(movie.genre_ids[0], genres),
+          voteAverageFormatted: movie.vote_average.toFixed(1)
         }
       })
       .filter((_, index) => index < 7)
