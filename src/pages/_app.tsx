@@ -1,24 +1,21 @@
 import { AppProps } from 'next/app'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { Header } from '../components/Header'
 import { SideMenu } from '../components/SideMenu'
 import { Footer } from '../components/Footer'
 
-import AppProvider from '../hooks'
-import { GenreProps } from '../hooks/genres'
+import { AppProvider } from '../hooks'
 
 import { GridArea } from '../styles/pages/app'
 import GlobalStyles from '../styles/global'
 
-interface MyAppProps extends AppProps {
-  genres: GenreProps[]
-}
-
-function MyApp({ Component, pageProps, genres }: MyAppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
+  const queryClient = new QueryClient()
 
   return (
-    <>
-      <AppProvider genres={genres}>
+    <QueryClientProvider client={queryClient}>
+      <AppProvider>
         <GridArea>
           <SideMenu />
           <Header />
@@ -28,7 +25,7 @@ function MyApp({ Component, pageProps, genres }: MyAppProps) {
       </AppProvider>
 
       <GlobalStyles />
-    </>
+    </QueryClientProvider>
   )
 }
 

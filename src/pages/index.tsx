@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
+import Loading from 'react-loading'
 import Pagination from '@material-ui/lab/Pagination'
 
 import { Movie } from '../components/Movie'
@@ -14,6 +15,8 @@ import {
   ListMovies,
   MovieSection
 } from '../styles/pages/home'
+import { useQuery } from 'react-query'
+import { GenreProps } from '../hooks/genres'
 
 interface MovieProps {
   id: number
@@ -36,47 +39,85 @@ interface MovieResponseProps {
 }
 
 interface HomeProps {
-  popularMovies: MovieResponseProps
-  topRated: MovieResponseProps
+  initialPopularMovies: MovieResponseProps
+  initialTopRated: MovieResponseProps
+  genres: GenreProps[]
 }
 
-export default function Home({ popularMovies, topRated }: HomeProps) {
-  const [popularMoviesData, setPopularMoviesData] = useState<MovieResponseProps>(popularMovies)
-  const [topRatedData, setTopRatedData] = useState<MovieResponseProps>(topRated)
+export default function Home({ initialPopularMovies, initialTopRated, genres }: HomeProps) {
+  const [popularMoviesPage, setPopularMoviesPage] = useState(initialPopularMovies.page)
+  const [topRatedPage, setTopRatedPage] = useState(initialTopRated.page)
+
   const [showAllPopularMovies, setShowAllPopularMovies] = useState(false)
   const [showAllTopRatedMovies, setShowAllTopRatedMovies] = useState(false)
 
+  const {
+    data: popularMoviesData,
+    isLoading: isPopularMoviesLoading,
+    isFetching: isPopularMoviesFetching
+  } = useQuery(['popularMovies', popularMoviesPage], async () => {
+    const response = await tmdbApi.get<MovieResponseProps>(`/movie/popular?page=${popularMoviesPage}`)
+
+    const movies = {
+      ...response.data,
+      results: response.data.results.map(movie => {
+        return {
+          ...movie,
+          genre_name: getGenre(movie.genre_ids[0], genres)
+        }
+      })
+    }
+
+    return movies
+  }, {
+    staleTime: 60 * 60 * 24
+  })
+
+  const {
+    data: topRatedData,
+    isLoading: isTopRatedLoading,
+    isFetching: isTopRatedFetching,
+  } = useQuery(['topRated', topRatedPage], async () => {
+    const response = await tmdbApi.get<MovieResponseProps>(`/movie/top_rated?page=${topRatedPage}`)
+
+    const movies = {
+      ...response.data,
+      results: response.data.results.map(movie => {
+        return {
+          ...movie,
+          genre_name: getGenre(movie.genre_ids[0], genres)
+        }
+      })
+    }
+
+    return movies
+  }, {
+    staleTime: 60 * 60 * 24,
+  })
+
   function handleShowAllPopularMovies() {
+    if (showAllPopularMovies) {
+      setPopularMoviesPage(initialPopularMovies.page)
+    }
+
     setShowAllPopularMovies(!showAllPopularMovies)
   }
 
   function handleShowAllTopRated() {
+    if (showAllTopRatedMovies) {
+      setTopRatedPage(initialTopRated.page)
+    }
+
     setShowAllTopRatedMovies(!showAllTopRatedMovies)
   }
 
-  useEffect(() => {
-    if (showAllPopularMovies) {
-      tmdbApi
-        .get<MovieResponseProps>('/movie/popular?page=1')
-        .then(response => {
-          setPopularMoviesData(response.data)
-        })
-    } else {
-      setPopularMoviesData(popularMovies)
-    }
-  }, [showAllPopularMovies])
+  function handleChangePopularMoviesPage(_, page: number) {
+    setPopularMoviesPage(page)
+  }
 
-  useEffect(() => {
-    if (showAllTopRatedMovies) {
-      tmdbApi
-        .get<MovieResponseProps>('/movie/top_rated?page=1')
-        .then(response => {
-          setTopRatedData(response.data)
-        })
-    } else {
-      setTopRatedData(topRated)
-    }
-  }, [showAllTopRatedMovies])
+  function handleChangeTopRatedPage(_, page: number) {
+    setTopRatedPage(page)
+  }
 
   return (
     <>
@@ -86,62 +127,96 @@ export default function Home({ popularMovies, topRated }: HomeProps) {
 
       <Container>
         <MovieSection isHidden={showAllTopRatedMovies} >
-          <div>
+          <header>
             <h1>Popular Movies</h1>
+
+            {!isPopularMoviesLoading && isPopularMoviesFetching && (
+              <Loading type="balls" height={20} width={20} />
+            )}
+
             <button onClick={handleShowAllPopularMovies}>
               {showAllPopularMovies ? "Hide movies" : "See all"}
             </button>
-          </div>
+          </header>
 
           <ListMovies>
-            {popularMoviesData.results.map(movie => {
-              return (
-                <Movie
-                  key={movie.id}
-                  movie={movie}
-                  genre={movie.genre_name}
-                />
-              )
-            })}
+            {showAllPopularMovies ? isPopularMoviesLoading ? (
+              <Loading type="spinningBubbles" height={50} width={50} />
+            ) : (
+              popularMoviesData.results.map(movie => {
+                return (
+                  <Movie
+                    key={movie.id}
+                    movie={movie}
+                  />
+                )
+              })
+            ) : (
+              initialPopularMovies.results.map(movie => {
+                return (
+                  <Movie
+                    key={movie.id}
+                    movie={movie}
+                  />
+                )
+              })
+            )}
           </ListMovies>
 
           {showAllPopularMovies && (
             <Pagination
               variant="outlined"
               shape="rounded"
-              page={popularMoviesData.page}
-              count={popularMoviesData.total_pages}
-              onChange={() => { }}
+              page={popularMoviesPage}
+              count={initialPopularMovies.total_pages}
+              onChange={handleChangePopularMoviesPage}
             />
           )}
         </MovieSection>
         <MovieSection isHidden={showAllPopularMovies} >
-          <div>
+          <header>
             <h1>Top Rated</h1>
+
+            {!isTopRatedLoading && isTopRatedFetching && (
+              <Loading type="balls" height={20} width={20} />
+            )}
+
             <button onClick={handleShowAllTopRated}>
               {showAllTopRatedMovies ? "Hide movies" : "See all"}
             </button>
-          </div>
+          </header>
 
           <ListMovies>
-            {topRatedData.results.map(movie => {
-              return (
-                <Movie
-                  key={movie.id}
-                  movie={movie}
-                  genre={movie.genre_name}
-                />
-              )
-            })}
+            {showAllTopRatedMovies ? isTopRatedLoading ? (
+              <Loading type="spinningBubbles" height={50} width={50} />
+            ) : (
+              topRatedData.results.map(movie => {
+                return (
+                  <Movie
+                    key={movie.id}
+                    movie={movie}
+                  />
+                )
+              })
+            ) : (
+              initialTopRated.results.map(movie => {
+                return (
+                  <Movie
+                    key={movie.id}
+                    movie={movie}
+                  />
+                )
+              })
+            )}
           </ListMovies>
 
           {showAllTopRatedMovies && (
             <Pagination
               variant="outlined"
               shape="rounded"
-              page={topRatedData.page}
-              count={topRatedData.total_pages}
-              onChange={() => { }}
+              page={topRatedPage}
+              count={initialTopRated.total_pages}
+              onChange={handleChangeTopRatedPage}
             />
           )}
         </MovieSection>
@@ -157,7 +232,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const genres = genresResponse.data.genres
 
-  const popularMovies = {
+  const initialPopularMovies = {
     ...popularMoviesResponse.data,
     results: popularMoviesResponse.data.results
       .map(movie => {
@@ -169,7 +244,7 @@ export const getStaticProps: GetStaticProps = async () => {
       .filter((_, index) => index < 7)
   }
 
-  const topRated = {
+  const initialTopRated = {
     ...topRatedResponse.data,
     results: topRatedResponse.data.results
       .map(movie => {
@@ -183,9 +258,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      popularMovies,
-      topRated,
-      genres
+      initialPopularMovies,
+      initialTopRated,
+      genres,
     },
     revalidate: 60 * 60 * 24 * 7
   }

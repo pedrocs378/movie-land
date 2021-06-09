@@ -4,19 +4,10 @@ import { GenresProvider } from './genres'
 import { MenuProvider } from './menu'
 import { AuthProvider } from './auth'
 
-interface GenreProps {
-	id: number
-	name: string
-}
-
-interface AppProviderProps {
-	genres: GenreProps[]
-}
-
-const AppProvider: React.FC<AppProviderProps> = ({ children, genres }) => {
+const AppProvider: React.FC = ({ children }) => {
 
 	return (
-		<GenresProvider data={genres}>
+		<GenresProvider>
 			<MenuProvider>
 				<AuthProvider>
 					{children}
@@ -26,4 +17,4 @@ const AppProvider: React.FC<AppProviderProps> = ({ children, genres }) => {
 	)
 }
 
-export default AppProvider
+export { AppProvider }

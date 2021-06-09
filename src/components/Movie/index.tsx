@@ -5,7 +5,7 @@ import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
 import { API_URL_IMAGES } from '../../config/movies'
 import { useAuth } from '../../hooks/auth'
 
-import api from '../../services/api'
+import { api } from '../../services/api'
 
 import { Container, MovieInfo, ToolTip } from './styles'
 
@@ -27,16 +27,15 @@ interface MovieCard {
 	poster_path: string
 	vote_average: number
 	release_date?: string
-	year?: string
+	genre_name: string
 }
 
 interface Props {
 	movie: MovieCard
-	genre: string
 	onUpdate?: () => void
 }
 
-const Movie: React.FC<Props> = ({ movie, genre, onUpdate, ...rest }) => {
+const Movie: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 	const [saved, setSaved] = useState(false)
 
 	const { user } = useAuth()
@@ -60,9 +59,9 @@ const Movie: React.FC<Props> = ({ movie, genre, onUpdate, ...rest }) => {
 			if (!saved) {
 				await api.post('watchlist', {
 					id: movie.id,
-					genre,
+					genre: movie.genre_name,
 					title: movie.title,
-					year: movie.release_date ? new Date(movie.release_date).getFullYear() : movie.year,
+					year: movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????',
 					poster_path: movie.poster_path ? movie.poster_path : "",
 					vote_average: movie.vote_average
 				})
@@ -85,34 +84,33 @@ const Movie: React.FC<Props> = ({ movie, genre, onUpdate, ...rest }) => {
 			alert(err)
 		}
 
-	}, [user, movie, genre, saved, onUpdate])
+	}, [user, movie, saved, onUpdate])
 
 	return (
 		<Container isLogged={!!user} {...rest}>
 			<Link href={`/movie/${movie.id}`}>
 				<a>
-					<div>
-						<img
-							src={movie.poster_path ? `${API_URL_IMAGES}${movie.poster_path}` : '/images/no-poster.png'}
-							alt={movie.title}
-						/>
+					<img
+						src={movie.poster_path ? `${API_URL_IMAGES}${movie.poster_path}` : '/images/no-poster.png'}
+						alt={movie.title}
+					/>
 
-						<button type="button" onClick={handleSaveMovie} >
-							{saved ? <BsBookmarkFill /> : <BsBookmark />}
+					<button type="button" onClick={handleSaveMovie} >
+						{saved ? <BsBookmarkFill /> : <BsBookmark />}
 
-							<ToolTip>
-								<span>Sign in to save this movie in your Watch List</span>
-							</ToolTip>
-						</button>
+						<ToolTip>
+							<span>Sign in to save this movie in your Watch List</span>
+						</ToolTip>
+					</button>
 
-						<MovieInfo>
-							<h3>
-								{movie.title.length > 20 ? `${movie.title.substring(0, 20)}...` : movie.title}
-								<span>{movie.vote_average}</span>
-							</h3>
-							<p>{movie.release_date ? new Date(movie.release_date).getFullYear() : movie.year}, {genre}</p>
-						</MovieInfo>
-					</div>
+					<MovieInfo>
+						<div>
+							<h3>{movie.title}</h3>
+
+							<strong>{movie.vote_average}</strong>
+						</div>
+						<p>{movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????'}, {movie.genre_name}</p>
+					</MovieInfo>
 				</a>
 			</Link>
 		</Container>

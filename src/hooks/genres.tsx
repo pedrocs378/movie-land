@@ -9,16 +9,12 @@ interface GenresContextData {
 	genres: GenreProps[]
 }
 
-interface GenresProviderProps {
-	data: GenreProps[]
-}
-
 const GenresContext = createContext<GenresContextData>({} as GenresContextData)
 
-const GenresProvider: React.FC<GenresProviderProps> = ({ children, data }) => {
+const GenresProvider: React.FC = ({ children }) => {
 
 	return (
-		<GenresContext.Provider value={{ genres: data }}>
+		<GenresContext.Provider value={{ genres: [] }}>
 			{children}
 		</GenresContext.Provider>
 	)

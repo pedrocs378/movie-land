@@ -26,18 +26,19 @@ export const MovieSection = styled.section<MovieSectionProps>`
 		display: none;
 	`}
 
-	> div:first-child {
+	header {
 		margin-bottom: 10px;
 
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 
 		h1 {
 			color: white;
+			margin-right: 0.75rem;
 		}
 
 		button {
+			margin-left: auto;
 			background: transparent;
 			color: white;
 			font-size: 14px;

@@ -15,59 +15,55 @@ export const Container = styled.div<ContainerProps>`
 	}
 
 	a {
-		> div {
-			height: auto;
+		height: auto;
+		width: 100%;
+		position: relative;
+		display: block;
+
+		img {
+			height: 100%;
 			width: 100%;
-			position: relative;
+			background-size: contain;
 
-			img {
-				height: 100%;
-				width: 100%;
-				background-size: contain;
-
-				border-radius: 4px;
-			}
-
-			button {
-				position: absolute;
-				right: 10px;
-				top: 10px;
-				padding: 5px;
-				background: rgba(215, 215, 215, 0.3);
-				border-radius: 5px;
-
-				display: flex;
-				align-items: center;
-				justify-content: center;
-
-				transition: background-color 0.2s;
-
-				&:hover {
-					background: ${shade(0.5, '#d7d7d7')};
-
-					div {
-						${({ isLogged }) => !isLogged && css`
-							opacity: 1;
-							visibility: visible;
-						`}
-					}
-				}
-
-				svg {
-					height: 17px;
-					width: 17px;
-					color: white;
-				}
-			}
-
+			border-radius: 4px;
 		}
+
+		button {
+			position: absolute;
+			right: 10px;
+			top: 10px;
+			padding: 5px;
+			background: rgba(215, 215, 215, 0.3);
+			border-radius: 5px;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			transition: background-color 0.2s;
+
+			&:hover {
+				background: ${shade(0.5, '#d7d7d7')};
+
+				div {
+					${({ isLogged }) => !isLogged && css`
+						opacity: 1;
+						visibility: visible;
+					`}
+				}
+			}
+
+			svg {
+				height: 17px;
+				width: 17px;
+				color: white;
+			}
+			}
 	}
 
 	@media(min-width: 670px) {
 		a {
-			> div {
-				width: 200px;
-			}
+			width: 200px;
 		}
 	}
 
@@ -107,7 +103,7 @@ export const ToolTip = styled.div`
 
 `
 
-export const MovieInfo = styled.div`
+export const MovieInfo = styled.footer`
 	position: absolute;
 	bottom: 0;
 	width: 100%;
@@ -122,13 +118,20 @@ export const MovieInfo = styled.div`
 	background: rgba(0, 0, 0, 0.1);
 	backdrop-filter: blur(8px);
 
-	h3 {
+	div {
 		z-index: 2;
+		margin: 0 8px;
 		display: flex;
+		align-items: center;
 		justify-content: space-between;
 		font-size: 16px;
 		color: white;
-		margin: 0 8px;
+
+		h3 {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
 	}
 
 	p {
