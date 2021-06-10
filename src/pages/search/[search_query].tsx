@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -29,23 +30,55 @@ interface MovieResponseProps {
 	page: number
 	results: MovieProps[]
 	total_pages: number
-	total_results: number
 }
 
 interface SearchResultsProps {
-	movies: MovieResponseProps
+	initialMovies: MovieResponseProps
+	genres: {
+		id: number
+		name: string
+	}[]
 }
 
-export default function SearchResults({ movies }: SearchResultsProps) {
+export default function SearchResults({ initialMovies, genres }: SearchResultsProps) {
+	const [movies, setMovies] = useState<MovieResponseProps>(initialMovies)
+	const [page, setPage] = useState(1)
 
 	const router = useRouter()
 	const { search_query } = router.query
+
+	useEffect(() => {
+		tmdbApi
+			.get<MovieResponseProps>('/search/movie', {
+				params: {
+					query: search_query,
+					page
+				}
+			})
+			.then(response => {
+				const data = {
+					...response.data,
+					results: response.data.results
+						.map(movie => {
+							return {
+								...movie,
+								genre_name: getGenre(movie.genre_ids[0], genres),
+								voteAverageFormatted: movie.vote_average.toFixed(1)
+							}
+						})
+						.sort((a, b) => (b.vote_count * b.vote_average) - (a.vote_count * a.vote_average))
+				}
+
+				setMovies(data)
+			})
+	}, [page, search_query, genres])
 
 	return (
 		<>
 			<Head>
 				<title>"{search_query}" | Movie Land</title>
 			</Head>
+
 			<Container>
 				<h1>Results for "{search_query}"</h1>
 				<ListMovies>
@@ -61,8 +94,9 @@ export default function SearchResults({ movies }: SearchResultsProps) {
 				<Pagination
 					variant="outlined"
 					shape="rounded"
-					count={movies.total_pages}
-					onChange={() => { }}
+					count={initialMovies.total_pages}
+					page={page}
+					onChange={(_, page) => setPage(page)}
 				/>
 			</Container>
 		</>
@@ -81,7 +115,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 		}
 	})
 
-	const movies = {
+	const initialMovies = {
 		...response.data,
 		results: response.data.results
 			.map(movie => {
@@ -96,7 +130,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 
 	return {
 		props: {
-			movies
+			initialMovies,
+			genres
 		}
 	}
 }
