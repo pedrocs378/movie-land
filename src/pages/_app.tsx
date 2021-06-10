@@ -1,4 +1,5 @@
 import { AppProps } from 'next/app'
+import { Provider as NextAuthProvider } from 'next-auth/client'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { Header } from '../components/Header'
@@ -14,21 +15,23 @@ function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient()
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AppProvider>
-        <GridArea>
-          <SideMenu />
-          <Header />
+    <NextAuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppProvider>
+          <GridArea>
+            <SideMenu />
+            <Header />
 
-          <Component {...pageProps} />
+            <Component {...pageProps} />
 
-          <Footer />
+            <Footer />
 
-        </GridArea>
-      </AppProvider>
+          </GridArea>
+        </AppProvider>
 
-      <GlobalStyles />
-    </QueryClientProvider>
+        <GlobalStyles />
+      </QueryClientProvider>
+    </NextAuthProvider>
   )
 }
 

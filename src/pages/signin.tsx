@@ -1,3 +1,4 @@
+import { signIn } from 'next-auth/client'
 import { FaGithub } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 
@@ -15,7 +16,11 @@ export default function SignIn() {
 				Sign in with Google
 			</button>
 
-			<button type="button" className="github">
+			<button
+				type="button"
+				className="github"
+				onClick={() => signIn('github')}
+			>
 				<FaGithub />
 
 				Sign in with Github
