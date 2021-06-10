@@ -1,6 +1,7 @@
 import React, { memo, MouseEvent, useCallback, useEffect, useState } from 'react'
-import Link from 'next/link'
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
+import Link from 'next/link'
+import Image from 'next/image'
 import lodash from 'lodash'
 
 import { useAuth } from '../../hooks/auth'
@@ -79,9 +80,12 @@ const MovieComponent: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 		<Container isLogged={!!user} {...rest}>
 			<Link href={`/movie/${movie.id}`}>
 				<a>
-					<img
+					<Image
 						src={movie.poster_path ? `https://image.tmdb.org/t/p/original${movie.poster_path}` : '/images/no-poster.png'}
 						alt={movie.title}
+						height={900}
+						width={600}
+						objectFit="cover"
 					/>
 
 					<button type="button" onClick={handleSaveMovie} >

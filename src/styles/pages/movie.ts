@@ -35,16 +35,10 @@ export const ColumnInfos = styled.div<ColumnInfosProps>`
 	display: flex;
 	flex-direction: column;
 
-	> img {
+	img.movie-cover {
 		border-radius: 8px;
-		height: auto;
 		width: 100%;
-	}
-
-	@media (min-width: 670px) {
-		> img {
-			max-width: 820px;
-		}
+		max-width: 820px;
 	}
 
 	button {
@@ -95,14 +89,22 @@ export const ColumnInfos = styled.div<ColumnInfosProps>`
 
 	}
 
-	div {
+	div.row {
 		display: flex;
+		flex-direction: column;
+	}
 
-		section + section {
-			margin-left: 20px;
+	@media (min-width: 620px) {
+		div.row {
+			flex-direction: row;
+			align-items: center;
 
-			padding-left: 30px;
-			border-left: 1px solid rgba(194, 195, 197, 0.2);
+			section + section {
+				margin-left: 20px;
+
+				padding-left: 30px;
+				border-left: 1px solid rgba(194, 195, 197, 0.2);
+			}
 		}
 	}
 `
@@ -137,8 +139,6 @@ export const ToolTip = styled.div`
 		top: 30%;
 		position: absolute;
 	}
-
-
 `
 
 export const ColumnCast = styled.div`
@@ -163,11 +163,11 @@ export const CastItem = styled.div`
 
 	img {
 		height: 50px;
-		width: 40px;
+		width: 50px;
 		border-radius: 50%;
 	}
 
-	div {
+	div.info {
 		margin-left: 10px;
 
 		h2 {

@@ -21,9 +21,7 @@ export const Container = styled.div<ContainerProps>`
 		display: block;
 
 		img {
-			height: 100%;
 			width: 100%;
-			background-size: contain;
 
 			border-radius: 4px;
 		}

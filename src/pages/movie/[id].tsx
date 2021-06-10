@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
+import Image from 'next/image'
 import { BsBookmark, BsBookmarkFill, BsStopwatch } from 'react-icons/bs'
 import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi'
 import Rating from '@material-ui/lab/Rating'
@@ -98,6 +99,7 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 				<GridDetails>
 					<ColumnInfos movieSaved={saved} isLogged={!!user}>
 						<img
+							className="movie-cover"
 							src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
 							alt={movie.original_title}
 						/>
@@ -109,7 +111,7 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 								<span>Sign in to save this movie in your Watch List</span>
 							</ToolTip>
 						</button>
-						<div>
+						<div className="row">
 							<Section>
 								<h1>
 									{movie.title} <Rating name="read-only" value={movie.rating} readOnly />
@@ -137,7 +139,7 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 							<h1>Description</h1>
 							<p>{movie.overview}</p>
 						</Section>
-						<div>
+						<div className="row">
 							<Section>
 								<div>
 									<h1>Duration</h1>
@@ -167,12 +169,15 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 							return (
 								<CastItem key={actor.id} >
 									{actor.profile_path && (
-										<img
+										<Image
 											src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
 											alt={actor.original_name}
+											height={150}
+											width={150}
+											objectFit="cover"
 										/>
 									)}
-									<div>
+									<div className="info">
 										<h2>{actor.name}</h2>
 										<p>{actor.character}</p>
 									</div>
