@@ -28,6 +28,8 @@ import {
 interface PathMovieResponse {
 	results: {
 		id: number
+		vote_count: number
+		vote_average: number
 	}[]
 }
 
@@ -201,8 +203,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	const popularMoviesResponse = await tmdbApi.get<PathMovieResponse>('/movie/popular?page=1')
 	const topRatedResponse = await tmdbApi.get<PathMovieResponse>('/movie/top_rated?page=1')
 
-	const popularMovies = popularMoviesResponse.data.results.filter((_, index) => index < 7)
-	const topRated = topRatedResponse.data.results.filter((_, index) => index < 7)
+	const popularMovies = popularMoviesResponse.data.results
+		.sort((a, b) => (b.vote_count * b.vote_average) - (a.vote_count * a.vote_average))
+		.filter((_, index) => index < 7)
+
+	const topRated = topRatedResponse.data.results
+		.sort((a, b) => (b.vote_count * b.vote_average) - (a.vote_count * a.vote_average))
+		.filter((_, index) => index < 7)
 
 	const movies = popularMovies.concat(topRated)
 
