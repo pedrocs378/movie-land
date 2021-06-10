@@ -241,9 +241,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 	const movie = {
 		...movieResponse.data,
-		release_date: format(new Date(movieResponse.data.release_date), 'dd/MM/yyyy', {
-			locale: ptBR
-		}),
+		release_date: movieResponse.data.release_date
+			? format(new Date(movieResponse.data.release_date), 'dd/MM/yyyy', {
+				locale: ptBR
+			})
+			: 'Undefined date',
 		rating: (5 * movieResponse.data.vote_average) / 10,
 		budgetFormatted,
 		revenueFormatted,

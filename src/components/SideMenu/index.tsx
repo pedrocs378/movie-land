@@ -87,7 +87,7 @@ const SideMenu: React.FC = () => {
 				</Navigation>
 			</Content>
 
-			<button onClick={handleSignInOrSignOut} >
+			<button type="button" onClick={handleSignInOrSignOut} >
 				{user ? "Sign Out" : "Sign In"}
 			</button>
 		</Container>

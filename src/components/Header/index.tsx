@@ -50,6 +50,9 @@ const Header: React.FC = () => {
 
 	const handleSubmit = useCallback((event: FormEvent) => {
 		event.preventDefault()
+		clearTimeout(searchTimeout)
+		setBoxOpened(false)
+		setIsLoading(false)
 
 		router.push(`/search/${searchText}`)
 	}, [searchText, router])

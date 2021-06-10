@@ -255,7 +255,7 @@ export const ListMovies = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 
 	gap: 10px;
 `
