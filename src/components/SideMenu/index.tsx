@@ -28,7 +28,7 @@ const SideMenu: React.FC = () => {
 		if (user) {
 			signOut()
 		} else {
-			router.push('/login')
+			router.push('/signin')
 		}
 
 	}, [user, signOut, router])
@@ -55,7 +55,7 @@ const SideMenu: React.FC = () => {
 				</TitleContainer>
 
 				<ProfileContainer>
-					<Link href={user ? "/profile" : "/login"}>
+					<Link href={user ? "/profile" : "/signin"}>
 						<a>
 							<img
 								src={user ? user.avatar_url : '/images/avatar-default.png'}
