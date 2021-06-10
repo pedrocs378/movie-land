@@ -31,6 +31,7 @@ interface MovieProps {
   poster_path: string
   vote_average: number
   voteAverageFormatted: string
+  vote_count: number
 }
 
 interface MovieResponseProps {
@@ -62,13 +63,15 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
 
     const movies = {
       ...response.data,
-      results: response.data.results.map(movie => {
-        return {
-          ...movie,
-          genre_name: getGenre(movie.genre_ids[0], genres),
-          voteAverageFormatted: movie.vote_average.toFixed(1)
-        }
-      })
+      results: response.data.results
+        .map(movie => {
+          return {
+            ...movie,
+            genre_name: getGenre(movie.genre_ids[0], genres),
+            voteAverageFormatted: movie.vote_average.toFixed(1)
+          }
+        })
+        .sort((a, b) => (b.vote_count * b.vote_average) - (a.vote_count * a.vote_average))
     }
 
     return movies
@@ -85,13 +88,15 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
 
     const movies = {
       ...response.data,
-      results: response.data.results.map(movie => {
-        return {
-          ...movie,
-          genre_name: getGenre(movie.genre_ids[0], genres),
-          voteAverageFormatted: movie.vote_average.toFixed(1)
-        }
-      })
+      results: response.data.results
+        .map(movie => {
+          return {
+            ...movie,
+            genre_name: getGenre(movie.genre_ids[0], genres),
+            voteAverageFormatted: movie.vote_average.toFixed(1)
+          }
+        })
+        .sort((a, b) => (b.vote_count * b.vote_average) - (a.vote_count * a.vote_average))
     }
 
     return movies
@@ -250,6 +255,7 @@ export const getStaticProps: GetStaticProps = async () => {
           voteAverageFormatted: movie.vote_average.toFixed(1)
         }
       })
+      .sort((a, b) => (b.vote_count * b.vote_average) - (a.vote_count * a.vote_average))
       .filter((_, index) => index < 7)
   }
 
@@ -263,6 +269,7 @@ export const getStaticProps: GetStaticProps = async () => {
           voteAverageFormatted: movie.vote_average.toFixed(1)
         }
       })
+      .sort((a, b) => (b.vote_count * b.vote_average) - (a.vote_count * a.vote_average))
       .filter((_, index) => index < 7)
   }
 

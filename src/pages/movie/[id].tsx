@@ -44,6 +44,7 @@ interface RecommendationMovie {
 	poster_path: string
 	vote_average: number
 	voteAverageFormatted: string
+	vote_count: number
 	release_date?: string
 	genre_name: string
 }
@@ -261,6 +262,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 			}
 		})
 		.filter((_, index) => index < 8)
+		.sort((a, b) => (b.vote_count * b.vote_average) - (a.vote_count * a.vote_average))
 
 	const cast = castResponse.data.cast.filter((_, index) => index < 10)
 
