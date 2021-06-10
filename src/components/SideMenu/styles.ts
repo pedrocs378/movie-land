@@ -16,6 +16,7 @@ export const Container = styled.aside<ContainerProps>`
 	width: 100%;
 	padding-top: 40px;
 	background: linear-gradient(180deg, rgba(66,80,98,1) 0%, rgba(45,53,71,1) 100%);
+	box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 
 	display: flex;
 	flex-direction: column;
@@ -172,6 +173,8 @@ export const Navigation = styled.nav`
 		display: flex;
 		align-items: center;
 
+		transition: ease 0.2s;
+
 		svg {
 			margin-right: 10px;
 			height: 22px;
@@ -179,7 +182,7 @@ export const Navigation = styled.nav`
 		}
 
 		&:hover {
-			background: ${setLightness(0.3, '#2f374a')};
+			background: ${setLightness(0.55, '#2f374a')};
 			border-left-color: #ffc50d;
 			color: #ffc50d;
 		}

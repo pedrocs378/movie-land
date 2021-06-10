@@ -273,7 +273,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 				voteAverageFormatted: movie.vote_average.toFixed(1)
 			}
 		})
-		.filter((_, index) => index < 8)
+		.filter((_, index) => index < 12)
 		.sort((a, b) => (b.vote_count * b.vote_average) - (a.vote_count * a.vote_average))
 
 	const cast = castResponse.data.cast.filter((_, index) => index < 10)
