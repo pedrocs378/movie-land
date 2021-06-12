@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { signIn } from 'next-auth/client'
 import { FaGithub } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
@@ -7,24 +8,34 @@ import { Container } from '../styles/pages/signin'
 export default function SignIn() {
 
 	return (
-		<Container>
-			<h1>Sign in to your account</h1>
+		<>
+			<Head>
+				<title>Sign in | Movie Land</title>
+			</Head>
 
-			<button type="button" className="google">
-				<FcGoogle />
+			<Container>
+				<h1>Sign in to your account</h1>
 
-				Sign in with Google
-			</button>
+				<button
+					type="button"
+					className="google"
+					onClick={() => signIn('google')}
+				>
+					<FcGoogle />
 
-			<button
-				type="button"
-				className="github"
-				onClick={() => signIn('github')}
-			>
-				<FaGithub />
+					Sign in with Google
+				</button>
 
-				Sign in with Github
-			</button>
-		</Container>
+				<button
+					type="button"
+					className="github"
+					onClick={() => signIn('github')}
+				>
+					<FaGithub />
+
+					Sign in with Github
+				</button>
+			</Container>
+		</>
 	)
 }

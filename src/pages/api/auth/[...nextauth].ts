@@ -12,4 +12,14 @@ export default NextAuth({
 			clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET
 		})
 	],
+	callbacks: {
+		async signIn(user, account, profile) {
+			const { name, email, image } = user
+
+			console.log(user, profile)
+
+			return true
+		}
+	},
+	database: process.env.NEXT_PUBLIC_MONGO_DATABASE_URL
 })

@@ -4,9 +4,9 @@ import { BsBookmark } from 'react-icons/bs'
 import { BiArrowToLeft } from 'react-icons/bi'
 import { GiClapperboard, GiPopcorn } from 'react-icons/gi'
 import { useRouter } from 'next/router'
+import { useSession, signOut } from 'next-auth/client'
 import Link from 'next/link'
 
-import { useAuth } from '../../hooks/auth'
 import { useShowMenu } from '../../hooks/menu'
 
 import {
@@ -19,23 +19,23 @@ import {
 
 
 const SideMenu: React.FC = () => {
-	const { user, signOut } = useAuth()
+	const [session] = useSession()
 	const { show, setShow } = useShowMenu()
 
 	const router = useRouter()
 
 	const handleSignInOrSignOut = useCallback(() => {
-		if (user) {
+		if (session) {
 			signOut()
 		} else {
 			router.push('/signin')
 		}
 
-	}, [user, signOut, router])
+	}, [session, signOut, router])
 
 	const userName = useMemo(() => {
-		return user?.name.split(' ')[0] ?? 'Stranger'
-	}, [user])
+		return session?.user.name.split(' ')[0] ?? 'Stranger'
+	}, [session])
 
 	return (
 		<Container show={show} >
@@ -55,14 +55,14 @@ const SideMenu: React.FC = () => {
 				</TitleContainer>
 
 				<ProfileContainer>
-					<Link href={user ? "/profile" : "/signin"}>
+					<Link href={session ? "/profile" : "/signin"}>
 						<a>
 							<img
-								src={user ? user.avatar_url : '/images/avatar-default.png'}
-								alt={user ? user.name : "Stranger"}
+								src={session ? session.user.image : '/images/avatar-default.png'}
+								alt={session ? session.user.name : "Stranger"}
 							/>
 
-							<span>{userName}</span>
+							<span>{session?.user.name || "Stranger"}</span>
 
 							<AiOutlineEdit />
 						</a>
@@ -88,7 +88,7 @@ const SideMenu: React.FC = () => {
 			</Content>
 
 			<button type="button" onClick={handleSignInOrSignOut} >
-				{user ? "Sign Out" : "Sign In"}
+				{session ? "Sign Out" : "Sign In"}
 			</button>
 		</Container>
 	)
