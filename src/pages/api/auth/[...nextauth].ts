@@ -14,9 +14,7 @@ export default NextAuth({
 	],
 	callbacks: {
 		async signIn(user, account, profile) {
-			const { name, email, image } = user
 
-			console.log(user, profile)
 
 			return true
 		}

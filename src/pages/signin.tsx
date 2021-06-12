@@ -1,5 +1,6 @@
+import { GetServerSideProps } from 'next'
 import Head from 'next/head'
-import { signIn } from 'next-auth/client'
+import { signIn, getSession } from 'next-auth/client'
 import { FaGithub } from 'react-icons/fa'
 import { FcGoogle } from 'react-icons/fc'
 
@@ -38,4 +39,21 @@ export default function SignIn() {
 			</Container>
 		</>
 	)
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+	const session = await getSession({ req })
+
+	if (session) {
+		return {
+			props: {},
+			redirect: {
+				destination: '/'
+			}
+		}
+	}
+
+	return {
+		props: {},
+	}
 }
