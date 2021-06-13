@@ -6,6 +6,7 @@ import Loading from 'react-loading'
 import Pagination from '@material-ui/lab/Pagination'
 
 import { Movie } from '../components/Movie'
+import { MovieLoading } from '../components/Movie/MovieLoading'
 
 import { getGenre } from '../utils/getGenre'
 
@@ -14,8 +15,7 @@ import { tmdbApi } from '../services/tmdb'
 import {
   Container,
   ListMovies,
-  MovieSection,
-  LoadWrapper
+  MovieSection
 } from '../styles/pages/home'
 
 interface GenreProps {
@@ -155,29 +155,29 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
           </header>
 
           <ListMovies>
-            {showAllPopularMovies ? isPopularMoviesLoading ? (
-              <LoadWrapper>
-                <Loading type="spinningBubbles" height={50} width={50} />
-              </LoadWrapper>
-            ) : (
-              popularMoviesData.results.map(movie => {
-                return (
-                  <Movie
-                    key={movie.id}
-                    movie={movie}
-                  />
-                )
-              })
-            ) : (
-              initialPopularMovies.results.map(movie => {
-                return (
-                  <Movie
-                    key={movie.id}
-                    movie={movie}
-                  />
-                )
-              })
-            )}
+            {showAllPopularMovies
+              ? isPopularMoviesLoading
+                ? (
+                  <MovieLoading totalCards={20} />
+                ) : (
+                  popularMoviesData.results.map(movie => {
+                    return (
+                      <Movie
+                        key={movie.id}
+                        movie={movie}
+                      />
+                    )
+                  })
+                ) : (
+                initialPopularMovies.results.map(movie => {
+                  return (
+                    <Movie
+                      key={movie.id}
+                      movie={movie}
+                    />
+                  )
+                })
+              )}
           </ListMovies>
 
           {showAllPopularMovies && (
@@ -205,9 +205,7 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
 
           <ListMovies>
             {showAllTopRatedMovies ? isTopRatedLoading ? (
-              <LoadWrapper>
-                <Loading type="spinningBubbles" height={50} width={50} />
-              </LoadWrapper>
+              <MovieLoading totalCards={20} />
             ) : (
               topRatedData.results.map(movie => {
                 return (

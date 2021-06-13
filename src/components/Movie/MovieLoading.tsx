@@ -1,5 +1,5 @@
-import Skeleton from '@material-ui/lab/Skeleton'
 import { useMemo } from 'react'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 interface MovieLoadingProps {
 	totalCards: number

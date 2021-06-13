@@ -83,11 +83,3 @@ export const ListMovies = styled.div`
 
 	gap: 10px;
 `
-
-export const LoadWrapper = styled.div`
-	width: 100%;
-	height: 450px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-`
