@@ -15,7 +15,7 @@ import {
 } from '../styles/pages/watchlist'
 
 export default function WatchList() {
-	const [session] = useSession()
+	const [session, sessionLoading] = useSession()
 	const { watchList, isFetching, isLoading } = useWatchlist()
 
 	return (
@@ -31,7 +31,7 @@ export default function WatchList() {
 						<BiSad />
 						<p>You need sign in to see your watch list</p>
 					</Message>
-				) : isLoading ? (
+				) : (isLoading || sessionLoading) ? (
 					<ListMovies>
 						<MovieLoading totalCards={7} />
 					</ListMovies>

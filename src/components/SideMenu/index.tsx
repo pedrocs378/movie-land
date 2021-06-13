@@ -6,6 +6,7 @@ import { GiClapperboard, GiPopcorn } from 'react-icons/gi'
 import { useRouter } from 'next/router'
 import { useSession, signOut } from 'next-auth/client'
 import Link from 'next/link'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 import { useShowMenu } from '../../contexts/menu'
 
@@ -19,7 +20,7 @@ import {
 
 
 const SideMenu: React.FC = () => {
-	const [session] = useSession()
+	const [session, sessionLoading] = useSession()
 	const { show, setShow } = useShowMenu()
 
 	const router = useRouter()
@@ -53,14 +54,32 @@ const SideMenu: React.FC = () => {
 				<ProfileContainer>
 					<Link href={session ? "/profile" : "/signin"}>
 						<a>
-							<img
-								src={session ? session.user.image : '/images/avatar-default.png'}
-								alt={session ? session.user.name : "Stranger"}
-							/>
+							{sessionLoading ? (
+								<>
+									<Skeleton variant="circle">
+										<img
+											src="/images/avatar-default.png"
+											alt="Stranger"
+										/>
+									</Skeleton>
 
-							<span>{session?.user.name || "Stranger"}</span>
+									<Skeleton variant="text">
+										<span>Stranger</span>
 
-							<AiOutlineEdit />
+										<AiOutlineEdit />
+									</Skeleton>
+								</>
+							) : (
+								<>
+									<img
+										src={session ? session.user.image : '/images/avatar-default.png'}
+										alt={session ? session.user.name : "Stranger"}
+									/>
+
+									<span>{session?.user.name || "Stranger"}</span>
+									<AiOutlineEdit />
+								</>
+							)}
 						</a>
 					</Link>
 				</ProfileContainer>
