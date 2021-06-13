@@ -1,3 +1,5 @@
+import { useSession } from 'next-auth/client';
+import { useEffect } from 'react';
 import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { createContext } from 'use-context-selector'
@@ -53,6 +55,8 @@ interface WatchListContextData {
 export const WatchlistContext = createContext({} as WatchListContextData)
 
 export const WatchlistProvider: React.FC = ({ children }) => {
+	const [session] = useSession()
+
 	const {
 		data: watchList,
 		isLoading,
@@ -117,6 +121,13 @@ export const WatchlistProvider: React.FC = ({ children }) => {
 	const deleteMovie = useCallback(async (id: number) => {
 		await deleteMovieMutation.mutateAsync(id)
 	}, [])
+
+	useEffect(() => {
+		if (session) {
+			queryClient.invalidateQueries('watchlist')
+			refetch()
+		}
+	}, [session])
 
 	return (
 		<WatchlistContext.Provider value={{
