@@ -83,7 +83,7 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie, isSaved, ...rest
 }
 
 export const Movie = memo(MovieComponent, (prevProps, nextProps) => {
-	return lodash.isEqual(prevProps.movie, nextProps.movie) && prevProps.isSaved === nextProps.isSaved
+	return lodash.isEqual(prevProps.movie, nextProps.movie)
 })
 
 
