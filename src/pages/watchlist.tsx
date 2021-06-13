@@ -31,7 +31,7 @@ export default function WatchList() {
 						<BiSad />
 						<p>You need sign in to see your watch list</p>
 					</Message>
-				) : (isLoading || sessionLoading) ? (
+				) : (isLoading || sessionLoading || isFetching) ? (
 					<ListMovies>
 						<MovieLoading totalCards={7} />
 					</ListMovies>
