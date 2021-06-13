@@ -1,0 +1,47 @@
+{
+  "name": "movie-land-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^1.6.3",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@unform/core": "^2.1.3",
+    "@unform/web": "^2.1.3",
+    "axios": "^0.21.1",
+    "date-fns": "^2.16.1",
+    "framer-motion": "^4.1.17",
+    "lodash": "^4.17.21",
+    "mongodb": "^3.6.9",
+    "mongoose": "^5.12.13",
+    "next": "10.2.3",
+    "next-auth": "^3.26.1",
+    "nookies": "^2.5.2",
+    "polished": "^4.0.5",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-icons": "^4.2.0",
+    "react-loading": "^2.0.3",
+    "react-query": "^3.16.1",
+    "react-spring": "^8.0.27",
+    "react-toastify": "^7.0.4",
+    "scheduler": "^0.20.2",
+    "styled-components": "^5.2.1",
+    "use-context-selector": "^1.3.7",
+    "yup": "^0.32.1"
+  },
+  "devDependencies": {
+    "@types/next-auth": "^3.15.0",
+    "@types/node": "^15.12.2",
+    "@types/react": "^17.0.9",
+    "@types/styled-components": "^5.1.9",
+    "typescript": "^4.3.2"
+  }
+}
