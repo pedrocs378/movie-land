@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { Header } from '../components/Header'
 import { SideMenu } from '../components/SideMenu'
+import { Development } from '../components/Development';
 import { Footer } from '../components/Footer'
 
 import { AppProvider } from '../contexts'
@@ -15,6 +16,16 @@ import GlobalStyles from '../styles/global'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient()
+
+  if (process.env.NEXT_PUBLIC_IS_DEVELOPING === 'true') {
+    return (
+      <>
+        <Development />
+        <Footer />
+        <GlobalStyles />
+      </>
+    )
+  }
 
   return (
     <NextAuthProvider>
@@ -29,7 +40,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
 
             <Footer />
-
           </GridArea>
         </AppProvider>
 
