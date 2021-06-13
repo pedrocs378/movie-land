@@ -9,6 +9,7 @@ import { useAuth } from '../../hooks/auth'
 import { api } from '../../services/api'
 
 import { Container, MovieInfo, ToolTip } from './styles'
+import { useSession } from 'next-auth/client'
 
 interface MovieCard {
 	id: number
@@ -28,56 +29,66 @@ interface Props {
 const MovieComponent: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 	const [saved, setSaved] = useState(false)
 
-	const { user } = useAuth()
+	const [session] = useSession()
 
-	useEffect(() => {
-		if (user) {
-			api.get(`watchlist/${movie.id}`).then(response => {
-				setSaved(response.data.found)
-			})
-		}
-	}, [movie, user])
+	// useEffect(() => {
+	// 	if (session) {
+	// 		api.get(`watchlist/${movie.id}`).then(response => {
+	// 			setSaved(response.data.found)
+	// 		})
+	// 	}
+	// }, [movie, session])
 
 	const handleSaveMovie = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
 
-		if (!user) {
+		if (!session) {
 			return
 		}
 
 		try {
-			if (!saved) {
-				await api.post('watchlist', {
-					id: movie.id,
-					genre: movie.genre_name,
-					title: movie.title,
-					year: movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????',
-					poster_path: movie.poster_path ? movie.poster_path : "",
-					vote_average: movie.vote_average
-				})
-				setSaved(!saved)
+			const response = await api.post('watchlist', {
+				movie_id: movie.id,
+				title: movie.title,
+				poster_path: movie.poster_path,
+				release_date: movie.release_date,
+				genre_name: movie.genre_name,
+				vote_average: movie.vote_average
+			})
 
-				onUpdate && onUpdate()
+			console.log(response.data)
+			// if (!saved) {
+			// 	await api.post('watchlist', {
+			// 		id: movie.id,
+			// 		genre: movie.genre_name,
+			// 		title: movie.title,
+			// 		year: movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????',
+			// 		poster_path: movie.poster_path ? movie.poster_path : "",
+			// 		vote_average: movie.vote_average
+			// 	})
+			// 	setSaved(!saved)
 
-			} else {
-				await api.delete('watchlist', {
-					data: {
-						movie_id: movie.id
-					}
-				})
-				setSaved(!saved)
+			// 	onUpdate && onUpdate()
 
-				onUpdate && onUpdate()
-			}
+			// } else {
+			// 	await api.delete('watchlist', {
+			// 		data: {
+			// 			movie_id: movie.id
+			// 		}
+			// 	})
+			// 	setSaved(!saved)
+
+			// 	onUpdate && onUpdate()
+			// }
 
 		} catch (err) {
 			alert(err)
 		}
 
-	}, [user, movie, saved, onUpdate])
+	}, [session, movie, saved, onUpdate])
 
 	return (
-		<Container isLogged={!!user} {...rest}>
+		<Container isLogged={!!session} {...rest}>
 			<Link href={`/movie/${movie.id}`}>
 				<a>
 					<Image
