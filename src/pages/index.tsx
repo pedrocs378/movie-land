@@ -71,6 +71,7 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
         .map(movie => {
           return {
             ...movie,
+            release_date: movie.release_date?.trim() ? String(new Date(movie.release_date).getFullYear()) : '????',
             genre_name: getGenre(movie.genre_ids[0], genres),
             voteAverageFormatted: movie.vote_average.toFixed(1)
           }
@@ -96,6 +97,7 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
         .map(movie => {
           return {
             ...movie,
+            release_date: movie.release_date?.trim() ? String(new Date(movie.release_date).getFullYear()) : '????',
             genre_name: getGenre(movie.genre_ids[0], genres),
             voteAverageFormatted: movie.vote_average.toFixed(1)
           }
@@ -255,6 +257,7 @@ export const getStaticProps: GetStaticProps = async () => {
       .map(movie => {
         return {
           ...movie,
+          release_date: movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????',
           genre_name: getGenre(movie.genre_ids[0], genres),
           voteAverageFormatted: movie.vote_average.toFixed(1)
         }
@@ -269,6 +272,7 @@ export const getStaticProps: GetStaticProps = async () => {
       .map(movie => {
         return {
           ...movie,
+          release_date: movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????',
           genre_name: getGenre(movie.genre_ids[0], genres),
           voteAverageFormatted: movie.vote_average.toFixed(1)
         }

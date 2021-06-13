@@ -16,16 +16,15 @@ interface MovieCard {
 	poster_path: string
 	vote_average: number
 	voteAverageFormatted: string
-	release_date?: string
+	release_date: string
 	genre_name: string
 }
 
 interface MovieComponentProps {
 	movie: MovieCard
-	onUpdate?: () => void
 }
 
-const MovieComponent: React.FC<MovieComponentProps> = ({ movie, onUpdate, ...rest }) => {
+const MovieComponent: React.FC<MovieComponentProps> = ({ movie, ...rest }) => {
 	const [session] = useSession()
 	const { watchList, isLoading, saveMovie, deleteMovie } = useWatchlist()
 
@@ -47,18 +46,14 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie, onUpdate, ...res
 		try {
 			if (isSaved) {
 				await deleteMovie(movie.id)
-
-				onUpdate && onUpdate()
 			} else {
 				await saveMovie(movie)
-
-				onUpdate && onUpdate()
 			}
 		} catch (err) {
-			toast.error(`Oh! An error has ocurred.\n${err}`)
+			toast.error(`Oh! An error has ocurred.\n${err.message}`)
 		}
 
-	}, [session, isSaved, movie, onUpdate])
+	}, [session, isSaved, movie])
 
 	return (
 		<Container isLogged={!!session} {...rest}>
@@ -86,7 +81,7 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie, onUpdate, ...res
 
 							<strong>{movie.voteAverageFormatted}</strong>
 						</div>
-						<p>{movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????'}, {movie.genre_name}</p>
+						<p>{movie.release_date}, {movie.genre_name}</p>
 					</MovieInfo>
 				</a>
 			</Link>

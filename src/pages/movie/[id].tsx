@@ -53,7 +53,7 @@ interface RecommendationMovie {
 	vote_average: number
 	voteAverageFormatted: string
 	vote_count: number
-	release_date?: string
+	release_date: string
 	genre_name: string
 }
 
@@ -311,6 +311,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		.map(movie => {
 			return {
 				...movie,
+				release_date: movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????',
 				genre_name: getGenre(movie.genre_ids[0], genres),
 				voteAverageFormatted: movie.vote_average.toFixed(1)
 			}

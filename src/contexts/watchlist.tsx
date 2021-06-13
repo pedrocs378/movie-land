@@ -67,14 +67,17 @@ export const WatchlistProvider: React.FC = ({ children }) => {
 				title: movie.title,
 				genre_name: movie.genre_name,
 				poster_path: movie.poster_path,
-				release_date: movie.release_date,
+				release_date: movie.release_date?.trim() ? String(new Date(movie.release_date).getFullYear()) : '????',
 				vote_average: movie.vote_average,
 				voteAverageFormatted: movie.vote_average.toFixed(1)
 			}
 		})
 
 		return movies
+	}, {
+		staleTime: 60 * 60 * 24
 	})
+
 	const queryClient = useQueryClient();
 
 	const saveMovieMutation = useMutation((data: MovieMutationData) => {

@@ -54,6 +54,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 		const user = await UserModel.findOne({ email: session.user.email })
 
+		if (user.watchlist.some(watchlistMovie => watchlistMovie.movie_id === Number(movie_id))) {
+			return res.status(400).send('Movie already saved.')
+		}
+
 		user.watchlist.push({
 			movie_id,
 			title,
