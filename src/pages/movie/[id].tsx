@@ -96,7 +96,7 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 	const [isUpdating, setIsUpdating] = useState(false)
 	const [session, sessionLoading] = useSession()
 
-	const { watchList, isLoading, saveMovie, deleteMovie } = useWatchlist()
+	const { watchList, isLoading, isFetching, saveMovie, deleteMovie } = useWatchlist()
 
 	const isSaved = useMemo(() => {
 		if (session) {
@@ -154,9 +154,9 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 						<button
 							type="button"
 							onClick={handleSaveOrRemoveMovie}
-							disabled={isUpdating || isLoading || sessionLoading}
+							disabled={isUpdating || isLoading || isFetching || sessionLoading}
 						>
-							{(isUpdating || isLoading || sessionLoading) ? (
+							{(isUpdating || isLoading || isFetching || sessionLoading) ? (
 								<Loading
 									type="bubbles"
 									height={20}
