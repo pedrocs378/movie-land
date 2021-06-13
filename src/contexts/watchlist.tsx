@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/client';
-import { useEffect } from 'react';
-import { useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { toast } from 'react-toastify';
 import { createContext } from 'use-context-selector'
 
 import { api } from "../services/api";
@@ -80,7 +80,10 @@ export const WatchlistProvider: React.FC = ({ children }) => {
 		return movies
 	}, {
 		staleTime: 60 * 60 * 24,
-		initialData: []
+		initialData: [],
+		onError: () => {
+			toast.error('Could not load your WatchList. Please, try reload the page.')
+		}
 	})
 
 	const queryClient = useQueryClient();
