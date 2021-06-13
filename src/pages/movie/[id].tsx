@@ -1,8 +1,10 @@
+import { useMemo } from 'react'
+import { BsBookmark, BsBookmarkFill, BsStopwatch } from 'react-icons/bs'
+import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi'
+import { useSession } from 'next-auth/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { BsBookmark, BsBookmarkFill, BsStopwatch } from 'react-icons/bs'
-import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi'
 import Rating from '@material-ui/lab/Rating'
 import { format } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
@@ -25,6 +27,7 @@ import {
 	Section,
 	Recommendations,
 } from '../../styles/pages/movie'
+import { useWatchlist } from '../../contexts/watchlist'
 
 interface PathMovieResponse {
 	results: {
@@ -53,6 +56,7 @@ interface RecommendationMovie {
 }
 
 interface MovieParams {
+	id: number
 	backdrop_path: string
 	budget: number
 	title: string
@@ -86,8 +90,17 @@ interface MovieDetailsProps {
 }
 
 export default function MovieDetails({ movie, recommendations, cast }: MovieDetailsProps) {
-	const saved = false
-	const user = null
+	const [session] = useSession()
+
+	const { watchList, isLoading } = useWatchlist()
+
+	const isSaved = useMemo(() => {
+		if (session && !isLoading) {
+			return watchList.some(watchlistMovie => watchlistMovie.id === movie.id)
+		} else {
+			return false
+		}
+	}, [session, watchList, isLoading])
 
 	return (
 		<>
@@ -97,15 +110,15 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 
 			<Container>
 				<GridDetails>
-					<ColumnInfos movieSaved={saved} isLogged={!!user}>
+					<ColumnInfos movieSaved={isSaved} isLogged={!!session}>
 						<img
 							className="movie-cover"
 							src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
 							alt={movie.original_title}
 						/>
 						<button type="button" onClick={() => { }} >
-							{saved ? <BsBookmarkFill /> : <BsBookmark />}
-							{saved ? "Remove" : "Save"}
+							{isSaved ? <BsBookmarkFill /> : <BsBookmark />}
+							{isSaved ? "Remove" : "Save"}
 
 							<ToolTip>
 								<span>Sign in to save this movie in your Watch List</span>

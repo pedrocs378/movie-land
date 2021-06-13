@@ -7,7 +7,6 @@ import Pagination from '@material-ui/lab/Pagination'
 
 import { Movie } from '../components/Movie'
 
-import { GenreProps } from '../hooks/genres'
 import { getGenre } from '../utils/getGenre'
 
 import { tmdbApi } from '../services/tmdb'
@@ -18,6 +17,11 @@ import {
   MovieSection,
   LoadWrapper
 } from '../styles/pages/home'
+
+interface GenreProps {
+  id: number
+  name: string
+}
 
 interface MovieProps {
   id: number

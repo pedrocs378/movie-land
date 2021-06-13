@@ -8,14 +8,14 @@ interface UserParams {
 	name: String
 	email: String
 	image: String
-	watchlist: [{
+	watchlist: {
 		movie_id: Number
 		title: String
 		poster_path: String
 		release_date: String
 		genre_name: String
 		vote_average: Number
-	}]
+	}[]
 }
 
 const userSchema = new Schema<UserParams>({
@@ -47,6 +47,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 		} = req.body
 
 		const session = await getSession({ req })
+
+		if (!session) {
+			return res.status(401).send('Unauthenticated user')
+		}
+
 		const user = await UserModel.findOne({ email: session.user.email })
 
 		user.watchlist.push({
@@ -64,10 +69,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
 	} else if (req.method === 'GET') {
 		const session = await getSession({ req })
+
+		if (!session) {
+			return res.status(401).send('Unauthenticated user')
+		}
+
 		const user = await UserModel.findOne({ email: session.user.email })
 
+		return res.json(user.watchlist)
+	} else if (req.method === 'DELETE') {
+		const { movie_id } = req.body
 
-		return res.json(user)
+		const session = await getSession({ req })
+
+		if (!session) {
+			return res.status(401).send('Unauthenticated user')
+		}
+
+		const user = await UserModel.findOne({ email: session.user.email })
+
+		user.watchlist = user.watchlist.filter(movie => movie.movie_id !== Number(movie_id))
+
+		const userUpdated = await user.save()
+
+		return res.json(userUpdated)
 	} else {
 		res.status(405).send('Method not allowed')
 	}

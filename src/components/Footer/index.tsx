@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaHeart } from 'react-icons/fa'
 
-import { useShowMenu } from '../../hooks/menu'
+import { useShowMenu } from '../../contexts/menu'
 
 import { Container } from './styles'
 

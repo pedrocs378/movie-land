@@ -6,16 +6,17 @@ import { RiEmotionNormalLine } from 'react-icons/ri'
 import { Movie } from '../components/Movie'
 import { MovieLoading } from '../components/Movie/MovieLoading'
 
+import { useWatchlist } from '../contexts/watchlist'
+
 import {
 	Container,
 	ListMovies,
 	Message
 } from '../styles/pages/watchlist'
 
-export default function WatchList({ watchList = [] }) {
+export default function WatchList() {
 	const [session] = useSession()
-
-	const isLoading = false
+	const { watchList, isFetching, isLoading } = useWatchlist()
 
 	return (
 		<>
@@ -50,6 +51,10 @@ export default function WatchList({ watchList = [] }) {
 								/>
 							)
 						})}
+
+						{(!isLoading && isFetching) && (
+							<MovieLoading totalCards={1} />
+						)}
 					</ListMovies>
 				)}
 			</Container>

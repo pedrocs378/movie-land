@@ -1,19 +1,16 @@
 import React from 'react'
 
-import { GenresProvider } from './genres'
 import { MenuProvider } from './menu'
-import { AuthProvider } from './auth'
+import { WatchlistProvider } from './watchlist'
 
 const AppProvider: React.FC = ({ children }) => {
 
 	return (
-		<GenresProvider>
+		<WatchlistProvider>
 			<MenuProvider>
-				<AuthProvider>
-					{children}
-				</AuthProvider>
+				{children}
 			</MenuProvider>
-		</GenresProvider>
+		</WatchlistProvider>
 	)
 }
 

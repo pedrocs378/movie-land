@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { FiSearch, FiArrowRight, FiMenu } from 'react-icons/fi'
 import Loading from 'react-loading'
 
-import { useShowMenu } from '../../hooks/menu'
+import { useShowMenu } from '../../contexts/menu'
 import { tmdbApi } from '../../services/tmdb'
 
 import { Container, Input, ResultsBox } from './styles'

@@ -1,15 +1,14 @@
-import React, { memo, MouseEvent, useCallback, useEffect, useState } from 'react'
+import React, { memo, MouseEvent, useCallback, useMemo } from 'react'
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
+import { useSession } from 'next-auth/client'
 import Link from 'next/link'
 import Image from 'next/image'
 import lodash from 'lodash'
 
-import { useAuth } from '../../hooks/auth'
-
 import { api } from '../../services/api'
+import { useWatchlist } from '../../contexts/watchlist'
 
 import { Container, MovieInfo, ToolTip } from './styles'
-import { useSession } from 'next-auth/client'
 
 interface MovieCard {
 	id: number
@@ -21,25 +20,24 @@ interface MovieCard {
 	genre_name: string
 }
 
-interface Props {
+interface MovieComponentProps {
 	movie: MovieCard
 	onUpdate?: () => void
 }
 
-const MovieComponent: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
-	const [saved, setSaved] = useState(false)
-
+const Movie: React.FC<MovieComponentProps> = ({ movie, onUpdate, ...rest }) => {
 	const [session] = useSession()
+	const { watchList, isLoading, saveMovie, deleteMovie } = useWatchlist()
 
-	// useEffect(() => {
-	// 	if (session) {
-	// 		api.get(`watchlist/${movie.id}`).then(response => {
-	// 			setSaved(response.data.found)
-	// 		})
-	// 	}
-	// }, [movie, session])
+	const isSaved = useMemo(() => {
+		if (session && !isLoading) {
+			return watchList.some(watchlistMovie => watchlistMovie.id === movie.id)
+		} else {
+			return false
+		}
+	}, [session, watchList, isLoading, movie])
 
-	const handleSaveMovie = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
+	const handleSaveOrRemoveMovie = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
 
 		if (!session) {
@@ -47,45 +45,20 @@ const MovieComponent: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 		}
 
 		try {
-			const response = await api.post('watchlist', {
-				movie_id: movie.id,
-				title: movie.title,
-				poster_path: movie.poster_path,
-				release_date: movie.release_date,
-				genre_name: movie.genre_name,
-				vote_average: movie.vote_average
-			})
+			if (isSaved) {
+				await deleteMovie(movie.id)
 
-			console.log(response.data)
-			// if (!saved) {
-			// 	await api.post('watchlist', {
-			// 		id: movie.id,
-			// 		genre: movie.genre_name,
-			// 		title: movie.title,
-			// 		year: movie.release_date?.trim() ? new Date(movie.release_date).getFullYear() : '????',
-			// 		poster_path: movie.poster_path ? movie.poster_path : "",
-			// 		vote_average: movie.vote_average
-			// 	})
-			// 	setSaved(!saved)
+				onUpdate && onUpdate()
+			} else {
+				await saveMovie(movie)
 
-			// 	onUpdate && onUpdate()
-
-			// } else {
-			// 	await api.delete('watchlist', {
-			// 		data: {
-			// 			movie_id: movie.id
-			// 		}
-			// 	})
-			// 	setSaved(!saved)
-
-			// 	onUpdate && onUpdate()
-			// }
-
+				onUpdate && onUpdate()
+			}
 		} catch (err) {
 			alert(err)
 		}
 
-	}, [session, movie, saved, onUpdate])
+	}, [session, isSaved, movie, onUpdate])
 
 	return (
 		<Container isLogged={!!session} {...rest}>
@@ -99,8 +72,8 @@ const MovieComponent: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 						objectFit="cover"
 					/>
 
-					<button type="button" onClick={handleSaveMovie} >
-						{saved ? <BsBookmarkFill /> : <BsBookmark />}
+					<button type="button" onClick={handleSaveOrRemoveMovie} >
+						{isSaved ? <BsBookmarkFill /> : <BsBookmark />}
 
 						<ToolTip>
 							<span>Sign in to save this movie in your Watch List</span>
@@ -121,10 +94,10 @@ const MovieComponent: React.FC<Props> = ({ movie, onUpdate, ...rest }) => {
 	)
 }
 
-export { MovieComponent }
+export { Movie }
 
-export const Movie = memo(MovieComponent, (prevProps, nextProps) => {
-	return lodash.isEqual(prevProps.movie, nextProps.movie)
-})
+// export const Movie = memo(MovieComponent, (prevProps, nextProps) => {
+// 	return lodash.isEqual(prevProps.movie, nextProps.movie)
+// })
 
 

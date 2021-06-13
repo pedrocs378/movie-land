@@ -6,7 +6,7 @@ import { Header } from '../components/Header'
 import { SideMenu } from '../components/SideMenu'
 import { Footer } from '../components/Footer'
 
-import { AppProvider } from '../hooks'
+import { AppProvider } from '../contexts'
 
 import { GridArea } from '../styles/pages/app'
 import GlobalStyles from '../styles/global'
