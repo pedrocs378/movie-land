@@ -45,7 +45,7 @@ export const ColumnInfos = styled.div<ColumnInfosProps>`
 		position: relative;
 		margin-top: 15px;
 		width: 150px;
-		padding: 10px 0;
+		height: 45px;
 		border-radius: 6px;
 		color: #312e38;
 		font-size: 18px;
@@ -56,6 +56,12 @@ export const ColumnInfos = styled.div<ColumnInfosProps>`
 		justify-content: center;
 
 		transition: background-color 0.2s;
+
+		svg {
+			height: 20px;
+			width: 20px;
+			margin-right: 5px;
+		}
 
 		${({ movieSaved }) => movieSaved ? css`
 			background: #ff3c3c;
@@ -80,11 +86,9 @@ export const ColumnInfos = styled.div<ColumnInfosProps>`
 			` }
 		}
 
-		svg {
-			height: 20px;
-			width: 20px;
-			margin-right: 5px;
-			color: #312e38;
+		&:disabled {
+			opacity: 0.7;
+			cursor: default;
 		}
 
 	}

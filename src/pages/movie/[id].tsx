@@ -1,7 +1,8 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import { BsBookmark, BsBookmarkFill, BsStopwatch } from 'react-icons/bs'
 import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi'
+import Loading from 'react-loading'
 import { useSession } from 'next-auth/client'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
@@ -92,17 +93,18 @@ interface MovieDetailsProps {
 }
 
 export default function MovieDetails({ movie, recommendations, cast }: MovieDetailsProps) {
-	const [session] = useSession()
+	const [isUpdating, setIsUpdating] = useState(false)
+	const [session, sessionLoading] = useSession()
 
 	const { watchList, isLoading, saveMovie, deleteMovie } = useWatchlist()
 
 	const isSaved = useMemo(() => {
-		if (session && !isLoading) {
+		if (session) {
 			return watchList.some(watchlistMovie => watchlistMovie.id === movie.id)
 		} else {
 			return false
 		}
-	}, [session, watchList, isLoading])
+	}, [session, watchList, movie])
 
 	async function handleSaveOrRemoveMovie() {
 		if (!session) {
@@ -110,6 +112,8 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 		}
 
 		try {
+			setIsUpdating(true)
+
 			if (isSaved) {
 				await deleteMovie(movie.id)
 
@@ -128,6 +132,8 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 			}
 		} catch (err) {
 			toast.error(`Oh! An error has ocurred.\n${err}`)
+		} finally {
+			setIsUpdating(false)
 		}
 	}
 
@@ -145,13 +151,35 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 							src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
 							alt={movie.original_title}
 						/>
-						<button type="button" onClick={handleSaveOrRemoveMovie} >
-							{isSaved ? <BsBookmarkFill /> : <BsBookmark />}
-							{isSaved ? "Remove" : "Save"}
+						<button
+							type="button"
+							onClick={handleSaveOrRemoveMovie}
+							disabled={isUpdating || isLoading || sessionLoading}
+						>
+							{(isUpdating || isLoading || sessionLoading) ? (
+								<Loading
+									type="bubbles"
+									height={20}
+									width={20}
+									color="#312e38"
+								/>
+							) : isSaved ? (
+								<>
+									<BsBookmarkFill />
+									Remove
+								</>
+							) : (
+								<>
+									<BsBookmark />
+									Save
+								</>
+							)}
 
-							<ToolTip>
-								<span>Sign in to save this movie in your Watch List</span>
-							</ToolTip>
+							{!session && (
+								<ToolTip>
+									<span>Sign in to save this movie in your Watch List</span>
+								</ToolTip>
+							)}
 						</button>
 						<div className="row">
 							<Section>
