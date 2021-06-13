@@ -1,11 +1,11 @@
 import React, { memo, MouseEvent, useCallback, useMemo } from 'react'
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
+import { toast } from 'react-toastify'
 import { useSession } from 'next-auth/client'
 import Link from 'next/link'
 import Image from 'next/image'
 import lodash from 'lodash'
 
-import { api } from '../../services/api'
 import { useWatchlist } from '../../contexts/watchlist'
 
 import { Container, MovieInfo, ToolTip } from './styles'
@@ -25,7 +25,7 @@ interface MovieComponentProps {
 	onUpdate?: () => void
 }
 
-const Movie: React.FC<MovieComponentProps> = ({ movie, onUpdate, ...rest }) => {
+const MovieComponent: React.FC<MovieComponentProps> = ({ movie, onUpdate, ...rest }) => {
 	const [session] = useSession()
 	const { watchList, isLoading, saveMovie, deleteMovie } = useWatchlist()
 
@@ -55,7 +55,7 @@ const Movie: React.FC<MovieComponentProps> = ({ movie, onUpdate, ...rest }) => {
 				onUpdate && onUpdate()
 			}
 		} catch (err) {
-			alert(err)
+			toast.error(`Oh! An error has ocurred.\n${err}`)
 		}
 
 	}, [session, isSaved, movie, onUpdate])
@@ -94,10 +94,8 @@ const Movie: React.FC<MovieComponentProps> = ({ movie, onUpdate, ...rest }) => {
 	)
 }
 
-export { Movie }
-
-// export const Movie = memo(MovieComponent, (prevProps, nextProps) => {
-// 	return lodash.isEqual(prevProps.movie, nextProps.movie)
-// })
+export const Movie = memo(MovieComponent, (prevProps, nextProps) => {
+	return lodash.isEqual(prevProps.movie, nextProps.movie)
+})
 
 

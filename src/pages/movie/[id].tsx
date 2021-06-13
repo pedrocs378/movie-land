@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { toast } from 'react-toastify'
 import { BsBookmark, BsBookmarkFill, BsStopwatch } from 'react-icons/bs'
 import { GiPayMoney, GiReceiveMoney } from 'react-icons/gi'
 import { useSession } from 'next-auth/client'
@@ -11,10 +12,12 @@ import ptBR from 'date-fns/locale/pt-BR'
 
 import { Movie } from '../../components/Movie'
 
+import { useWatchlist } from '../../contexts/watchlist'
+import { tmdbApi } from '../../services/tmdb'
+
 import { getGenre } from '../../utils/getGenre'
 import { getRuntime } from '../../utils/getRuntime'
 import { getCurrency } from '../../utils/getCurrency'
-import { tmdbApi } from '../../services/tmdb'
 
 import {
 	Container,
@@ -27,7 +30,6 @@ import {
 	Section,
 	Recommendations,
 } from '../../styles/pages/movie'
-import { useWatchlist } from '../../contexts/watchlist'
 
 interface PathMovieResponse {
 	results: {
@@ -92,7 +94,7 @@ interface MovieDetailsProps {
 export default function MovieDetails({ movie, recommendations, cast }: MovieDetailsProps) {
 	const [session] = useSession()
 
-	const { watchList, isLoading } = useWatchlist()
+	const { watchList, isLoading, saveMovie, deleteMovie } = useWatchlist()
 
 	const isSaved = useMemo(() => {
 		if (session && !isLoading) {
@@ -101,6 +103,33 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 			return false
 		}
 	}, [session, watchList, isLoading])
+
+	async function handleSaveOrRemoveMovie() {
+		if (!session) {
+			return
+		}
+
+		try {
+			if (isSaved) {
+				await deleteMovie(movie.id)
+
+				toast.success(`${movie.title} removed!`)
+			} else {
+				await saveMovie({
+					id: movie.id,
+					genre_name: movie.genres[0].name,
+					poster_path: movie.poster_path,
+					title: movie.title,
+					vote_average: movie.vote_average,
+					release_date: movie.release_date
+				})
+
+				toast.success(`${movie.title} saved!`)
+			}
+		} catch (err) {
+			toast.error(`Oh! An error has ocurred.\n${err}`)
+		}
+	}
 
 	return (
 		<>
@@ -116,7 +145,7 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 							src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
 							alt={movie.original_title}
 						/>
-						<button type="button" onClick={() => { }} >
+						<button type="button" onClick={handleSaveOrRemoveMovie} >
 							{isSaved ? <BsBookmarkFill /> : <BsBookmark />}
 							{isSaved ? "Remove" : "Save"}
 
