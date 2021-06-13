@@ -6,7 +6,7 @@ import { RiEmotionNormalLine } from 'react-icons/ri'
 import { Movie } from '../components/Movie'
 import { MovieLoading } from '../components/Movie/MovieLoading'
 
-import { useWatchlist } from '../contexts/watchlist'
+import { useWatchlist } from '../hooks/useWatchlist'
 
 import {
 	Container,
@@ -47,7 +47,7 @@ export default function WatchList() {
 								<Movie
 									key={movie.id}
 									movie={movie}
-									onUpdate={() => { }}
+									isSaved={session && watchList.some(watchlistMovie => watchlistMovie.id === movie.id)}
 								/>
 							)
 						})}

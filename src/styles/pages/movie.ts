@@ -248,6 +248,7 @@ export const Recommendations = styled.div`
 	h1 {
 		color: white;
 		font-size: 24px;
+		margin-bottom: 10px;
 	}
 `
 

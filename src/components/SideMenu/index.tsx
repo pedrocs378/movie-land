@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { BsBookmark } from 'react-icons/bs'
 import { BiArrowToLeft } from 'react-icons/bi'
@@ -32,10 +32,6 @@ const SideMenu: React.FC = () => {
 		}
 
 	}, [session, signOut, router])
-
-	const userName = useMemo(() => {
-		return session?.user.name.split(' ')[0] ?? 'Stranger'
-	}, [session])
 
 	return (
 		<Container show={show} >

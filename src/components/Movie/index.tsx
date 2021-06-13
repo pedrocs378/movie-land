@@ -1,4 +1,4 @@
-import React, { memo, MouseEvent, useCallback, useMemo } from 'react'
+import React, { memo, MouseEvent, useCallback, useMemo, useState } from 'react'
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
 import { toast } from 'react-toastify'
 import { useSession } from 'next-auth/client'
@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import lodash from 'lodash'
 
-import { useWatchlist } from '../../contexts/watchlist'
+import { useWatchlist } from '../../hooks/useWatchlist'
 
 import { Container, MovieInfo, ToolTip } from './styles'
 
@@ -22,19 +22,12 @@ interface MovieCard {
 
 interface MovieComponentProps {
 	movie: MovieCard
+	isSaved: boolean
 }
 
-const MovieComponent: React.FC<MovieComponentProps> = ({ movie, ...rest }) => {
+const MovieComponent: React.FC<MovieComponentProps> = ({ movie, isSaved, ...rest }) => {
 	const [session] = useSession()
-	const { watchList, isLoading, saveMovie, deleteMovie } = useWatchlist()
-
-	const isSaved = useMemo(() => {
-		if (session && !isLoading) {
-			return watchList.some(watchlistMovie => watchlistMovie.id === movie.id)
-		} else {
-			return false
-		}
-	}, [session, watchList, isLoading, movie])
+	const { saveMovie, deleteMovie } = useWatchlist()
 
 	const handleSaveOrRemoveMovie = useCallback(async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault()
@@ -90,7 +83,7 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie, ...rest }) => {
 }
 
 export const Movie = memo(MovieComponent, (prevProps, nextProps) => {
-	return lodash.isEqual(prevProps.movie, nextProps.movie)
+	return lodash.isEqual(prevProps.movie, nextProps.movie) && prevProps.isSaved === nextProps.isSaved
 })
 
 

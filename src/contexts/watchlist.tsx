@@ -1,5 +1,6 @@
-import { createContext, useContext } from "react";
+import { useCallback } from 'react';
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { createContext } from 'use-context-selector'
 
 import { api } from "../services/api";
 
@@ -49,7 +50,7 @@ interface WatchListContextData {
 	deleteMovie: (id: number) => Promise<void>
 }
 
-const WatchlistContext = createContext({} as WatchListContextData)
+export const WatchlistContext = createContext({} as WatchListContextData)
 
 export const WatchlistProvider: React.FC = ({ children }) => {
 	const {
@@ -57,7 +58,6 @@ export const WatchlistProvider: React.FC = ({ children }) => {
 		isLoading,
 		isFetching,
 		refetch,
-
 	} = useQuery(['watchlist'], async () => {
 		const response = await api.get<WatchListResponseParams[]>('/watchlist')
 
@@ -75,7 +75,8 @@ export const WatchlistProvider: React.FC = ({ children }) => {
 
 		return movies
 	}, {
-		staleTime: 60 * 60 * 24
+		staleTime: 60 * 60 * 24,
+		initialData: []
 	})
 
 	const queryClient = useQueryClient();
@@ -102,7 +103,7 @@ export const WatchlistProvider: React.FC = ({ children }) => {
 		}
 	});
 
-	async function saveMovie(movie: SaveMovieProps) {
+	const saveMovie = useCallback(async (movie: SaveMovieProps) => {
 		await saveMovieMutation.mutateAsync({
 			movie_id: movie.id,
 			title: movie.title,
@@ -111,11 +112,11 @@ export const WatchlistProvider: React.FC = ({ children }) => {
 			genre_name: movie.genre_name,
 			vote_average: movie.vote_average
 		})
-	}
+	}, [])
 
-	async function deleteMovie(id: number) {
+	const deleteMovie = useCallback(async (id: number) => {
 		await deleteMovieMutation.mutateAsync(id)
-	}
+	}, [])
 
 	return (
 		<WatchlistContext.Provider value={{
@@ -129,5 +130,3 @@ export const WatchlistProvider: React.FC = ({ children }) => {
 		</WatchlistContext.Provider>
 	)
 }
-
-export const useWatchlist = () => useContext(WatchlistContext)

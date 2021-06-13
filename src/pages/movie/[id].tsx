@@ -12,7 +12,7 @@ import ptBR from 'date-fns/locale/pt-BR'
 
 import { Movie } from '../../components/Movie'
 
-import { useWatchlist } from '../../contexts/watchlist'
+import { useWatchlist } from '../../hooks/useWatchlist'
 import { tmdbApi } from '../../services/tmdb'
 
 import { getGenre } from '../../utils/getGenre'
@@ -236,6 +236,7 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 								<Movie
 									key={recommendationMovie.id}
 									movie={recommendationMovie}
+									isSaved={session && watchList.some(watchlistMovie => watchlistMovie.id === recommendationMovie.id)}
 								/>
 							)
 						})}

@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
+import { useSession } from 'next-auth/client'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
 import Loading from 'react-loading'
@@ -8,6 +9,7 @@ import Pagination from '@material-ui/lab/Pagination'
 import { Movie } from '../components/Movie'
 import { MovieLoading } from '../components/Movie/MovieLoading'
 
+import { useWatchlist } from '../hooks/useWatchlist'
 import { getGenre } from '../utils/getGenre'
 
 import { tmdbApi } from '../services/tmdb'
@@ -52,6 +54,9 @@ interface HomeProps {
 }
 
 export default function Home({ initialPopularMovies, initialTopRated, genres }: HomeProps) {
+  const [session] = useSession()
+  const { watchList } = useWatchlist()
+
   const [popularMoviesPage, setPopularMoviesPage] = useState(initialPopularMovies.page)
   const [topRatedPage, setTopRatedPage] = useState(initialTopRated.page)
 
@@ -165,6 +170,7 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
                       <Movie
                         key={movie.id}
                         movie={movie}
+                        isSaved={session && watchList.some(watchlistMovie => watchlistMovie.id === movie.id)}
                       />
                     )
                   })
@@ -174,6 +180,7 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
                     <Movie
                       key={movie.id}
                       movie={movie}
+                      isSaved={session && watchList.some(watchlistMovie => watchlistMovie.id === movie.id)}
                     />
                   )
                 })
@@ -212,6 +219,7 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
                   <Movie
                     key={movie.id}
                     movie={movie}
+                    isSaved={session && watchList.some(watchlistMovie => watchlistMovie.id === movie.id)}
                   />
                 )
               })
@@ -221,6 +229,7 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
                   <Movie
                     key={movie.id}
                     movie={movie}
+                    isSaved={session && watchList.some(watchlistMovie => watchlistMovie.id === movie.id)}
                   />
                 )
               })

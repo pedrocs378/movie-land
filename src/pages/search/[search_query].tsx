@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/client'
 import Pagination from '@material-ui/lab/Pagination'
 
 import { Movie } from '../../components/Movie'
@@ -13,6 +14,7 @@ import {
 	Container,
 	ListMovies
 } from '../../styles/pages/searchResults'
+import { useWatchlist } from '../../hooks/useWatchlist'
 
 interface MovieProps {
 	id: number
@@ -41,6 +43,9 @@ interface SearchResultsProps {
 }
 
 export default function SearchResults({ initialMovies, genres }: SearchResultsProps) {
+	const [session] = useSession()
+	const { watchList } = useWatchlist()
+
 	const [movies, setMovies] = useState<MovieResponseProps>(initialMovies)
 	const [page, setPage] = useState(1)
 
@@ -88,6 +93,7 @@ export default function SearchResults({ initialMovies, genres }: SearchResultsPr
 							<Movie
 								key={movie.id}
 								movie={movie}
+								isSaved={session && watchList.some(watchlistMovie => watchlistMovie.id === movie.id)}
 							/>
 						)
 					})}
