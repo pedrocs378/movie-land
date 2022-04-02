@@ -22,12 +22,12 @@ export const Container = styled.aside<ContainerProps>`
 	flex-direction: column;
 	justify-content: space-between;
 
-	visibility: hidden;
-	opacity: 0;
+	transform: translateX(-100%);
+
+	transition: transform 0.4s;
 
 	${({ show }) => show && css`
-		visibility: visible;
-		opacity: 1;
+		transform: translateX(0);
 	`}
 
 	> button {
@@ -50,8 +50,7 @@ export const Container = styled.aside<ContainerProps>`
 	@media (min-width: 670px) {
 		width: 250px;
 
-		visibility: visible;
-		opacity: 1;
+		transform: translateX(0);
 	}
 `
 
@@ -60,7 +59,6 @@ export const Content = styled.div`
 `
 
 export const TitleContainer = styled.div`
-
 	margin-left: 18px;
 	display: flex;
 	justify-content: space-between;
@@ -104,7 +102,6 @@ export const TitleContainer = styled.div`
 	}
 
 	@media (min-width: 670px) {
-
 		button {
 			display: none;
 		}

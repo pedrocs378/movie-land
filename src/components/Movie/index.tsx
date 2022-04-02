@@ -60,7 +60,7 @@ const MovieComponent: React.FC<MovieComponentProps> = ({ movie, isSaved, ...rest
 						objectFit="cover"
 					/>
 
-					<button type="button" onClick={handleSaveOrRemoveMovie} >
+					<button type="button" onClick={handleSaveOrRemoveMovie}>
 						{isSaved ? <BsBookmarkFill /> : <BsBookmark />}
 
 						<ToolTip>

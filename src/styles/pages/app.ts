@@ -11,7 +11,6 @@ export const GridArea = styled.div`
 		"footer";
 
 	@media(min-width: 670px) {
-		display: grid;
 		grid-template-rows: 120px auto 50px;
 		grid-template-columns: 250px 1fr;
 		grid-template-areas:
@@ -19,6 +18,4 @@ export const GridArea = styled.div`
 			"menu content"
 			"menu footer";
 	}
-
-
 `

@@ -237,7 +237,7 @@ export default function MovieDetails({ movie, recommendations, cast }: MovieDeta
 						<h1>Cast</h1>
 						{cast.map(actor => {
 							return (
-								<CastItem key={actor.id} >
+								<CastItem key={actor.id}>
 									{actor.profile_path && (
 										<Image
 											src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}

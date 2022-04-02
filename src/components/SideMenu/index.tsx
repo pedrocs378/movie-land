@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { forwardRef } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { BsBookmark } from 'react-icons/bs'
 import { BiArrowToLeft } from 'react-icons/bi'
@@ -18,42 +18,43 @@ import {
 	TitleContainer
 } from './styles'
 
-
-const SideMenu: React.FC = () => {
+const SideMenu = () => {
 	const [session, sessionLoading] = useSession()
-	const { show, setShow } = useShowMenu()
-
 	const router = useRouter()
 
-	const handleSignInOrSignOut = useCallback(() => {
+	const { show, setShow } = useShowMenu()
+
+	const handleSignInOrSignOut = () => {
+		setShow(false)
+
 		if (session) {
 			signOut()
 		} else {
 			router.push('/signin')
 		}
 
-	}, [session, signOut, router])
+	}
 
 	return (
-		<Container show={show} >
+		<Container show={show}>
 			<Content>
 				<TitleContainer>
-					<Link href="/" >
-						<a>
+					<Link href="/">
+						<a onClick={() => setShow(false)}>
 							<GiClapperboard />
 
 							<h1>MOVIE<span>LAND</span></h1>
 						</a>
 					</Link>
 
-					<button type="button" onClick={() => setShow(false)} >
+					<button type="button" onClick={() => setShow(false)}>
 						<BiArrowToLeft />
 					</button>
 				</TitleContainer>
 
 				<ProfileContainer>
 					<Link href={session ? "/profile" : "/signin"}>
-						<a>
+						<a onClick={() => setShow(false)}>
 							{sessionLoading ? (
 								<>
 									<Skeleton variant="circle">
@@ -88,13 +89,13 @@ const SideMenu: React.FC = () => {
 					<h3>Media</h3>
 
 					<Link href="/">
-						<a>
+						<a onClick={() => setShow(false)}>
 							<GiPopcorn />
 							Movies
 						</a>
 					</Link>
 					<Link href="/watchlist">
-						<a>
+						<a onClick={() => setShow(false)}>
 							<BsBookmark />
 							Saved
 						</a>
@@ -102,7 +103,7 @@ const SideMenu: React.FC = () => {
 				</Navigation>
 			</Content>
 
-			<button type="button" onClick={handleSignInOrSignOut} >
+			<button type="button" onClick={handleSignInOrSignOut}>
 				{session ? "Sign Out" : "Sign In"}
 			</button>
 		</Container>

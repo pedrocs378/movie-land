@@ -13,7 +13,7 @@ const MenuProvider: React.FC = ({ children }) => {
 	const setShow = useCallback((value: boolean) => setShowMenu(value), [])
 
 	return (
-		<MenuContext.Provider value={{ show: showMenu, setShow }} >
+		<MenuContext.Provider value={{ show: showMenu, setShow }}>
 			{children}
 		</MenuContext.Provider>
 	)

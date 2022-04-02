@@ -1,5 +1,5 @@
-import { shade } from 'polished'
 import styled, { keyframes } from 'styled-components'
+import { shade } from 'polished'
 
 const fadeFromUp = keyframes`
 	from {
@@ -17,7 +17,7 @@ export const Container = styled.div`
 
 	margin: 80px auto;
 	height: 300px;
-	width: 100%;
+	width: 95%;
 	max-width: 400px;
 	padding: 0 30px;
 
@@ -80,5 +80,9 @@ export const Container = styled.div`
 				background: ${shade(0.15, '#24292D')};
 			}
 		}
+	}
+
+	@media (min-width: 670px) {
+		width: 100%;
 	}
 `

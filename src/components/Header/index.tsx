@@ -79,11 +79,11 @@ const Header: React.FC = () => {
 	}, [searchText])
 
 	return (
-		<Container isShowllableMenu={show} >
-			<button type="button" onClick={() => setShow(!show)} >
+		<Container isShowllableMenu={show}>
+			<button type="button" onClick={() => setShow(!show)}>
 				<FiMenu />
 			</button>
-			<form onSubmit={handleSubmit} >
+			<form onSubmit={handleSubmit}>
 				<Input isFocused={isFocused}>
 					<input
 						name="movie"
@@ -97,12 +97,16 @@ const Header: React.FC = () => {
 					{isLoading ? (
 						<Loading type="bubbles" height={20} width={20} />
 					) : (
-						<button type="submit" >
+						<button type="submit">
 							<FiSearch />
 						</button>
 					)}
 				</Input>
-				<ResultsBox isFocused={isFocused} onMouseEnter={handleSetOpenedBox} onMouseLeave={handleSetClosenedBox}>
+				<ResultsBox
+					isFocused={isFocused}
+					onMouseEnter={handleSetOpenedBox}
+					onMouseLeave={handleSetClosenedBox}
+				>
 					{movies.map(movie => {
 						return (
 							<Link

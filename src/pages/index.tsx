@@ -146,7 +146,7 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
       </Head>
 
       <Container>
-        <MovieSection isHidden={showAllTopRatedMovies} >
+        <MovieSection isHidden={showAllTopRatedMovies}>
           <header>
             <h1>Popular Movies</h1>
 
@@ -197,7 +197,7 @@ export default function Home({ initialPopularMovies, initialTopRated, genres }: 
             />
           )}
         </MovieSection>
-        <MovieSection isHidden={showAllPopularMovies} >
+        <MovieSection isHidden={showAllPopularMovies}>
           <header>
             <h1>Top Rated</h1>
 
