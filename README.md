@@ -2,7 +2,7 @@
   <img alt="MovieLand" title="MovieLand" src=".github/logo.png" />
 </h1>
 
-https://movieland.dev/
+https://movieland.vercel.app/
 
 ## :rocket: Tecnologias
 
